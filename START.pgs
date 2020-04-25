@@ -1,0 +1,46 @@
+[
+  {
+    "name": "MAIN",
+    "nodes": [
+      {
+        "x": 775.0,
+        "y": 620.0,
+        "id": 0,
+        "isFinal": true
+      }
+    ],
+    "edges": [
+      {
+        "start": 0,
+        "end": 0,
+        "token": "VAR_DCL",
+        "func": "",
+        "anchorX": 821.0,
+        "anchorY": 405.0,
+        "isGraph": true,
+        "isGlobal": false
+      },
+      {
+        "start": 0,
+        "end": 0,
+        "token": "RECORD_DCL",
+        "func": "",
+        "anchorX": 558.0,
+        "anchorY": 673.0,
+        "isGraph": true,
+        "isGlobal": false
+      },
+      {
+        "start": 0,
+        "end": 0,
+        "token": "FUNCTION_DCL",
+        "func": "",
+        "anchorX": 962.9999999999998,
+        "anchorY": 745.0,
+        "isGraph": true,
+        "isGlobal": false
+      }
+    ],
+    "start": 0
+  }
+]
