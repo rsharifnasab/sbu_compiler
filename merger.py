@@ -28,7 +28,7 @@ other_list = json.loads(other_text)
 
 all_set = set(str(json.dumps(a, indent =4))  for a in  (main_list + other_list) )
 
-merged_list = list(all_set)
+merged_list = [ json.loads(a) for a in all_set ]
 
 
 # write down files
@@ -37,6 +37,8 @@ open(file_name,"w").write(final_text)
 
 
 # clean temp file
+from time import sleep
+sleep(1)
 rm(temp_name)
 
 
