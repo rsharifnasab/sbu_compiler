@@ -92,21 +92,21 @@
       {
         "start": 4,
         "end": 3,
-        "token": "var",
+        "token": "Var",
         "func": "",
         "anchorX": 835.0,
         "anchorY": 452.0,
-        "isGraph": false,
+        "isGraph": true,
         "isGlobal": false
       },
       {
         "start": 5,
         "end": 3,
-        "token": "var",
+        "token": "Var",
         "func": "",
         "anchorX": 982.5,
         "anchorY": 411.0,
-        "isGraph": false,
+        "isGraph": true,
         "isGlobal": false
       },
       {
@@ -290,7 +290,7 @@
       {
         "start": 10,
         "end": 11,
-        "token": "todo",
+        "token": "todo1",
         "func": "",
         "anchorX": 351.0,
         "anchorY": 359.5,
@@ -304,7 +304,7 @@
         "func": "",
         "anchorX": 284.5,
         "anchorY": 249.0,
-        "isGraph": false,
+        "isGraph": true,
         "isGlobal": false
       },
       {
@@ -350,7 +350,7 @@
       {
         "start": 15,
         "end": 16,
-        "token": "todo",
+        "token": "todo2",
         "func": "",
         "anchorX": 392.0,
         "anchorY": 182.0,
@@ -364,26 +364,26 @@
     "name": "Var",
     "nodes": [
       {
-        "x": 296.0,
-        "y": 243.0,
+        "x": 146.0,
+        "y": 210.0,
         "id": 17,
         "isFinal": true
       },
       {
-        "x": 809.0,
-        "y": 282.0,
+        "x": 399.0,
+        "y": 237.0,
         "id": 18,
         "isFinal": true
       },
       {
-        "x": 1222.0,
-        "y": 313.0,
+        "x": 781.0,
+        "y": 300.0,
         "id": 19,
         "isFinal": true
       },
       {
-        "x": 893.0,
-        "y": 289.0,
+        "x": 571.0,
+        "y": 266.0,
         "id": 20,
         "isFinal": false
       }
@@ -394,8 +394,8 @@
         "end": 18,
         "token": "id",
         "func": "",
-        "anchorX": 552.5,
-        "anchorY": 262.5,
+        "anchorX": 304.5,
+        "anchorY": 194.5,
         "isGraph": false,
         "isGlobal": false
       },
@@ -404,8 +404,8 @@
         "end": 20,
         "token": "\u003d",
         "func": "",
-        "anchorX": 851.0,
-        "anchorY": 285.5,
+        "anchorX": 511.99999999999966,
+        "anchorY": 224.5,
         "isGraph": false,
         "isGlobal": false
       },
@@ -414,12 +414,58 @@
         "end": 19,
         "token": "Expression",
         "func": "",
-        "anchorX": 1057.0,
-        "anchorY": 300.5,
+        "anchorX": 679.0,
+        "anchorY": 288.5,
         "isGraph": true,
         "isGlobal": false
       }
     ],
     "start": 17
+  },
+  {
+    "name": "Brackets",
+    "nodes": [
+      {
+        "x": 206.0,
+        "y": 245.0,
+        "id": 21,
+        "isFinal": false
+      },
+      {
+        "x": 464.0,
+        "y": 264.0,
+        "id": 22,
+        "isFinal": true
+      },
+      {
+        "x": 315.0,
+        "y": 204.0,
+        "id": 23,
+        "isFinal": false
+      }
+    ],
+    "edges": [
+      {
+        "start": 21,
+        "end": 23,
+        "token": "[",
+        "func": "",
+        "anchorX": 260.5,
+        "anchorY": 225.5,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 23,
+        "end": 22,
+        "token": "]",
+        "func": "",
+        "anchorX": 389.5,
+        "anchorY": 234.0,
+        "isGraph": false,
+        "isGlobal": false
+      }
+    ],
+    "start": 21
   }
 ]
