@@ -311,8 +311,8 @@
         "end": 10,
         "token": "id",
         "func": "",
-        "anchorX": 839.0,
-        "anchorY": 523.5,
+        "anchorX": 875.0,
+        "anchorY": 679.5,
         "isGraph": false,
         "isGlobal": false
       },
@@ -321,8 +321,8 @@
         "end": 10,
         "token": "void",
         "func": "",
-        "anchorX": 855.0,
-        "anchorY": 484.5,
+        "anchorX": 844.0,
+        "anchorY": 592.5,
         "isGraph": false,
         "isGlobal": false
       }
