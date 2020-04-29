@@ -959,6 +959,16 @@
         "anchorY": 390.5,
         "isGraph": false,
         "isGlobal": false
+      },
+      {
+        "start": 57,
+        "end": 58,
+        "token": "BOOL_LITERAL",
+        "func": "",
+        "anchorX": 790.5,
+        "anchorY": 478.5,
+        "isGraph": true,
+        "isGlobal": false
       }
     ],
     "start": 57
@@ -1775,16 +1785,6 @@
         "func": "",
         "anchorX": 406.4999999999983,
         "anchorY": 1595.5,
-        "isGraph": false,
-        "isGlobal": false
-      },
-      {
-        "start": 97,
-        "end": 101,
-        "token": "end",
-        "func": "",
-        "anchorX": 767.0,
-        "anchorY": 1523.0,
         "isGraph": false,
         "isGlobal": false
       },
