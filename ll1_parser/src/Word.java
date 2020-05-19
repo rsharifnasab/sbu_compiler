@@ -14,10 +14,10 @@ public class Word{
         return w.toUpperCase().equals(w)? WordType.TERMINAL : WordType.NON_TERMINAL;
     }
 
-    private boolean isTerminal(){
+    public boolean isTerminal(){
         return wordType == WordType.TERMINAL;
     }
-    private boolean isNonTerminal(){
+    public boolean isNonTerminal(){
         return wordType == WordType.NON_TERMINAL;
     }
     
