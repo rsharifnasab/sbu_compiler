@@ -11,6 +11,7 @@ developing a top down LL1 parser
 ### useful resources:
 + https://www.geeksforgeeks.org/construction-of-ll1-parsing-table/
 + https://www.codeproject.com/Articles/5162249/How-to-Make-an-LL-1-Parser-Lesson-1
++ https://courses.cs.washington.edu/courses/cse401/04sp/slides/03b-LL1-example.pdf
 
 
 
