@@ -10,8 +10,8 @@ public class Word{
             this.w = w;
     }
 
-    private static WordType stringToWordType(String w){
-        return w.toUpperCase().equals(w)? WordType.TERMINAL : WordType.NON_TERMINAL;
+    private static WordType stringToWordType(String w){ ///-->if a word is totally uppercase return terminal
+        return w.toUpperCase().equals(w)? WordType.NON_TERMINAL : WordType.TERMINAL;
     }
 
     public boolean isTerminal(){
@@ -23,7 +23,7 @@ public class Word{
     
     @Override 
     public boolean equals(Object o){
-        return  o != null && o instanceof Word && o.toString().equals(this.toString()); 
+        return o instanceof Word && o.toString().equals(this.toString());
     }
 
     @Override
