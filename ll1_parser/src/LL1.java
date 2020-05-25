@@ -1,10 +1,10 @@
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class LL1 {
     public final Grammer grammer;
 
-    public LL1 (String filename) throws FileNotFoundException {
+    public LL1 (String filename) throws IOException {
         this.grammer = new Grammer(filename);
     }
 
