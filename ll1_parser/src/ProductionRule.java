@@ -5,12 +5,15 @@ public class ProductionRule {
     String [] rule;
     Word leftSide;
     ArrayList<Word> rightSide;
+    boolean visited;
+
 
     public ProductionRule(int num){
 
         this.num = num;
         this.rule = new String[2];
         this.rightSide = new ArrayList<>();
+        this.visited = false;
 
     }
 
@@ -22,7 +25,7 @@ public class ProductionRule {
     }
 
     public void setRight(){
-        for (String str: this.rule[1].split(" ")) {
+        for (String str: this.rule[1].trim().split(" ")) {
             this.rightSide.add(new Word(str));
         }
     }

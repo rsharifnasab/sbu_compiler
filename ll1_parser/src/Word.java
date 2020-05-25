@@ -4,14 +4,14 @@ enum WordType{
 
 public class Word{
     private final WordType wordType;
-    private final String w;
-    public Word(String w){
-            wordType = stringToWordType(w);
-            this.w = w;
+    private final String content;
+    public Word(String content){
+            wordType = stringToWordType(content);
+            this.content = content;
     }
 
-    private static WordType stringToWordType(String w){ ///-->if a word is totally uppercase return terminal
-        return w.toUpperCase().equals(w)? WordType.NON_TERMINAL : WordType.TERMINAL;
+    private static WordType stringToWordType(String content){ ///-->if a word is totally uppercase return terminal
+        return content.toUpperCase().equals(content)? WordType.NON_TERMINAL : WordType.TERMINAL;
     }
 
     public boolean isTerminal(){
@@ -27,8 +27,8 @@ public class Word{
     }
 
     @Override
-    public int hashCode(){ return w.hashCode() + 31; }
+    public int hashCode(){ return content.hashCode() + 31; }
 
     @Override
-    public String toString(){ return w; }
+    public String toString(){ return content; }
 }

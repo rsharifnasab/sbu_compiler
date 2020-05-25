@@ -13,7 +13,9 @@ public class Main {
         LL1 parser = new LL1(filename);
         parser.grammer.build_RHS();
 
-
+        //--test
+        Word test = new Word("TERM'");
+       System.out.println(parser.is_nullable(test));
 
 
 

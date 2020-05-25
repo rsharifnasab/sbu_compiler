@@ -24,9 +24,32 @@ public class LL1 {
         throw new RuntimeException("not implemented yet");
     }
 
+    //-----------------------------------------
     public boolean is_nullable(Word w){
-        return false;//----> to be completed //todo
+        boolean flag = true;
+
+        if(w.isTerminal() && !w.toString().equals("#"))
+            return false;
+
+        else {
+
+           for (ProductionRule pr : grammer.prod_rules) {
+
+             if(pr.leftSide.equals(w) && !pr.visited){
+                pr.visited = true;
+
+                 for (Word word : pr.rightSide) {
+                    if(!is_nullable(word)){
+                        flag = false;
+                        break;}
+                 }
+             }
+           }
+
+        }
+
+
+
+        return flag;
     }
-
-
 }
