@@ -8,11 +8,9 @@ public class ParseTable{
         innerMap = new HashMap<>();
     }
 
-
     public void put(Word key1, Word key2, ProductionRule value) {
         throw new RuntimeException("not implemented yet");
     }
-
 
 
     @Override

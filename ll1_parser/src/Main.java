@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+
 public class Main {
 
     private static String getFileName(String[] args){
@@ -14,15 +15,10 @@ public class Main {
         String filename = getFileName(args);
 
         LL1 parser = new LL1(filename);
-        parser.grammer.build_RHS();
 
         //--test
         Word test = new Word("EXP");
         System.out.println(parser.is_nullable(test));
-
-        //---------------------
-
-
 
     }
 
