@@ -1,14 +1,17 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
-        Scanner input = new Scanner(System.in);
+    private static String getFileName(String[] args){
+        if(args.length == 1) return args[0];
+        System.err.println("enter input filename");
+        return new java.util.Scanner(System.in).next();
+    }
+
+    public static void main(String[] args) throws IOException {
+
         System.out.println("welcome to this program!");
-        System.out.println("enter the file name");
-        String filename = input.next();
+        String filename = getFileName(args);
 
         LL1 parser = new LL1(filename);
         parser.grammer.build_RHS();
@@ -17,16 +20,10 @@ public class Main {
         Word test = new Word("EXP");
         System.out.println(parser.is_nullable(test));
 
-
-
-
         //---------------------
 
 
 
     }
-
-
-
 
 }
