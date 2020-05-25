@@ -14,7 +14,7 @@ public class Main {
         parser.grammer.build_RHS();
 
         //--test
-        Word test = new Word("TERM");
+        Word test = new Word("EXP");
         System.out.println(parser.is_nullable(test));
 
 

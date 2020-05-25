@@ -13,10 +13,31 @@ public class LL1 {
     }
 
     public Set<Word> first(Word w){
-        if(w.isTerminal()) throw new IllegalArgumentException("first should only calculated for non-terminals");
-        //todo
-        throw new RuntimeException("not implemented yet");
+        Set<Word> set = new HashSet<>();
+        if(w.isTerminal()) throw new IllegalArgumentException
+                ("first should only calculated for non-terminals");
+
+        for (ProductionRule pr : grammer.prod_rules) {
+            if(pr.leftSide.equals(w) && !pr.visited){
+                pr.visited = true;
+                for (Word word : pr.rightSide) {
+
+                    if(word.isNonTerminal()){
+                        if(is_nullable(word)){continue;}
+                        else {first(word);}
+                    }
+                    else{ set.add(word); }
+                }
+
+
+            }
+
+        }
+        return set;
     }
+
+
+    //----------------------------------------------------------------------------------------------------------
 
     public Set<Word> follow(Word w){
         if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
@@ -49,6 +70,10 @@ public class LL1 {
               }
            }
 
+        }
+
+        for (ProductionRule pr : grammer.prod_rules) {
+            pr.visited = false;
         }
 
 
