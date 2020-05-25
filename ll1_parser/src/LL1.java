@@ -72,6 +72,7 @@ public class LL1 {
 
         }
 
+        //--> revrting visited boolean to fasle again , after the job is done!
         for (ProductionRule pr : grammer.prod_rules) {
             pr.visited = false;
         }
