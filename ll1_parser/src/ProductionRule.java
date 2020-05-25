@@ -1,42 +1,37 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.*;
+
 
 public class ProductionRule {
+    static int count = 0;
+
     public final int num;
-    String [] rule;
-    Word leftSide;
-    ArrayList<Word> rightSide;
+    final String [] rule;
+    final Word leftSide;
+    final List<Word> rightSide;
+
+
     boolean visited;
 
 
-    public ProductionRule(int num){
+    public ProductionRule(String rule){
+        this.num = count++;
+        this.rule = rule.trim().split(":");
 
-        this.num = num;
-        this.rule = new String[2];
-        this.rightSide = new ArrayList<>();
+        // set left side
+        this.leftSide = new Word( this.rule[0].trim() );
+
+        // set right side
+        this.rightSide = Arrays.stream(this.rule[1].trim().split(" "))
+            .map(a -> new Word(a))
+            .collect(Collectors.toList());
+
         this.visited = false;
-
     }
 
-    //-------setter for left side and right side of the rule-------
-    public void setLeft(){
-
-        this.leftSide = new Word( this.rule[0].trim());
-
-    }
-
-    public void setRight(){
-        for (String str: this.rule[1].trim().split(" ")) {
-            this.rightSide.add(new Word(str));
-        }
-    }
     //------------------------------------------------------------
 
-
     @Override
-    public String toString(){ return ""+num; }
-
-
-
-
+    public String toString(){ return Integer.toString(num); }
 
 }

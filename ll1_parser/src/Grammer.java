@@ -8,25 +8,21 @@ public class Grammer{
 
     public Grammer(String filename) throws FileNotFoundException {
         this.prod_rules = new ArrayList<>();
-        this.RHS       = new ArrayList<>();
-        File grammerFile = new File(filename);
-        Scanner fileScan = new Scanner(grammerFile);
+        this.RHS = new ArrayList<>();
 
-        int i = 0;
+        Scanner fileScan = new Scanner(new File(filename));
+
+
         //--->read the file line by line and construct production rules
         while (fileScan.hasNextLine()){
-           String temp = fileScan.nextLine();
-           ProductionRule pr = new ProductionRule(i);
-           pr.rule = temp.trim().split(":");
 
-           //----separates left side and right side of the rule
-           pr.setLeft();
-           pr.setRight();
+           ProductionRule pr = new ProductionRule(
+                fileScan.nextLine()
+           );
            //-------
 
            prod_rules.add(pr);
 
-            i++;
         }
 
     }
@@ -65,5 +61,5 @@ public class Grammer{
         }
 
 
-    
+
 }
