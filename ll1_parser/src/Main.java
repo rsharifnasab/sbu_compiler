@@ -10,11 +10,11 @@ public class Main {
         System.out.println("enter the file name");
         String filename = input.next();
 
-        Grammer grammer = new Grammer(filename);
-        grammer.build_RHS();
+        LL1 parser = new LL1(filename);
+        parser.grammer.build_RHS();
 
-        System.out.println("RHS table: ");
-        grammer.display_RHS();
+
+
 
 
         //---------------------

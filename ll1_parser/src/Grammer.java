@@ -3,12 +3,12 @@ import java.util.*;
 
 public class Grammer{
 
-    public ArrayList <ProductionRule> grm_rules;
+    public ArrayList <ProductionRule> prod_rules;
     public ArrayList <Stack<String>> RHS; //---->stack of strings for storing each rule's right hand side
 
     public Grammer(String filename) throws FileNotFoundException {
-        this.grm_rules = new ArrayList<>();
-        this.RHS   = new ArrayList<>();
+        this.prod_rules = new ArrayList<>();
+        this.RHS       = new ArrayList<>();
         File grammerFile = new File(filename);
         Scanner fileScan = new Scanner(grammerFile);
 
@@ -19,7 +19,12 @@ public class Grammer{
            ProductionRule pr = new ProductionRule(i);
            pr.rule = temp.trim().split(":");
 
-           grm_rules.add(pr);
+           //----separates left side and right side of the rule
+           pr.setLeft();
+           pr.setRight();
+           //-------
+
+           prod_rules.add(pr);
 
             i++;
         }
@@ -31,7 +36,7 @@ public class Grammer{
     public void build_RHS(){
 
         Stack<String> stack;
-        for (ProductionRule pr : grm_rules) {
+        for (ProductionRule pr : prod_rules) {
 
             String[] temp = pr.rule[1].trim().split(" ");
             stack = new Stack<>();
