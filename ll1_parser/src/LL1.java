@@ -30,7 +30,6 @@ public class LL1 {
 
         if(w.isTerminal() && !w.toString().equals("#"))
             return false;
-
         else {
 
            for (ProductionRule pr : grammer.prod_rules) {
@@ -39,11 +38,15 @@ public class LL1 {
                 pr.visited = true;
 
                  for (Word word : pr.rightSide) {
-                    if(!is_nullable(word)){
-                        flag = false;
-                        break;}
+                     //if all of them are nullable return true else false
+                     if(!is_nullable(word))
+                     { flag = false;
+                       break;
+                     }
+                     else {flag = true;}
+
                  }
-             }
+              }
            }
 
         }

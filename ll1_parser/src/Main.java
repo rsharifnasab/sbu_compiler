@@ -14,8 +14,9 @@ public class Main {
         parser.grammer.build_RHS();
 
         //--test
-        Word test = new Word("TERM'");
-       System.out.println(parser.is_nullable(test));
+        Word test = new Word("TERM");
+        System.out.println(parser.is_nullable(test));
+
 
 
 

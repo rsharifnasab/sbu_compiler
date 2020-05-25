@@ -3,7 +3,7 @@ enum WordType{
 }
 
 public class Word{
-    private final WordType wordType;
+    public final WordType wordType;
     private final String content;
     public Word(String content){
             wordType = stringToWordType(content);
@@ -11,7 +11,7 @@ public class Word{
     }
 
     private static WordType stringToWordType(String content){ ///-->if a word is totally uppercase return terminal
-        return content.toUpperCase().equals(content)? WordType.NON_TERMINAL : WordType.TERMINAL;
+        return content.toLowerCase().equals(content)?  WordType.TERMINAL : WordType.NON_TERMINAL;
     }
 
     public boolean isTerminal(){
