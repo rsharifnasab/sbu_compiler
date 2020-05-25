@@ -12,6 +12,7 @@ public class LL1 {
     throw new RuntimeException("not implemented yet");
   }
 
+
   public Set<Word> first(Word w){
     if(w.isTerminal()) throw new IllegalArgumentException
     ("first should only calculated for non-terminals");
@@ -40,7 +41,6 @@ public class LL1 {
   }
 
 
-  //----------------------------------------------------------------------------------------------------------
 
   public Set<Word> follow(Word w){
     if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
@@ -48,8 +48,8 @@ public class LL1 {
     throw new RuntimeException("not implemented yet");
   }
 
-  //-----------------------------------------
-  public boolean is_nullable(Word w){
+
+   public boolean is_nullable(Word w){
     if(w.isTerminal() && !w.toString().equals("#"))
         return false;
 
