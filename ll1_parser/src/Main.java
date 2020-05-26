@@ -26,7 +26,10 @@ public class Main {
         System.out.println(parser.first(new Word("ID")));
         System.out.println(parser.first(new Word("ID'")));
 
-
+        parser.pt.put(new Word("EXP"),new Word("+"),
+            new ProductionRule("EXP : TERM EXP'")
+        );
+        System.out.println( parser.pt.toString() );
     }
 
 }

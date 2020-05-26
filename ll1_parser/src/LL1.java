@@ -4,9 +4,11 @@ import java.util.stream.*;
 
 public class LL1 {
   public final Grammer grammer;
+  public final ParseTable pt;
 
   public LL1 (String filename) throws IOException {
     this.grammer = new Grammer(filename);
+    this.pt = new ParseTable(grammer);
   }
 
   public ParseTable run(){
