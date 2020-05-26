@@ -6,7 +6,7 @@ import java.util.stream.*;
 public class Grammer{
 
   final public List <ProductionRule> prod_rules;
-  final public List <Stack<String>> RHS; //---->stack of strings for storing each rule's right hand side
+  final public List <Stack<Word>> RHS; //---->stack of Words for storing each rule's right hand side
 
   public Grammer(String filename) throws IOException {
 
@@ -20,16 +20,15 @@ public class Grammer{
 
 
   //-----> method to assemble the rhs table
-  public List<Stack<String>> build_RHS(){
-    List <Stack<String>> tempRHS = new ArrayList<Stack<String>>();
+  public List<Stack<Word>> build_RHS(){
+    List <Stack<Word>> tempRHS = new ArrayList<>();
 
-    Stack<String> stack = new Stack<>();
     for (ProductionRule pr : prod_rules) {
-      stack.clear();
+      Stack<Word> stack = new Stack<>();
 
       String[] temp = pr.rule[1].trim().split(" ");
       for (int i = temp.length - 1; i >= 0 ; i--) {
-        stack.push(temp[i]);
+        stack.push( new Word(temp[i]) );
       }
       tempRHS.add(stack);
     }
@@ -37,8 +36,13 @@ public class Grammer{
   }
 
   public void display_RHS(){
-    for (Stack<String> x : RHS) {
-      for (String str: x) {
+
+/*    RHS.stream()
+        .map( x-> String.join(",",x) )
+        .forEach(System.out::println);
+*/
+    for (Stack<Word> x : RHS) {
+      for (Word str: x) {
         System.out.print(str+" , ");
       }
       System.out.println();
