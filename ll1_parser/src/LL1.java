@@ -19,7 +19,7 @@ public class LL1 {
       ("first should only calculated for non-terminals");
     return Stream.concat(
                 grammer // avalin gheire nullable
-                  .prod_rules
+                  .prodRules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
                   .map( a ->
@@ -32,7 +32,7 @@ public class LL1 {
                   ,
 
                 grammer // hame ye nullable haye ghabl az avalin gheire nullable
-                  .prod_rules
+                  .prodRules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
                   .flatMap( a ->
@@ -46,7 +46,7 @@ public class LL1 {
   }
 
   private Set<ProductionRule> whoContainsMe(Word w){
-        return grammer.prod_rules
+        return grammer.prodRules
                   .stream()
                   .filter( a -> a.rightSide.contains(w))
                   .collect(Collectors.toSet());
@@ -64,7 +64,7 @@ public class LL1 {
       ,
     )
 
-    grammer.prod_rules
+    grammer.prodRules
                  .stream() // hame ye ghavaed
                  .filter( a -> a.rightSide.contains(w) ) // shamel w
                  .flatMap( a -> // a: ghede tolid
@@ -89,7 +89,7 @@ public class LL1 {
    public boolean isNullable(Word w){
       if(w.isNullable == null)
          w.isNullable = grammer
-            .prod_rules
+            .prodRules
             .stream()
             .filter( a -> a.leftSide.equals(w) ) // left hand side is w
             .anyMatch( // har kodum az ghavaed boud okeye

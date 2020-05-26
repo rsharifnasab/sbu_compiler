@@ -5,13 +5,13 @@ import java.util.stream.*;
 
 public class Grammer{
 
-  final public List <ProductionRule> prod_rules;
+  final public List <ProductionRule> prodRules;
   final public List <Stack<Word>> RHS; //---->stack of Words for storing each rule's right hand side
 
   public Grammer(String filename) throws IOException {
 
     //--->read the file line by line and construct production rules
-    prod_rules = Files.lines(Paths.get(filename))
+    prodRules = Files.lines(Paths.get(filename))
     .map( a -> new ProductionRule(a) )
     .collect( Collectors.toList() );
 
@@ -23,7 +23,7 @@ public class Grammer{
   public List<Stack<Word>> build_RHS(){
     List <Stack<Word>> tempRHS = new ArrayList<>();
 
-    for (ProductionRule pr : prod_rules) {
+    for (ProductionRule pr : prodRules) {
       Stack<Word> stack = new Stack<>();
 
       String[] temp = pr.rule[1].trim().split(" ");
