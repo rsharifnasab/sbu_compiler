@@ -16,19 +16,34 @@ public class LL1 {
 
   public Set<Word> first(Word w){ //todo
     if(w.isTerminal()) throw new IllegalArgumentException
-    ("first should only calculated for non-terminals");
-
-    return grammer.prod_rules
-      .stream()
-      .filter( a -> a.leftSide.equals(w) ) // left hand side is w
-      .map(
-            a -> a.rightSide
+      ("first should only calculated for non-terminals");
+    return
+            Stream.concat(
+                  grammer // avalin gheire nullable
+                  .prod_rules
                   .stream()
-                  .filter( b -> !is_nullable(b) )
-                  .findFirst()
-                  .orElse(Word.lambda)
-      )
-      .collect( Collectors.toSet() );
+                  .filter( a -> a.leftSide.equals(w) ) // left hand side is w
+                  .map( a->
+                        a.rightSide
+                              .stream()
+                              .filter( b -> !is_nullable(b) )
+                              .findFirst()
+                              .orElse(Word.lambda)
+                  )
+                  ,
+
+                  grammer // hame ye nullable ha
+                  .prod_rules
+                  .stream()
+                  .filter( a -> a.leftSide.equals(w) ) // left hand side is w
+                  .flatMap( a->
+                        a.rightSide
+                              .stream()
+                              .takeWhile( b -> is_nullable(b) )
+                  )
+
+      ).collect( Collectors.toSet() );
+
   }
 
 

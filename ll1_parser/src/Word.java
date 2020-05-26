@@ -2,10 +2,11 @@
 public class Word{
 
     public static final Word lambda = new Word("W");
+    public static final Word terminator = new Word("$");
 
     private final WordType wordType;
     private final String content;
-    
+
     public Boolean isNullable = null;
 
     public Word(String content){
