@@ -45,22 +45,26 @@ public class LL1 {
 
   }
 
-  public Set<ProductionRule> whoContainsMe(Word w){
+  private Set<ProductionRule> whoContainsMe(Word w){
         return grammer.prod_rules
                   .stream()
                   .filter( a -> a.rightSide.contains(w))
                   .collect(Collectors.toSet());
  }
 
-  public Set<Word> follow(Word w){
+
+
+
+  public Set<Word> follow(Word w){ //‌ُ TODO
     if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
-    if (w.equals(Word.terminator)) return Set.of(terminator);
+    if (w.equals(Word.terminator)) return Set.of(Word.terminator);
 
-    Set<ProductionRule> relatedRules = whoContainsMe(w);
+    /*
+    return Stream.concat(
+      ,
+    )
 
-    Set<Word> avvalinWHa = relatedRules.
-     
-    return grammer.prod_rules
+    grammer.prod_rules
                  .stream() // hame ye ghavaed
                  .filter( a -> a.rightSide.contains(w) ) // shamel w
                  .flatMap( a -> // a: ghede tolid
@@ -75,8 +79,8 @@ public class LL1 {
                         )
                  )
                  .collect(Collectors.toSet());
-
-
+      */
+      return null;
   }
 
 
