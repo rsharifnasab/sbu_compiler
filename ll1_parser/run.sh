@@ -2,6 +2,6 @@
 clear
 cd src
 javac *.java
-java Main  ../in.txt
+time java Main  ../in.txt
 rm *.class
 cd ..

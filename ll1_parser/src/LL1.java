@@ -17,9 +17,8 @@ public class LL1 {
   public Set<Word> first(Word w){ //todo
     if(w.isTerminal()) throw new IllegalArgumentException
       ("first should only calculated for non-terminals");
-    return
-            Stream.concat(
-                  grammer // avalin gheire nullable
+    return Stream.concat(
+                grammer // avalin gheire nullable
                   .prod_rules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
@@ -32,7 +31,7 @@ public class LL1 {
                   )
                   ,
 
-                  grammer // hame ye nullable ha
+                grammer // hame ye nullable ha
                   .prod_rules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
