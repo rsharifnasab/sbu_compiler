@@ -1,11 +1,17 @@
 
 public class Word{
-    public final WordType wordType;
+
+    public static final Word lambda = new Word("W");
+
+    private final WordType wordType;
     private final String content;
+    
+    public Boolean isNullable = null;
 
     public Word(String content){
             wordType = stringToWordType(content);
             this.content = content;
+            if(this.isTerminal()) this.isNullable = this.equals(lambda);
     }
 
     private static WordType stringToWordType(String content){ ///-->if a word is totally lowercase return erminal
@@ -30,4 +36,7 @@ public class Word{
 
     @Override
     public String toString(){ return content; }
+
+    public boolean isLambda(){ return this.equals(lambda); }
+
 }

@@ -20,8 +20,7 @@ public class LL1 {
     Set<Word> set = new HashSet<>();
 
     for (ProductionRule pr : grammer.prod_rules) {
-      if(pr.leftSide.equals(w) && !pr.visited){
-        pr.visited = true;
+      if(pr.leftSide.equals(w) ){
         for (Word word : pr.rightSide) {
 
           if(word.isNonTerminal()){
@@ -49,32 +48,18 @@ public class LL1 {
   }
 
 
+
+
    public boolean is_nullable(Word w){
-    if(w.isTerminal() && !w.toString().equals("#"))
-        return false;
+      if(w.isNullable == null)
+         w.isNullable = grammer
+            .prod_rules
+            .stream()
+            .filter( a -> a.leftSide.equals(w) ) // left hand side is w
+            .flatMap( a-> a.rightSide.stream() ) // combine all together
+            .distinct()
+            .allMatch( a -> is_nullable(a) );
 
-    boolean flag = true;
-    for (ProductionRule pr : grammer.prod_rules) {
-
-      if(pr.leftSide.equals(w) && !pr.visited){
-        pr.visited = true;
-        for (Word word : pr.rightSide) {
-          //if all of them are nullable return true else false
-          if(!is_nullable(word)){
-            flag = false;
-            break;
-          }
-          else flag = true;
-
-        }
-      }
-    }
-
-
-    //--> revrting visited boolean to fasle again , after the job is done!
-    for (ProductionRule pr : grammer.prod_rules) {
-      pr.visited = false;
-    }
-    return flag;
+    return w.isNullable;
   }
 }

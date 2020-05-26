@@ -9,8 +9,6 @@ public class ProductionRule {
     final Word leftSide;
     final List<Word> rightSide;
 
-    boolean visited;
-
     public ProductionRule(String rule){
         this.num = count++;
         this.rule = rule.trim().split(":");
@@ -19,8 +17,6 @@ public class ProductionRule {
         this.rightSide = Arrays.stream(this.rule[1].trim().split(" "))
             .map(a -> new Word(a))
             .collect(Collectors.toList());
-
-        this.visited = false;
     }
 
 
