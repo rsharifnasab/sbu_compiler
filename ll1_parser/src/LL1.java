@@ -22,7 +22,7 @@ public class LL1 {
                   .prod_rules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
-                  .map( a->
+                  .map( a ->
                         a.rightSide
                               .stream()
                               .filter( b -> !is_nullable(b) )
@@ -31,11 +31,11 @@ public class LL1 {
                   )
                   ,
 
-                grammer // hame ye nullable ha
+                grammer // hame ye nullable haye ghabl az avalin gheire nullable
                   .prod_rules
                   .stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
-                  .flatMap( a->
+                  .flatMap( a ->
                         a.rightSide
                               .stream()
                               .takeWhile( b -> is_nullable(b) )
@@ -45,12 +45,38 @@ public class LL1 {
 
   }
 
-
+  public Set<ProductionRule> whoContainsMe(Word w){
+        return grammer.prod_rules
+                  .stream()
+                  .filter( a -> a.rightSide.contains(w))
+                  .collect(Collectors.toSet());
+ }
 
   public Set<Word> follow(Word w){
     if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
+    if (w.equals(Word.terminator)) return Set.of(terminator);
 
-    throw new RuntimeException("not implemented yet");
+    Set<ProductionRule> relatedRules = whoContainsMe(w);
+
+    Set<Word> avvalinWHa = relatedRules.
+     
+    return grammer.prod_rules
+                 .stream() // hame ye ghavaed
+                 .filter( a -> a.rightSide.contains(w) ) // shamel w
+                 .flatMap( a -> // a: ghede tolid
+                        Stream.concat(
+                               a.rightSide.stream()
+                                    .dropWhile( b -> !b.equals(w) ) // khodesh ro peyda kon
+                                    .skip(1) // badish ro peyda kon
+                                    .limit(1) //fagjat avvali
+                                    .map( b -> first(b) ) //
+                              ,
+                              is_nullable(a.leftSide)? first(a.leftSide).stream(): null
+                        )
+                 )
+                 .collect(Collectors.toSet());
+
+
   }
 
 
