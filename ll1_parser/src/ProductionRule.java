@@ -15,7 +15,7 @@ public class ProductionRule {
 
         this.leftSide = new Word( this.rule[0].trim() );
         this.rightSide = Arrays.stream(this.rule[1].trim().split(" "))
-            .map(a -> new Word(a))
+            .map(Word::new)
             .collect(Collectors.toList());
     }
 

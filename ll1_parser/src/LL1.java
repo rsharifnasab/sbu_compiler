@@ -21,8 +21,7 @@ public class LL1 {
       ("first should only calculated for non-terminals");
     return Stream.concat(
                 grammer // avalin gheire nullable
-                  .prodRules
-                  .stream()
+                  .prodRules.stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
                   .map( a ->
                         a.rightSide
@@ -34,13 +33,12 @@ public class LL1 {
                   ,
 
                 grammer // hame ye nullable haye ghabl az avalin gheire nullable
-                  .prodRules
-                  .stream()
+                  .prodRules.stream()
                   .filter( a -> a.leftSide.equals(w) ) // left hand side is w
                   .flatMap( a ->
                         a.rightSide
                               .stream()
-                              .takeWhile( b -> isNullable(b) )
+                              .takeWhile(this::isNullable)
                   )
 
       ).collect( Collectors.toSet() );
@@ -59,30 +57,29 @@ public class LL1 {
 
   public Set<Word> follow(Word w){ //‌ُ TODO
     if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
-    if (w.equals(Word.terminator)) return Set.of(Word.terminator);
+    Set<Word> set = new HashSet<>();
 
-    /*
-    return Stream.concat(
-      ,
-    )
+    if (w.equals(Word.terminator))
+        set.add(w);
+      set.addAll( grammer.prodRules.stream()
+              .filter(a -> a.rightSide.contains(w))
+              .map(a -> a.rightSide)
+              .map(a -> a.get(a.indexOf(w) + 1))
+              .filter(Word::isTerminal)
+              .collect(Collectors.toSet())
+      );
 
-    grammer.prodRules
-                 .stream() // hame ye ghavaed
-                 .filter( a -> a.rightSide.contains(w) ) // shamel w
-                 .flatMap( a -> // a: ghede tolid
-                        Stream.concat(
-                               a.rightSide.stream()
-                                    .dropWhile( b -> !b.equals(w) ) // khodesh ro peyda kon
-                                    .skip(1) // badish ro peyda kon
-                                    .limit(1) //fagjat avvali
-                                    .map( b -> first(b) ) //
-                              ,
-                              isNullable(a.leftSide)? first(a.leftSide).stream(): null
-                        )
-                 )
-                 .collect(Collectors.toSet());
-      */
-      return null;
+      grammer.prodRules.stream()
+              .filter(a -> a.rightSide.contains(w))
+              .map(a -> a.rightSide)
+              .map(a -> a.get(a.indexOf(w) + 1))
+              .filter(Word::isNonTerminal)
+              .forEach(a -> set.addAll(first(a)));
+
+
+
+
+      return set;
   }
 
 

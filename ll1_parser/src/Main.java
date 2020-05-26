@@ -18,18 +18,19 @@ public class Main {
 
         //--test
         Word test = new Word("EXP");
-        parser.grammer.printRHS();
+        //parser.grammer.printRHS();
         System.out.println(parser.isNullable(test));
         System.out.println(parser.first(test));
-        //System.out.println(parser.follow(test));
 
-        System.out.println(parser.first(new Word("ID")));
+
+       // System.out.println(parser.first(new Word("ID")));
         System.out.println(parser.first(new Word("ID'")));
+        System.out.println(parser.follow(new Word("FACTOR")));
 
-        parser.pt.put(new Word("EXP"),new Word("+"),
+        /*parser.pt.put(new Word("EXP"),new Word("+"),
             new ProductionRule("EXP : TERM EXP'")
         );
-        System.out.println( parser.pt.toString() );
+        System.out.println( parser.pt.toString() );*/
     }
 
 }

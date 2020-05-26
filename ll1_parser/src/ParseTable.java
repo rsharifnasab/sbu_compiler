@@ -15,13 +15,13 @@ public class ParseTable{
           int satrCount = (int) g.prodRules
                   .stream()
                   .flatMap( a-> a.rightSide.stream() )
-                  .filter( a -> a.isNonTerminal() )
+                  .filter(Word::isNonTerminal)
                   .count();
 
           int  sotunCount = (int) g.prodRules
                     .stream()
                     .flatMap( a-> a.rightSide.stream() )
-                    .filter(a -> a.isTerminal())
+                    .filter(Word::isTerminal)
                     .count();
 
             arr = new ProductionRule[satrCount][sotunCount]; // not sure
