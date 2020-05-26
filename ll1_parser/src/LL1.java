@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 
 public class LL1 {
   public final Grammer grammer;
@@ -19,24 +20,19 @@ public class LL1 {
 
     Set<Word> set = new HashSet<>();
 
-    for (ProductionRule pr : grammer.prod_rules) {
-      if(pr.leftSide.equals(w) ){
-        for (Word word : pr.rightSide) {
+    grammer.prod_rules
+      .stream()
+      .filter( a -> a.leftSide.equals(w) ) // left hand side is w
+      .map(
+            a -> a.rightSide
+                  .stream()
+                  .filter( b -> !is_nullable(b) )
+                  .findFirst()
+                  .orElse(Word.lambda)
+      )
+      .collect( Collectors.toSet() );
 
-          if(word.isNonTerminal()){
-            if(is_nullable(word))
-            continue;
-            else
-            first(word);
-          }
-          else set.add(word);
-        }
-
-
-      }
-
-    }
-    return set;
+      return set.isEmpty()? Set.of(Word.lambda) : set;
   }
 
 
@@ -56,7 +52,7 @@ public class LL1 {
             .prod_rules
             .stream()
             .filter( a -> a.leftSide.equals(w) ) // left hand side is w
-            .flatMap( a-> a.rightSide.stream() ) // combine all together
+            .flatMap( a -> a.rightSide.stream() ) // combine all together
             .distinct()
             .allMatch( a -> is_nullable(a) );
 
