@@ -15,12 +15,12 @@ public class Grammer{
     .map( a -> new ProductionRule(a) )
     .collect( Collectors.toList() );
 
-    RHS = build_RHS();
+    RHS = createRHS();
   }
 
 
   //-----> method to assemble the rhs table
-  public List<Stack<Word>> build_RHS(){
+  public List<Stack<Word>> createRHS(){
     List <Stack<Word>> tempRHS = new ArrayList<>();
 
     for (ProductionRule pr : prodRules) {
@@ -35,7 +35,7 @@ public class Grammer{
     return tempRHS;
   }
 
-  public void display_RHS(){
+  public void printRHS(){
 
 /*    RHS.stream()
         .map( x-> String.join(",",x) )

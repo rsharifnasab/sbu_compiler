@@ -18,7 +18,7 @@ public class Main {
 
         //--test
         Word test = new Word("EXP");
-        parser.grammer.display_RHS();
+        parser.grammer.printRHS();
         System.out.println(parser.isNullable(test));
         System.out.println(parser.first(test));
         //System.out.println(parser.follow(test));
