@@ -14,13 +14,11 @@ public class LL1 {
   }
 
 
-  public Set<Word> first(Word w){
+  public Set<Word> first(Word w){ //todo
     if(w.isTerminal()) throw new IllegalArgumentException
     ("first should only calculated for non-terminals");
 
-    Set<Word> set = new HashSet<>();
-
-    grammer.prod_rules
+    return grammer.prod_rules
       .stream()
       .filter( a -> a.leftSide.equals(w) ) // left hand side is w
       .map(
@@ -31,8 +29,6 @@ public class LL1 {
                   .orElse(Word.lambda)
       )
       .collect( Collectors.toSet() );
-
-      return set.isEmpty()? Set.of(Word.lambda) : set;
   }
 
 
@@ -52,9 +48,13 @@ public class LL1 {
             .prod_rules
             .stream()
             .filter( a -> a.leftSide.equals(w) ) // left hand side is w
-            .flatMap( a -> a.rightSide.stream() ) // combine all together
-            .distinct()
-            .allMatch( a -> is_nullable(a) );
+            .anyMatch( // har kodum az ghavaed boud okeye
+                  a -> a.rightSide
+                        .stream()
+                        .allMatch( // hame word hash nullable bashe
+                              b -> is_nullable(b)
+                        )
+            );
 
     return w.isNullable;
   }
