@@ -18,8 +18,15 @@ public class Main {
 
         //--test
         Word test = new Word("EXP");
-        System.out.println(parser.is_nullable(test));
         parser.grammer.display_RHS();
+        System.out.println(parser.is_nullable(test));
+        System.out.println(parser.first(test));
+        //System.out.println(parser.follow(test));
+
+        System.out.println(parser.first(new Word("ID")));
+        System.out.println(parser.first(new Word("ID'")));
+
+
     }
 
 }
