@@ -25,7 +25,7 @@ public class LL1 {
                   .map( a ->
                         a.rightSide
                               .stream()
-                              .filter( b -> !is_nullable(b) )
+                              .filter( b -> !isNullable(b) )
                               .findFirst()
                               .orElse(Word.lambda)
                   )
@@ -38,7 +38,7 @@ public class LL1 {
                   .flatMap( a ->
                         a.rightSide
                               .stream()
-                              .takeWhile( b -> is_nullable(b) )
+                              .takeWhile( b -> isNullable(b) )
                   )
 
       ).collect( Collectors.toSet() );
@@ -75,7 +75,7 @@ public class LL1 {
                                     .limit(1) //fagjat avvali
                                     .map( b -> first(b) ) //
                               ,
-                              is_nullable(a.leftSide)? first(a.leftSide).stream(): null
+                              isNullable(a.leftSide)? first(a.leftSide).stream(): null
                         )
                  )
                  .collect(Collectors.toSet());
@@ -86,7 +86,7 @@ public class LL1 {
 
 
 
-   public boolean is_nullable(Word w){
+   public boolean isNullable(Word w){
       if(w.isNullable == null)
          w.isNullable = grammer
             .prod_rules
@@ -96,7 +96,7 @@ public class LL1 {
                   a -> a.rightSide
                         .stream()
                         .allMatch( // hame word hash nullable bashe
-                              b -> is_nullable(b)
+                              b -> isNullable(b)
                         )
             );
 
