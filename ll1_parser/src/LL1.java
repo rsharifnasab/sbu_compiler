@@ -70,9 +70,10 @@ public class LL1 {
               .map(a -> a.rightSide.get(a.rightSide.indexOf(w) + 1))
               .filter(Word::isNonTerminal)
               .forEach(a -> set.addAll(first(a)));
+    
+    
 
       //--->next word after w is nullable --> T' : * F T' | # ----> follow(F) contains follow(T')
-
       grammer.prodRules.stream()
               .filter(a -> a.rightSide.contains(w))
               .filter(a -> a.rightSide.lastIndexOf(w) != a.rightSide.size() - 1)
