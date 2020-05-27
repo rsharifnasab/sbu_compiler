@@ -109,9 +109,8 @@ public class LL1 {
               .map(a -> follow(a.leftSide))
               .findFirst().ifPresent(set::addAll);
 
-
-
-
+      //removing lambda from set
+      set.remove(Word.lambda);
 
 
 

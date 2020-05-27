@@ -18,19 +18,12 @@ public class Main {
         LL1 parser = new LL1(filename);
 
 
+        //test part
         System.out.println(parser.isNullable(new Word("E'")));
         System.out.println(parser.first(new Word("E'")));
-        System.out.println(parser.follow(new Word("E'")));
+        System.out.println(parser.follow(new Word("TERM'")));
 
 
-       // System.out.println(parser.first(new Word("ID")));
-       // System.out.println(parser.first(new Word("S")));
-        //System.out.println(parser.follow(new Word("TERM")));
-
-        /*parser.pt.put(new Word("EXP"),new Word("+"),
-            new ProductionRule("EXP : TERM EXP'")
-        );
-        System.out.println( parser.pt.toString() );*/
     }
 
 }
