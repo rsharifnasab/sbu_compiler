@@ -1,7 +1,7 @@
 
 public class Word{
 
-    public static final Word lambda = new Word("W");
+    public static final Word lambda = new Word("#");
     public static final Word terminator = new Word("$");
 
     private final WordType wordType;

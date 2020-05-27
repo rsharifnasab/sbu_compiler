@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.*;
 
@@ -16,16 +17,15 @@ public class Main {
 
         LL1 parser = new LL1(filename);
 
-        //--test
-        Word test = new Word("EXP");
-        //parser.grammer.printRHS();
-        System.out.println(parser.isNullable(test));
-        System.out.println(parser.first(test));
+
+        System.out.println(parser.isNullable(new Word("E'")));
+        System.out.println(parser.first(new Word("E'")));
+        System.out.println(parser.follow(new Word("E'")));
 
 
        // System.out.println(parser.first(new Word("ID")));
-        System.out.println(parser.first(new Word("ID'")));
-        System.out.println(parser.follow(new Word("FACTOR")));
+       // System.out.println(parser.first(new Word("S")));
+        //System.out.println(parser.follow(new Word("TERM")));
 
         /*parser.pt.put(new Word("EXP"),new Word("+"),
             new ProductionRule("EXP : TERM EXP'")

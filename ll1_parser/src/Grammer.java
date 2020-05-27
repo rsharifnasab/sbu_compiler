@@ -7,13 +7,16 @@ public class Grammer{
 
   final public List <ProductionRule> prodRules;
   final public List <Stack<Word>> RHS; //---->stack of Words for storing each rule's right hand side
+  final public Word startSymbol;
 
   public Grammer(String filename) throws IOException {
 
     //--->read the file line by line and construct production rules
+
     prodRules = Files.lines(Paths.get(filename))
-    .map( a -> new ProductionRule(a) )
+    .map(ProductionRule::new)
     .collect( Collectors.toList() );
+    this.startSymbol = this.prodRules.get(0).leftSide;
 
     RHS = createRHS();
   }
