@@ -51,13 +51,15 @@ public class ParseTable{
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder("\t"+sotunIndex.keySet()+"\n");
-        for ( int i =0; i < arr.length; i++ ) {
-            sb.append(
-                    ""
-                    );
-             
-
-
+        for (  Word satrW : satrIndex.keySet() ) {
+            sb.append( satrW + "\t");
+            for (Word sotunW : sotunIndex.keySet() ) {
+                int i = satrIndex.get(satrW);
+                int j = sotunIndex.get(sotunW);
+                ProductionRule pr = arr[i][j];
+                String toAppend = "[" + (pr==null?"":pr) +"]";
+                sb.append(toAppend);
+            }
             sb.append("\n");
         }
           return sb.toString();
