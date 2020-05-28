@@ -40,8 +40,6 @@ public class ParseTable{
         if(key1.isTerminal()) throw new IllegalArgumentException("while putting in parse table key1 should be non-terminal");
         if(key2.isNonTerminal()) throw new IllegalArgumentException("while putting in parse table key2 should be terminal");
         
-        if(arr[satr(key1)][sotun(key2)] != null) 
-            throw new RuntimeException("cell is not empty");
         arr[satr(key1)][sotun(key2)] = value;
     }
 

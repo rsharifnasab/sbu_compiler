@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -14,10 +13,8 @@ public class Main {
 
         String filename = getFileName(args);
         LL1 parser = new LL1(filename);
-        
         System.out.println(parser.firstsToString());
         System.out.println(parser.followsToString());
-        
         System.out.println(parser.run());
 
     } // end main method 

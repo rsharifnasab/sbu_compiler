@@ -92,7 +92,7 @@ public class LL1 {
 
 
 
-    public Set<Word> first(Word w){ //todo
+    public Set<Word> first(Word w){ 
         if(w.isTerminal()) throw new IllegalArgumentException
             ("first should only calculated for non-terminals");
 
@@ -193,8 +193,7 @@ public class LL1 {
             .map(a -> a.rightSide)
             .anyMatch(
                     a -> a.stream().allMatch(this::isNullable)
-                    );
-
+                );
     }
 
     private Set<ProductionRule> whoContainsMe(Word w){
@@ -203,6 +202,4 @@ public class LL1 {
             .filter( a -> a.rightSide.contains(w))
             .collect(Collectors.toSet());
     }
-
-
 }
