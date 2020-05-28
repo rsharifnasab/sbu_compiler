@@ -11,8 +11,17 @@ public class LL1 {
     this.pt = new ParseTable(grammer);
   }
 
-  public ParseTable run(){
-    throw new RuntimeException("not implemented yet");
+  public ParseTable run(){ // why method name should be "run"?
+    return createParseTable();
+  }
+
+  public ParseTable createParseTable(){
+    ParseTable pt = new ParseTable(grammer);
+    
+
+
+
+    return pt;
   }
 
   public String firstsToString(){

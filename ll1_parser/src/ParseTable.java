@@ -12,19 +12,21 @@ public class ParseTable{
     private final ProductionRule[][] arr;
 
     public ParseTable(Grammer g){
-          int satrCount = (int) g.prodRules
+        int satrCount = (int) g.prodRules
                   .stream()
-                  .flatMap( a-> a.rightSide.stream() )
+                  .map( a-> a.leftSide )
                   .filter(Word::isNonTerminal)
+                  .distinct()
                   .count();
 
-          int  sotunCount = (int) g.prodRules
+        int  sotunCount = (int) g.prodRules
                     .stream()
                     .flatMap( a-> a.rightSide.stream() )
                     .filter(Word::isTerminal)
+                    .distinct()
                     .count();
 
-            arr = new ProductionRule[satrCount][sotunCount]; // not sure
+        arr = new ProductionRule[satrCount][sotunCount]; // not sure
     }
 
 
@@ -48,13 +50,26 @@ public class ParseTable{
 
     @Override
     public String toString(){
-          return "\nthis is pt arr: \n"
+        StringBuilder sb = new StringBuilder("\t"+sotunIndex.keySet()+"\n");
+        for ( int i =0; i < arr.length; i++ ) {
+            sb.append(
+                    ""
+                    );
+             
+
+
+            sb.append("\n");
+        }
+          return sb.toString();
+        /*
+         * ; + "\nthis is pt arr: \n"
           +Arrays.deepToString(arr)
           + "\n\n this is satr map"
           + satrIndex.toString()
           + "\n\n this is sotun map"
           + sotunIndex.toString()
           ;
+          */
         //throw new RuntimeException("not implemented yet");
     }
 }
