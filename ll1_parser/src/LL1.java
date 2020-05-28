@@ -26,50 +26,44 @@ public class LL1 {
         }
         return ans;
     }
+    
+    private boolean isRuleNullable(ProductionRule pr){
+        for( var w : pr.rightSide)
+            if(! isNullable(w)) return false;
+        return true;
+    }
+
+    private Set<Word> predict(ProductionRule pr){
+        Set<Word> ans = new HashSet<>();
+
+        for( var w : pr.rightSide ){
+            if(isNullable(w)){
+                if(w.equals(Word.lambda) ) {
+                    ans.addAll(follow(pr.leftSide));
+                } else ans.addAll(first(w));
+            }
+            else{
+                if(w.isTerminal()) 
+                    ans.add(w);
+                else
+                    ans.addAll(first(w));
+                break;
+            }
+        }
+        return ans;
+    }
 
 
     public ParseTable createParseTable(){
         ParseTable pt = new ParseTable(grammer);
 
-        var nonTerminals = grammer.prodRules
-            .stream()
-            .map( a-> a.leftSide )
-            .filter(Word::isNonTerminal)
-            .distinct()
-            .collect(Collectors.toSet());
-
-        for( var nt : nonTerminals ){
-            var firsts = first(nt);
-            boolean shouldAddFollow = firsts.contains(Word.lambda);
-
-            firsts.remove(Word.lambda);
-            for( var f : firsts ){
-                var pr = grammer.prodRules
-                    .stream()
-                    .filter( a -> a.leftSide.equals(nt) )
-  //                  .filter( a -> firstOfProdRule(a).contains(f) )
-                    .findAny()
-                    .get();
-                pt.put(nt,f,pr);
+        for( var pr : this.grammer.prodRules ){
+            var prodRulePredict = predict(pr);
+            var leftNonTerminal =  pr.leftSide;
+            for( var w : prodRulePredict ){
+                pt.put(leftNonTerminal,w,pr);
             }
-
-            if(shouldAddFollow){
-
-                var follows = follow(nt);
-                follows.remove(Word.lambda);
-                for( var f : follows ){
-                    var pr = grammer.prodRules
-                        .stream()
-                        .filter( a -> a.leftSide.equals(nt) )
-//                        .filter( a -> firstOfProdRule(a).contains(f) )
-                        .findAny()
-                        .get();
-
-                pt.put(nt,f,pr);
-                }
-            }    
         }
-
         return pt;
     }
 
