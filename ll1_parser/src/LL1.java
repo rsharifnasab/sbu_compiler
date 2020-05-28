@@ -15,6 +15,29 @@ public class LL1 {
     throw new RuntimeException("not implemented yet");
   }
 
+  public String firstsToString(){
+      return this.grammer.prodRules.stream()
+                .map( a -> a.leftSide )
+                .distinct()
+                .map( a->
+                   "first(" + a.toString() + ")= " + first(a).toString() + "\n"
+                )
+                .reduce( (a,b) -> a  + b )
+                .orElse("###");
+  }
+
+
+  public String followsToString(){
+        return this.grammer.prodRules.stream()
+                .map( a -> a.leftSide )
+                .distinct()
+                .map( a->
+                    "follow(" + a.toString() + ")= " + follow(a).toString() + "\n"
+                )
+                .reduce( (a,b) -> a  + b )
+                .orElse("###");
+  }
+
 
 
   public Set<Word> first(Word w){ //todo

@@ -13,36 +13,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         String filename = getFileName(args);
-
         LL1 parser = new LL1(filename);
         
-        if(filename.contains("in1")){
-                System.out.println(parser.follow(new Word("S"))); // $
-                System.out.println(parser.follow(new Word("EXP"))); // $, ) 
-                System.out.println(parser.follow(new Word("EXP'")));// $, )
-                System.out.println(parser.follow(new Word("TERM"))); // $, ), +, -
-                System.out.println(parser.follow(new Word("TERM'")));// $, ), +, -
-                System.out.println(parser.follow(new Word("FACTOR"))); // $, ), *,+, -, /
-                System.out.println(parser.follow(new Word("ID"))); // $, ), *,+, -, /
-                System.out.println(parser.follow(new Word("ID'")));// $, ), *,+, -, /
-        } else if (filename.contains("in2")){
-
-                System.out.println(parser.first(new Word("E"))); // (, id
-                System.out.println(parser.first(new Word("T"))); // (, id
-                System.out.println(parser.first(new Word("F"))); // (, id
-
-                System.out.println(parser.first(new Word("E'"))); // #, +
-                System.out.println(parser.first(new Word("T'"))); // #, *
-
-                System.out.println(parser.follow(new Word("E"))); // $, )
-                System.out.println(parser.follow(new Word("E'")));// $, )
-                System.out.println(parser.follow(new Word("T"))); // $, ), +
-                System.out.println(parser.follow(new Word("T'")));// $, ), +
-                System.out.println(parser.follow(new Word("F"))); // $, ), *, +
-
-                System.out.println(parser.isNullable(new Word("E'"))); //true
-                System.out.println(parser.first(new Word("E'"))); // #, +
-        }
+        System.out.println(parser.firstsToString());
+        System.out.println(parser.followsToString());
+        
 
     } // end main method 
 
