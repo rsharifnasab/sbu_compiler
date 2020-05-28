@@ -1,5 +1,5 @@
-## top down ll1 parser by java 
-this is computeric excercise of compiler course 
+## top down LL1 parser by java 
+this is computer-based exercise of compiler course 
 developing a top down LL1 parser 
 
 
@@ -20,5 +20,5 @@ developing a top down LL1 parser
 + production rule: something like S -> a (each row of input)
 + grammer: set of production rules: have IO stuff to load and parse input from file 
 + Main: the main class that has psvm, also parse argument passed in terminal
-+ BiHashMap: a 2D map, we may use that for parseTable or maybe we use array
++ parseTable: a 2D map, we may use that for saving final parseTable
 
