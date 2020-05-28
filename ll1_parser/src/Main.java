@@ -29,9 +29,6 @@ public class Main {
                 System.out.println(parser.follow(new Word("ID"))); // $, ), *,+, -, /
                 System.out.println(parser.follow(new Word("ID'")));// $, ), *,+, -, /
 
-                System.out.println(parser.isNullable(new Word("E'")));
-                System.out.println(parser.first(new Word("E'")));
-                System.out.println(parser.follow(new Word("TERM'")));
                 
                 break;
 
@@ -50,6 +47,9 @@ public class Main {
                 System.out.println(parser.follow(new Word("T'")));// $, ), +
                 System.out.println(parser.follow(new Word("F"))); // $, ), *, +
 
+                System.out.println(parser.isNullable(new Word("E'"))); //true
+                System.out.println(parser.first(new Word("E'"))); // #, +
+                
                 break;
             default:
                 System.out.println("nothing to test here");
