@@ -25,23 +25,38 @@ public class LL1 {
 
         for( var nt : nonTerminals ){
             var firsts = first(nt);
-            if(firsts.contains(Word.lambda)){
-                firsts.addAll( follow(nt));
-            }
+            boolean shouldAddFollow = firsts.contains(Word.lambda);
+
             firsts.remove(Word.lambda);
             for( var f : firsts ){
                 var pr = grammer.prodRules
                     .stream()
                     .filter( a -> a.leftSide.equals(nt) )
-                    .filter( a -> a.rightSide.contains(f) )
+                    // .filter( a -> a.rightSide.contains(f) )
                     .findAny()
-                    .orElse(null);
+                    .get();
 
                 pt.put(nt,f,pr);
             }
+
+            if(shouldAddFollow){
+
+                var follows = follow(nt);
+                follows.remove(Word.lambda);
+                for( var f : follows ){
+                    var pr = grammer.prodRules
+                        .stream()
+                        .filter( a -> a.leftSide.equals(nt) )
+                    //    .filter( a -> isNullable(a.lef) )
+                        .findAny()
+                        .get();
+
+                    pt.put(nt,f,pr);
+                }
+            }    
         }
 
-       return pt;
+        return pt;
     }
 
     public String firstsToString(){

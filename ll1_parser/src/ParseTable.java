@@ -55,13 +55,15 @@ public class ParseTable{
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder("\t"+sotunIndex.keySet()+"\n");
+        String keySet = sotunIndex.keySet().stream().map( a-> a.toString()).reduce( (a,b) -> a+ "\t" + b).orElse(" ");
+        StringBuilder sb = new StringBuilder("\t"+keySet+"\n");
+
         for (  Word satrW : satrIndex.keySet() ) {
             sb.append( satrW + "\t");
             for (Word sotunW : sotunIndex.keySet() ) {
                 var pr = arr[satr(satrW)][sotun(sotunW)];
               //  var pr = arr[satr(sotunW)][sotun(satrW)];
-                sb.append("["+(pr==null?"":pr)+"]");
+                sb.append("["+(pr==null?"":pr)+"]\t");
             }
             sb.append("\n");
         }
