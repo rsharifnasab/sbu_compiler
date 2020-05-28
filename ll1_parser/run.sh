@@ -1,16 +1,18 @@
 #!/bin/sh 
+tests="./tests"
+temp="./tmp"
+out="./out"
+mkdir $temp
+mkdir $out 
+
 clear
-cd src
+javac -d $out src/*.java && echo "compiled"
 
-javac *.java
-echo "compiled"
+for i in 1 2 
+do 
+    java -cp $out Main "$tests/in$i.txt" > "$temp/out"
+    cmp  "$tests/out$i.txt" "$temp/out" && echo "test $i passed" || echo "wrong answer on test $i"
+done 
 
-java Main  ../in.txt > ../out.bpk
-cmp -s ../out.txt ../out.bpk && echo "test 1 passed" || echo "wrong answer on test 1"
-
-java Main  ../in2.txt > ../out2.bpk
-cmp -s ../out2.txt ../out2.bpk && echo "test 2 passed" || echo "wrong answer on test 2"
-
-rm *.class
-cd ..
-rm *.bpk
+rm -r $temp
+rm -r $out

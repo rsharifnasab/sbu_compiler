@@ -15,11 +15,8 @@ public class Main {
         String filename = getFileName(args);
 
         LL1 parser = new LL1(filename);
-
-
-        switch (filename) {
-            case "../in.txt":
-
+        
+        if(filename.contains("in1")){
                 System.out.println(parser.follow(new Word("S"))); // $
                 System.out.println(parser.follow(new Word("EXP"))); // $, ) 
                 System.out.println(parser.follow(new Word("EXP'")));// $, )
@@ -28,11 +25,7 @@ public class Main {
                 System.out.println(parser.follow(new Word("FACTOR"))); // $, ), *,+, -, /
                 System.out.println(parser.follow(new Word("ID"))); // $, ), *,+, -, /
                 System.out.println(parser.follow(new Word("ID'")));// $, ), *,+, -, /
-
-                
-                break;
-
-            case "../in2.txt":
+        } else if (filename.contains("in2")){
 
                 System.out.println(parser.first(new Word("E"))); // (, id
                 System.out.println(parser.first(new Word("T"))); // (, id
@@ -49,11 +42,7 @@ public class Main {
 
                 System.out.println(parser.isNullable(new Word("E'"))); //true
                 System.out.println(parser.first(new Word("E'"))); // #, +
-                
-                break;
-            default:
-                System.out.println("nothing to test here");
-        } // end switch
+        }
 
     } // end main method 
 
