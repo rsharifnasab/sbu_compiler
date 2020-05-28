@@ -18,7 +18,7 @@ public class Main {
         System.out.println(parser.firstsToString());
         System.out.println(parser.followsToString());
         
-        System.err.println(parser.run());
+        System.out.println(parser.run());
 
     } // end main method 
 
