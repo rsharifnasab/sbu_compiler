@@ -13,27 +13,7 @@ public class LL1 {
         return createParseTable();
     }
     
-    private Set<Word> firstOfProdRule(ProductionRule pr){
-        Set<Word> ans = new HashSet<>();
-        for( var w : pr.rightSide ){
-            if (isNullable(w) ) continue;
-            if( w.isNonTerminal() )
-                ans.addAll(first(w));
-            else{
-                ans.add(w);
-            }
-            break; //todo
-        }
-        return ans;
-    }
-    
-    private boolean isRuleNullable(ProductionRule pr){
-        for( var w : pr.rightSide)
-            if(! isNullable(w)) return false;
-        return true;
-    }
-
-    private Set<Word> predict(ProductionRule pr){
+    public Set<Word> predict(ProductionRule pr){
         Set<Word> ans = new HashSet<>();
 
         for( var w : pr.rightSide ){
@@ -53,7 +33,6 @@ public class LL1 {
         return ans;
     }
 
-
     public ParseTable createParseTable(){
         ParseTable pt = new ParseTable(grammer);
 
@@ -72,12 +51,11 @@ public class LL1 {
             .map( a -> a.leftSide )
             .distinct()
             .map( a->
-                    "first(" + a.toString() + ")= " + first(a).toString() + "\n"
-                )
+                "first(" + a.toString() + ")= " + first(a).toString() + "\n"
+              )
             .reduce( (a,b) -> a+b )
             .orElse("error in printing firsts: no non-terminal found");
     }
-
 
     public String followsToString(){
         return this.grammer.prodRules.stream()
@@ -89,8 +67,6 @@ public class LL1 {
             .reduce( (a,b) -> a+b )
             .orElse("error in printing follows: no non-terminal found");
     }
-
-
 
     public Set<Word> first(Word w){ 
         if(w.isTerminal()) throw new IllegalArgumentException
@@ -120,8 +96,6 @@ public class LL1 {
 
         return set;
     }
-
-
 
 
     public Set<Word> follow(Word w){ 
@@ -181,8 +155,6 @@ public class LL1 {
         set.remove(Word.lambda);
         return set;
     }
-
-
 
     public boolean isNullable(Word w) {
         if(w.isTerminal())
