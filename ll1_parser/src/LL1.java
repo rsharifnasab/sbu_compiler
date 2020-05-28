@@ -16,15 +16,12 @@ public class LL1 {
     private Set<Word> firstOfProdRule(ProductionRule pr){
         Set<Word> ans = new HashSet<>();
         for( var w : pr.rightSide ){
-        
+            if (isNullable(w) ) continue;
             if( w.isNonTerminal() )
                 ans.addAll(first(w));
             else{
                 ans.add(w);
-                break;
             }
-            if(!isNullable(w)) break;
-
             break; //todo
         }
         return ans;
@@ -50,10 +47,9 @@ public class LL1 {
                 var pr = grammer.prodRules
                     .stream()
                     .filter( a -> a.leftSide.equals(nt) )
-                    .filter( a -> firstOfProdRule(a).contains(f) )
+  //                  .filter( a -> firstOfProdRule(a).contains(f) )
                     .findAny()
                     .get();
-
                 pt.put(nt,f,pr);
             }
 
@@ -65,11 +61,11 @@ public class LL1 {
                     var pr = grammer.prodRules
                         .stream()
                         .filter( a -> a.leftSide.equals(nt) )
-                    //    .filter( a -> isNullable(a.lef) )
+//                        .filter( a -> firstOfProdRule(a).contains(f) )
                         .findAny()
                         .get();
 
-                    pt.put(nt,f,pr);
+                pt.put(nt,f,pr);
                 }
             }    
         }
