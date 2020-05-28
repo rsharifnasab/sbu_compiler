@@ -12,6 +12,21 @@ public class LL1 {
     public ParseTable run(){ // why method name should be "run"?
         return createParseTable();
     }
+    
+    private Set<Word> firstOfProdRule(ProductionRule pr){
+        Set<Word> ans = new HashSet<>();
+        for( var w : pr.rightSide ){
+            if( w.isNonTerminal() )
+                ans.addAll(first(w));
+            else{
+                ans.add(w);
+                break;
+            }
+            if(!isNullable(w)) break;
+        }
+        return ans;
+    }
+
 
     public ParseTable createParseTable(){
         ParseTable pt = new ParseTable(grammer);
@@ -32,7 +47,7 @@ public class LL1 {
                 var pr = grammer.prodRules
                     .stream()
                     .filter( a -> a.leftSide.equals(nt) )
-                    // .filter( a -> a.rightSide.contains(f) )
+                    .filter( a -> firstOfProdRule(a).contains(f) )
                     .findAny()
                     .get();
 

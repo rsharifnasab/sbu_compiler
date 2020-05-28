@@ -29,8 +29,8 @@ public class ParseTable{
                 )
                 .distinct()
                 .count();
-        System.err.println("tedad satr(nonterminal:"+satrCount);
-        System.err.println("tedad sotun(  nerminal:"+sotunCount);
+        //System.err.println("tedad satr(nonterminal):"+satrCount);
+        //System.err.println("tedad sotun(nerminal):"+sotunCount);
 
         arr = new ProductionRule[satrCount][sotunCount]; // not sure
     }
