@@ -16,6 +16,7 @@ public class LL1 {
   }
 
 
+
   public Set<Word> first(Word w){ //todo
       if(w.isTerminal()) throw new IllegalArgumentException
               ("first should only calculated for non-terminals");
@@ -28,7 +29,8 @@ public class LL1 {
                               .dropWhile(this::isNullable)
                               .findFirst()
                               .orElse(Word.lambda)
-              ).filter(Word::isTerminal).collect(Collectors.toSet());
+              ).filter(Word::isTerminal)
+              .collect(Collectors.toSet());
 
       ///---->if the the first not nullable was non terminal recursively call first on that
               grammer.prodRules.stream()
@@ -39,27 +41,18 @@ public class LL1 {
                                       .findFirst()
                                       .orElse(Word.lambda)
                       ).filter(Word::isNonTerminal)
-                      .forEach(a -> set.addAll(first(a)));//---> recursively call on each non terminal
-
+                      .forEach(a -> set.addAll(first(a))); //---> recursively call on each non terminal
 
       return set;
-
   }
-
-  private Set<ProductionRule> whoContainsMe(Word w){
-        return grammer.prodRules
-                  .stream()
-                  .filter( a -> a.rightSide.contains(w))
-                  .collect(Collectors.toSet());
- }
 
 
 
 
   public Set<Word> follow(Word w){ //‌ُ TODO
     if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
-    Set<Word> set = new HashSet<>();
 
+    Set<Word> set = new HashSet<>();
     if (w.equals(grammer.startSymbol))
         set.add(Word.terminator);
 
@@ -70,19 +63,19 @@ public class LL1 {
               .map(a -> a.rightSide.get(a.rightSide.indexOf(w) + 1))
               .filter(Word::isNonTerminal)
               .forEach(a -> set.addAll(first(a)));
-    
-    
+
 
       //--->next word after w is nullable --> T' : * F T' | # ----> follow(F) contains follow(T')
       grammer.prodRules.stream()
               .filter(a -> a.rightSide.contains(w))
               .filter(a -> a.rightSide.lastIndexOf(w) != a.rightSide.size() - 1)
-              .filter(a -> a.rightSide.get(a.rightSide.indexOf(w) + 1).isNonTerminal() &&
-                      isNullable(a.rightSide.get(a.rightSide.indexOf(w) + 1)))
-
-              .map(a -> follow(a.leftSide)).findFirst()
+              .filter(a ->
+                    a.rightSide.get(a.rightSide.indexOf(w) + 1).isNonTerminal()
+                    && isNullable(a.rightSide.get(a.rightSide.indexOf(w) + 1))
+              )
+              .map(a -> follow(a.leftSide))
+              .findFirst()
               .ifPresent(set::addAll);
-
 
       //case two : terminal after w
       grammer.prodRules.stream()
@@ -110,43 +103,31 @@ public class LL1 {
               .map(a -> follow(a.leftSide))
               .findFirst().ifPresent(set::addAll);
 
-      //removing lambda from set
       set.remove(Word.lambda);
-
-
-
       return set;
   }
 
 
 
-
    public boolean isNullable(Word w) {
+       if(w.isTerminal())
+           return w.equals(Word.lambda);
 
-       if (w.equals(Word.lambda))
-           return true;
-       else if(w.isTerminal())
-           return false;
-
-       else {
-           boolean flag = false;
-           int temp =  (int)grammer.prodRules.stream()
-                   .filter(a -> a.leftSide.equals(w))
-                   .map(a -> a.rightSide)
-                   .filter(a -> a.stream().allMatch(this::isNullable)
-                   ).count();
-
-
-           if(temp > 0)
-           {flag =  true;}
-
-
-           return flag;
-       }
+       return grammer.prodRules.stream()
+              .filter(a -> a.leftSide.equals(w))
+              .map(a -> a.rightSide)
+              .anyMatch(
+                    a -> a.stream().allMatch(this::isNullable)
+               );
 
    }
 
+   private Set<ProductionRule> whoContainsMe(Word w){
+         return grammer.prodRules
+                   .stream()
+                   .filter( a -> a.rightSide.contains(w))
+                   .collect(Collectors.toSet());
+  }
 
 
 }
-

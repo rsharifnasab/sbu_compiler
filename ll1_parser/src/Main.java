@@ -12,18 +12,37 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("welcome to this program!");
         String filename = getFileName(args);
 
         LL1 parser = new LL1(filename);
 
 
-        //test part
-        System.out.println(parser.isNullable(new Word("E'")));
-        System.out.println(parser.first(new Word("E'")));
-        System.out.println(parser.follow(new Word("TERM'")));
+        switch (filename) {
+            case "../in.txt":
+                System.out.println(parser.isNullable(new Word("E'")));
+                System.out.println(parser.first(new Word("E'")));
+                System.out.println(parser.follow(new Word("TERM'")));
+                break;
 
+            case "../in2.txt":
 
-    }
+                System.out.println(parser.first(new Word("E"))); // (, id
+                System.out.println(parser.first(new Word("T"))); // (, id
+                System.out.println(parser.first(new Word("F"))); // (, id
 
-}
+                System.out.println(parser.first(new Word("E'"))); // #, +
+                System.out.println(parser.first(new Word("T'"))); // #, *
+
+                System.out.println(parser.follow(new Word("E"))); // $, )
+                System.out.println(parser.follow(new Word("E'")));// $, )
+                System.out.println(parser.follow(new Word("T"))); // $, ), +
+                System.out.println(parser.follow(new Word("T'")));// $, ), +
+                System.out.println(parser.follow(new Word("F"))); // $, ), *, +
+                break;
+            default:
+                System.out.println("nothing to test here");
+        } // end switch
+
+    } // end main method 
+
+} // end class 
