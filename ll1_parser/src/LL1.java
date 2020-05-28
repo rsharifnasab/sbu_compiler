@@ -16,6 +16,7 @@ public class LL1 {
     private Set<Word> firstOfProdRule(ProductionRule pr){
         Set<Word> ans = new HashSet<>();
         for( var w : pr.rightSide ){
+        
             if( w.isNonTerminal() )
                 ans.addAll(first(w));
             else{
@@ -23,6 +24,8 @@ public class LL1 {
                 break;
             }
             if(!isNullable(w)) break;
+
+            break; //todo
         }
         return ans;
     }
@@ -131,7 +134,7 @@ public class LL1 {
 
 
 
-    public Set<Word> follow(Word w){ //‌ُ TODO
+    public Set<Word> follow(Word w){ 
         if(w.isTerminal()) throw new IllegalArgumentException("follow should only calculated for non-terminals");
 
         Set<Word> set = new HashSet<>();
