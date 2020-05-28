@@ -18,13 +18,7 @@ public class Main {
         System.out.println(parser.firstsToString());
         System.out.println(parser.followsToString());
         
-
-        ParseTable pt = new ParseTable(parser.grammer);
-        pt.put(
-            new Word("S"),new Word("id"),
-            parser.grammer.prodRules.stream().filter( a-> a.leftSide.equals(new Word("S")) ).findAny().get()
-         );
-        System.err.println(pt);
+        System.err.println(parser.run());
 
     } // end main method 
 

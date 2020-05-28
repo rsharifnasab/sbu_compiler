@@ -16,14 +16,21 @@ public class ParseTable{
                   .map( a-> a.leftSide )
                   .filter(Word::isNonTerminal)
                   .distinct()
-                  .count();
+                  .count(); 
 
-        int  sotunCount = (int) g.prodRules
+        int  sotunCount = (int) Stream.concat(
+                    g.prodRules
                     .stream()
                     .flatMap( a-> a.rightSide.stream() )
                     .filter(Word::isTerminal)
-                    .distinct()
-                    .count();
+                    .filter( w -> !w.equals(Word.lambda) )
+                    ,
+                    Stream.of(Word.terminator) 
+                )
+                .distinct()
+                .count();
+        System.err.println("tedad satr(nonterminal:"+satrCount);
+        System.err.println("tedad sotun(  nerminal:"+sotunCount);
 
         arr = new ProductionRule[satrCount][sotunCount]; // not sure
     }
@@ -53,6 +60,7 @@ public class ParseTable{
             sb.append( satrW + "\t");
             for (Word sotunW : sotunIndex.keySet() ) {
                 var pr = arr[satr(satrW)][sotun(sotunW)];
+              //  var pr = arr[satr(sotunW)][sotun(satrW)];
                 sb.append("["+(pr==null?"":pr)+"]");
             }
             sb.append("\n");
