@@ -19,9 +19,20 @@ public class Main {
 
         switch (filename) {
             case "../in.txt":
+
+                System.out.println(parser.follow(new Word("S"))); // $
+                System.out.println(parser.follow(new Word("EXP"))); // $, ) 
+                System.out.println(parser.follow(new Word("EXP'")));// $, )
+                System.out.println(parser.follow(new Word("TERM"))); // $, ), +, -
+                System.out.println(parser.follow(new Word("TERM'")));// $, ), +, -
+                System.out.println(parser.follow(new Word("FACTOR"))); // $, ), *,+, -, /
+                System.out.println(parser.follow(new Word("ID"))); // $, ), *,+, -, /
+                System.out.println(parser.follow(new Word("ID'")));// $, ), *,+, -, /
+
                 System.out.println(parser.isNullable(new Word("E'")));
                 System.out.println(parser.first(new Word("E'")));
                 System.out.println(parser.follow(new Word("TERM'")));
+                
                 break;
 
             case "../in2.txt":
@@ -38,6 +49,7 @@ public class Main {
                 System.out.println(parser.follow(new Word("T"))); // $, ), +
                 System.out.println(parser.follow(new Word("T'")));// $, ), +
                 System.out.println(parser.follow(new Word("F"))); // $, ), *, +
+
                 break;
             default:
                 System.out.println("nothing to test here");
