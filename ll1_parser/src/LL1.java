@@ -22,8 +22,8 @@ public class LL1 {
                 .map( a->
                    "first(" + a.toString() + ")= " + first(a).toString() + "\n"
                 )
-                .reduce( (a,b) -> a  + b )
-                .orElse("###");
+                .reduce( (a,b) -> a+b )
+                .orElse("error in printing firsts: no non-terminal found");
   }
 
 
@@ -34,8 +34,8 @@ public class LL1 {
                 .map( a->
                     "follow(" + a.toString() + ")= " + follow(a).toString() + "\n"
                 )
-                .reduce( (a,b) -> a  + b )
-                .orElse("###");
+                .reduce( (a,b) -> a+b )
+                .orElse("error in printing follows: no non-terminal found");
   }
 
 
