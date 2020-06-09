@@ -8,7 +8,7 @@ mkdir $out
 clear
 javac -d $out src/*.java && echo "compiled"
 
-for i in 1 2 
+for i in 1 2 3
 do 
     java -cp $out Main "$tests/in$i.txt" > "$tests/out$i.txt" 
 done 
