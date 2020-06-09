@@ -1,0 +1,110 @@
+S : INC SS int main ( ) { MBODY
+MBODY : STL RET } FUNC
+MBODY : RET } FUNC
+SS : UNION STRUCT ENUM PROTOTYPE
+INC : include < id . id > INC
+INC : #
+UNION : union id { BODY } ; UNION
+UNION : #
+STRUCT : struct id { BODY } ; STRUCT
+STRUCT : #
+ENUM : enum id { EBODY } ; ENUM
+ENUM : #
+PROTOTYPE : TYPP id ( PHEAD ) ; PROTOTYPE
+PROTOTYPE : #
+FUNC : TYP id ( FHEAD ) { FBODY
+FBODY : STL RET } FUNC
+FBODY : RET } FUNC
+FUNC : #
+FHEAD : TYP id FHEAD'
+FHEAD : #
+FHEAD' : , TYP id FHEAD'
+FHEAD' : #
+RET : return IDORN ;
+RET : #
+PHEAD : TYP PHEAD'
+PHEAD : #
+PHEAD' : , TYP PHEAD'
+PHEAD' : #
+EBODY : id EBODY'
+EBODY' : , id EBODY'
+EBODY' : #
+EBODY : #
+BODY : DCL BODY
+BODY : #
+STL : ST STL'
+STL' : #
+STL' : ST STL'
+ST : AST
+ST : DCL
+ST : WST
+ST : FST
+ST : DOWST
+ST : IFST
+ST : SWST
+ST : FC
+FC : call id ( ) ;
+CALLH : id CALLH'
+CALLH : #
+CALLH' : , id
+CALLH' : #
+AST : id = E ;
+IFST : if ( BE ) do SORL ELIFST
+ELIFST : else ELSIFST'
+ELIFST : #
+ELSIFST' : if ( BE ) do SORL ELIFST
+ELSIFST' : SORL
+SORL : { STL }
+SORL : ST
+WST : while ( BE ) do SORL
+FST : for id in range ( IDORN , IDORN ) do SORL
+DOWST : repeat SORL until ( BE ) ;
+SWST : switch ( id ) { CASE }
+CASE : case num ; STL BREAK
+BREAK : CASE'
+BREAK : break ; CASE'
+CASE' : default ; STL
+CASE' : #
+CASE' : case num ; STL BREAK
+DCL : TYP PO id CONT
+PO : *
+PO : #
+CONT : = IDORN CONT'
+CONT : [ X CONT'
+CONT : CONT'
+CONT' : , id CONT
+CONT' : ;
+X : num ]
+X : ] = { IDORN N }
+N : , IDORN N
+N : #
+IDORN : id
+IDORN : num
+TYP : float
+TYP : int
+TYP : char
+TYP : double
+TYP : bool
+TYPP : float
+TYPP : void
+TYPP : char
+TYPP : double
+TYPP : bool
+E : T E'
+E' : + T E'
+E' : - T E'
+E' : #
+T : F T'
+T' : * F T'
+T' : / F T'
+T' : #
+F : ID
+ID : id ID'
+ID' : ++
+ID' : --
+ID' : #
+ID : -- id
+ID : ++ id
+F : num
+F : ( E )
+BE : #
