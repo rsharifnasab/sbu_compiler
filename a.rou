@@ -1,0 +1,14 @@
+function void start(){
+     println(12.53f);
+     println("mehrshad");
+     int a = 5000;
+     a = 2;
+
+    return;
+}
+function void test(int a , float c){
+  println("s");
+  a = 2;
+
+  return;
+}
