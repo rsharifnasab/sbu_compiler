@@ -1,0 +1,6 @@
+function void start(){
+//    println("print mishe aya?");
+    println(17);
+
+    return;
+}
