@@ -1,9 +1,10 @@
 package bytecodeTest;
 
+import java.util.Scanner;
+
 public class Testing {
     public static void main(String[] args) {
-      int a = 5000;
-      a = 2;
+         new Scanner(System.in).next();
 
 
 

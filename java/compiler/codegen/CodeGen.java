@@ -30,7 +30,6 @@ public class CodeGen {
 
     private final Lexical lexical;
 
-
     public CodeGen(File output, Lexical lexical) {
         OUTPUT_FILE = output;
         OUTCLASS_NAME = Utils.getClassNameFromFile(output);
@@ -223,9 +222,16 @@ public class CodeGen {
             //-----------------------------------------
             case "complete_assign":{
                 var value = semanticStack.pop();
-                var type = semanticStack.pop();
+                var name  = semanticStack.pop();
+                var type  = semanticStack.pop();
 
                 var functionDscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                VariableDescriptor varDscp = new VariableDescriptor(type);
+                varDscp.value = value;
+                int address = functionDscp.innerTable.getSize();
+                varDscp.setAddress(address);
+
+                functionDscp.innerTable.add(name, varDscp);
 
                 switch (type) {
                     case "double":
@@ -248,35 +254,71 @@ public class CodeGen {
                         break;
                 }
 
-                int storage = functionDscp.innerTable.getSize()+1;
-                functionDscp.mv.visitVarInsn(getOp(type), storage);
+
+                functionDscp.mv.visitVarInsn(getOp(type), address);
 
                 break;
             }
 
-            //----------------------
-            case "make_dscp":{
-                var functionDscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-                VariableDescriptor varDscp = new VariableDescriptor(semanticStack.peek());
-                functionDscp.innerTable.add(lastValue, varDscp);
-
-                break;
-
-            }
-
-
-            //---------------------
-            case "push_id":{
-
-               var symtab = ((FunctionDescriptor)st.getDSCP(currentFunc)).innerTable;
-               if(symtab.hasDefined(lastValue)){
-                   semanticStack.push(lastValue);
-
-               }
-               else System.err.println("compile error: variable "+lastValue+" not defined!");
+            //------------------------------------------------------------------------
+            case "push_dcl_name":{
+               semanticStack.push(lastValue);
 
             }
             break;
+            //-----------------------------------------------------------------------
+            case "simple_assign":{
+                var functionDscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                var literal = semanticStack.pop();
+                var name    = semanticStack.pop();
+
+                if(!functionDscp.innerTable.hasDefined(name)){
+                    System.err.println("compile error: variable "+name+" is not defined at function "+currentFunc+"()");
+                    System.exit(404);//terminate compilation
+                }
+                else{
+
+                    var varDscp = (VariableDescriptor)functionDscp.innerTable.getDSCP(name);
+                    varDscp.value = literal;
+                    var type = varDscp.type;
+
+                    switch (type) {
+                        case "double":
+                            functionDscp.mv.visitLdcInsn(Double.parseDouble(literal));
+                            break;
+                        case "float":
+                            functionDscp.mv.visitLdcInsn(Float.parseFloat(literal));
+                            break;
+                        case "long":
+                            functionDscp.mv.visitLdcInsn(Long.parseLong(literal));
+                            break;
+                        case "int":
+                            functionDscp.mv.visitLdcInsn(Integer.parseInt(literal));
+                            break;
+                        case "byte":
+                            functionDscp.mv.visitLdcInsn(Byte.parseByte(literal));
+                            break;
+                        default:
+                            functionDscp.mv.visitLdcInsn(literal);
+                            break;
+                    }
+                    functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
+
+
+                }
+                break;
+
+
+            }
+
+
+            //--------------------------------------------------------------------
+            case "push_id":{
+                semanticStack.push(lastValue);
+                System.out.print("");
+                break;
+
+            }
 
 
             //----------------------------------------------
@@ -304,8 +346,27 @@ public class CodeGen {
 
                 break;
             }
+            //------------------------------------------------------------------------
+             case "new_scanner":{
+                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                 dscp.mv.visitTypeInsn(NEW, "java/util/Scanner");
+                 dscp.mv.visitInsn(DUP);
+                 dscp.mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
+                 dscp.mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V");
+                 dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "next", "()Ljava/lang/String;");
+                 dscp.mv.visitInsn(POP);
+
+
+
+
+
+
+
+
+                 break;
+             }
             ///-------------------------------------------------------------------------
-            case "end_function":{
+             case "end_function":{
                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
                 while (!semanticStack.isEmpty()) semanticStack.pop();
 
