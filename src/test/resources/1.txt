@@ -1,0 +1,32 @@
+// hooora first program!
+function int calc(int a, char b){
+    return a+b;
+}
+
+function void start(){
+    
+    int my_car = 3;
+    float f = (float) 2;
+    
+    float f2 = (float) my_car;
+    f++;
+   --f;
+    input(float);
+
+    sizeof(f);
+    if(1 == 2){
+        // pass
+    } else {
+        string g;
+       g = "google";
+
+        println("p");
+        //println(g);
+        //println(2);
+    }
+    auto c=2;
+
+    const auto d=3; //, d= new int[1];
+    return;
+}
+

@@ -1,14 +1,26 @@
+
+function void test(int a, string s){
+  println(a);
+  test(4 , "rec");
+  return;
+}
+
 function void start(){
+
      println(12.53f);
      println("mehrshad");
-     int a = 5000;
-     a = 2;
+     int b = 5;
+     int a = 50;
+     string str = "mehrshad";
+     str = "";
+     int c = input(int);
+     int x = 7 + 5 * 2 + (2 - 3);
+     test(2, "init");
+     println(x);
+     if(3 >= 2){ }
+
+
+
 
     return;
-}
-function void test(int a , float c){
-  println("s");
-  a = 2;
-
-  return;
 }

@@ -1,0 +1,14 @@
+ int a;
+int b;
+
+record salam{
+    int c;
+};
+
+record golabi{
+    int d;
+    int e;
+    char f;
+    string s;
+};
+

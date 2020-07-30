@@ -1,0 +1,34 @@
+function void main(){
+    for( int i =0; i < 10; i++){
+        println("salam");
+        i--;
+        //break;
+    }
+    
+    switch(1+ +2) of:
+        begin 
+            case 2: { //pass
+            }
+
+            case 3: {
+                println("salam");
+            }
+            
+            default:{ println("golabi");
+
+            }
+    
+        end
+
+    repeat {
+        i++;
+        println("im coming..");
+        //continue;
+        //break;
+        //continue;
+    } until (2>3);
+    
+ //   auto a =1, b = 2f, c = new int[1];
+
+    return;
+}

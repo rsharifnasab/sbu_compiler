@@ -1,0 +1,10 @@
+1.2F
+1.2f
+3.14156
+'s'
+'\n'
+'\r'
+"some string"
+"some \n \t string"
+"\n"
+"s"
