@@ -4,7 +4,17 @@ import java.util.Scanner;
 
 public class Testing {
     public static void main(String[] args) {
-         new Scanner(System.in).next();
+
+
+       // int a =  new Scanner(System.in).nextInt();
+        int c;
+        int b = 500;
+       /* int k = 100;
+        c = b + k;*/
+       c = b + 20;
+
+
+
 
 
 

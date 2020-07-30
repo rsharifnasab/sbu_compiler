@@ -7,6 +7,7 @@ import compiler.scanner.symboltable.VariableDescriptor;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.objectweb.asm.*;
 import java.io.*;
+import java.util.Map;
 import java.util.Stack;
 
 import compiler.util.*;
@@ -27,6 +28,7 @@ public class CodeGen {
     public MethodVisitor mVisit;
     public  Stack<String> semanticStack;
     public String currentFunc;
+    public Stack<String> helpStack;
 
     private final Lexical lexical;
 
@@ -35,6 +37,7 @@ public class CodeGen {
         OUTCLASS_NAME = Utils.getClassNameFromFile(output);
         this.lexical = lexical;
         this.semanticStack = new Stack<>();
+        this.helpStack = new Stack<>();
         initializeClass();
 
     }
@@ -117,8 +120,115 @@ public class CodeGen {
                 return ARETURN;
         }
     }
+    public int loadOp(String type) {
+
+        switch (type) {
+            case "double":
+                return  DLOAD;
+            case "float":
+                return FLOAD;
+            case "long":
+                return LLOAD;
+            case "int":
+                return ILOAD;
+            default:
+                return ALOAD;
+        }
+    }
+    //------------------------------
+    public int addOp(String type) {
+
+        switch (type) {
+            case "double":
+                return  DADD;
+            case "float":
+                return FADD;
+            case "long":
+                return LADD;
+            case "int":
+                return IADD;
+            default:
+                return 0;
+        }
+    }
+    //-----------------------------
+    public int subOp(String type){
+        switch (type) {
+            case "double":
+                return  DSUB;
+            case "float":
+                return FSUB;
+            case "long":
+                return LSUB;
+            case "int":
+                return ISUB;
+            default:
+                return 0;
+        }
+    }
+
+    public int divOp(String type){
+        switch (type) {
+            case "double":
+                return  DDIV;
+            case "float":
+                return FDIV;
+            case "long":
+                return LDIV;
+            case "int":
+                return IDIV;
+            default:
+                return 0;
+        }
+    }
+
+    public int mulOp(String type){
+        switch (type) {
+            case "double":
+                return  DMUL;
+            case "float":
+                return FMUL;
+            case "long":
+                return LMUL;
+            case "int":
+                return IMUL;
+            default:
+                return 0;
+        }
+    }
 
 
+
+
+    //------------------------------------------------
+    public void typeLdcInsn(MethodVisitor mv , String type , String literal){
+        switch (type) {
+            case "double":
+                mv.visitLdcInsn(Double.parseDouble(literal));
+                break;
+            case "float":
+                mv.visitLdcInsn(Float.parseFloat(literal));
+                break;
+            case "long":
+                mv.visitLdcInsn(Long.parseLong(literal));
+                break;
+            case "int":
+                mv.visitLdcInsn(Integer.parseInt(literal));
+                break;
+            case "byte":
+                mv.visitLdcInsn(Byte.parseByte(literal));
+                break;
+            default:
+                mv.visitLdcInsn(literal);
+                break;
+        }
+    }
+
+
+
+
+
+    ///------codegen main logic
     public void doSemantic(String semantic){
 
         TypeDescMap mapper = new TypeDescMap();
@@ -210,11 +320,14 @@ public class CodeGen {
                 semanticStack.push(type);
 
 
+
             }break;
 
             //-----------------------------------
             case "push_lit":{
                 semanticStack.push(lastValue);
+                helpStack.push(lastToken.toString().split("_")[0].toLowerCase());
+
 
                 break;
             }
@@ -227,35 +340,25 @@ public class CodeGen {
 
                 var functionDscp = (FunctionDescriptor)st.getDSCP(currentFunc);
                 VariableDescriptor varDscp = new VariableDescriptor(type);
-                varDscp.value = value;
                 int address = functionDscp.innerTable.getSize();
                 varDscp.setAddress(address);
 
                 functionDscp.innerTable.add(name, varDscp);
 
-                switch (type) {
-                    case "double":
-                        functionDscp.mv.visitLdcInsn(Double.parseDouble(value));
-                        break;
-                    case "float":
-                        functionDscp.mv.visitLdcInsn(Float.parseFloat(value));
-                        break;
-                    case "long":
-                        functionDscp.mv.visitLdcInsn(Long.parseLong(value));
-                        break;
-                    case "int":
-                        functionDscp.mv.visitLdcInsn(Integer.parseInt(value));
-                        break;
-                    case "byte":
-                        functionDscp.mv.visitLdcInsn(Byte.parseByte(value));
-                        break;
-                    default:
-                        functionDscp.mv.visitLdcInsn(value);
-                        break;
+               // 1 extra slots for double
+                if(type.equals("double")||type.equals("long")){
+                    functionDscp.innerTable.add(null,null);
                 }
 
+                if(helpStack.peek().equals("IDENTIFIER")){ // if the right side is id , load it's value
+                    helpStack.pop();
+                    var adr = ((VariableDescriptor)functionDscp.innerTable.getDSCP(value)).getAddress();
+                    functionDscp.mv.visitVarInsn(loadOp(type), adr);
+                }
+                else typeLdcInsn(functionDscp.mv, type, value);//-push for every type
 
                 functionDscp.mv.visitVarInsn(getOp(type), address);
+
 
                 break;
             }
@@ -282,27 +385,10 @@ public class CodeGen {
                     varDscp.value = literal;
                     var type = varDscp.type;
 
-                    switch (type) {
-                        case "double":
-                            functionDscp.mv.visitLdcInsn(Double.parseDouble(literal));
-                            break;
-                        case "float":
-                            functionDscp.mv.visitLdcInsn(Float.parseFloat(literal));
-                            break;
-                        case "long":
-                            functionDscp.mv.visitLdcInsn(Long.parseLong(literal));
-                            break;
-                        case "int":
-                            functionDscp.mv.visitLdcInsn(Integer.parseInt(literal));
-                            break;
-                        case "byte":
-                            functionDscp.mv.visitLdcInsn(Byte.parseByte(literal));
-                            break;
-                        default:
-                            functionDscp.mv.visitLdcInsn(literal);
-                            break;
-                    }
+                    //---loads for every type
+                    typeLdcInsn(functionDscp.mv,type,literal);
                     functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
+
 
 
                 }
@@ -316,6 +402,7 @@ public class CodeGen {
             case "push_id":{
                 semanticStack.push(lastValue);
                 System.out.print("");
+                helpStack.push(lastToken.toString());
                 break;
 
             }
@@ -325,21 +412,46 @@ public class CodeGen {
             case "print":{
 
                 var literal = lastToken.toString().toLowerCase();
-                String param = null;
+                String param;
+                String type = null;
 
                 if(literal.equals("icv"))
                     param = "I";
-
                 else{
-                    String key = literal.trim().split("_")[0];
-                    param = mapper.map.get(key); }
+                    type = literal.trim().split("_")[0];
+                    param = mapper.map.get(type);
+                }
+
 
                 String argType = "("+param+")";
                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
                 dscp.mv.visitCode();
                 dscp.mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
                 //pushes the data on the stack
-                dscp.mv.visitLdcInsn(lastValue);
+                typeLdcInsn(dscp.mv, type, lastValue);
+
+                //print call
+                dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", argType+"V", false);
+
+
+
+                break;
+            }
+            //------------------------------------------------------------------
+            case "print_value":{
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                var id = lastValue;
+                var varDscp = ((VariableDescriptor)dscp.innerTable.getDSCP(id));
+                var adr = varDscp.getAddress();
+                var type = varDscp.getType();
+
+
+                var argType = "(" + mapper.map.get(type) + ")";
+                dscp.mv.visitCode();
+                dscp.mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                //pushes the data on the stack
+                dscp.mv.visitVarInsn(loadOp(type), adr);
+
                 //print call
                 dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", argType+"V", false);
 
@@ -353,11 +465,6 @@ public class CodeGen {
                  dscp.mv.visitInsn(DUP);
                  dscp.mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
                  dscp.mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V");
-                 dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "next", "()Ljava/lang/String;");
-                 dscp.mv.visitInsn(POP);
-
-
-
 
 
 
@@ -365,6 +472,255 @@ public class CodeGen {
 
                  break;
              }
+             ///-----------------------------------------------------------------------
+             case "get_input":{
+                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+
+                 var callType = semanticStack.pop();  //e.g. double
+                 var temp = callType;
+                 var methodType = mapper.map.get(callType); // e.g. D
+                 var firstLetter = callType.substring(0,1).toUpperCase(); // d->D
+                 callType = callType.substring(1); // e.g. ouble
+                 String methodCall;
+
+
+                 if(temp.equals("string"))
+                     methodCall = "next";
+                 else
+                     methodCall = "next" + firstLetter + callType;
+
+
+                 dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", methodCall, "()"+methodType);
+
+                  dscp.mv.visitVarInsn(getOp(temp), dscp.innerTable.getSize());
+
+
+
+                 break;
+
+             }
+
+            case "get_string":{
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                dscp.mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "next", "()"+"Ljava/lang/String;");
+                dscp.mv.visitVarInsn(ASTORE, dscp.innerTable.getSize());
+
+                break;
+            }
+            ///------------------------------------------------------------------------
+             case "input_assign":{
+                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                 var varName = semanticStack.pop();
+                 var varType = semanticStack.pop();
+                 VariableDescriptor varDscp = new VariableDescriptor(varType);
+                 varDscp.setAddress(dscp.innerTable.getSize() - 1);
+                 dscp.innerTable.add(varName, varDscp);
+
+                 //1 extra slot for long and double
+                 if(varType.equals("double") || varType.equals("long")){
+                     dscp.innerTable.add(null, null);
+                 }
+                 helpStack.clear();
+
+
+                 break;
+
+
+             }
+             //-----------------------------------------------------------------------
+            case "add":{
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                String addType = null;
+                //-
+
+                for (int i = 0; i < 2; i++) {
+
+                    if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+                        helpStack.pop();
+                        var name = semanticStack.pop();
+
+                        var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+                        //search type and address in innerTable
+                        var address = varDscp.getAddress();
+                        var type = varDscp.getType();
+                        dscp.mv.visitVarInsn(loadOp(type), address);
+                        addType = type;
+
+
+                    } else {
+                        var literalType = helpStack.pop();
+                        var val = semanticStack.pop();
+                        typeLdcInsn(dscp.mv, literalType, val);
+                       // System.out.println(literalType+"= "+val);
+                        addType = literalType;
+                    }
+                }
+
+
+                dscp.mv.visitInsn(addOp(addType));
+                var adr = dscp.innerTable.getSize();
+                dscp.mv.visitVarInsn(getOp(addType), adr);
+
+                VariableDescriptor tempDscp = new VariableDescriptor(addType);
+                tempDscp.setAddress(adr);
+                dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+                //push type into helper
+                helpStack.push("IDENTIFIER");
+                semanticStack.push("system_temp");
+
+
+
+
+
+                break;
+            }
+            ///----------------------------------------------------------------------
+            case "sub":{
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                String addType = null;
+                //-
+
+                for (int i = 0; i < 2; i++) {
+
+                    if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+                        helpStack.pop();
+                        var name = semanticStack.pop();
+
+                        var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+                        //search type and address in innerTable
+                        var address = varDscp.getAddress();
+                        var type = varDscp.getType();
+                        dscp.mv.visitVarInsn(loadOp(type), address);
+                        addType = type;
+
+
+                    } else {
+                        var literalType = helpStack.pop();
+                        var val = semanticStack.pop();
+                        typeLdcInsn(dscp.mv, literalType, val);
+                        // System.out.println(literalType+"= "+val);
+                        addType = literalType;
+                    }
+                }
+
+
+                dscp.mv.visitInsn(subOp(addType));
+                var adr = dscp.innerTable.getSize();
+                dscp.mv.visitVarInsn(getOp(addType), adr);
+
+                VariableDescriptor tempDscp = new VariableDescriptor(addType);
+                tempDscp.setAddress(adr);
+                dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+                //push type into helper
+                helpStack.push("IDENTIFIER");
+                semanticStack.push("system_temp");
+
+
+                break;
+            }
+            //-----------------------------------------------------------------------
+            case "mult":{
+
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                String addType = null;
+                //-
+
+                for (int i = 0; i < 2; i++) {
+
+                    if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+                        helpStack.pop();
+                        var name = semanticStack.pop();
+
+                        var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+                        //search type and address in innerTable
+                        var address = varDscp.getAddress();
+                        var type = varDscp.getType();
+                        dscp.mv.visitVarInsn(loadOp(type), address);
+                        addType = type;
+
+
+                    } else {
+                        var literalType = helpStack.pop();
+                        var val = semanticStack.pop();
+                        typeLdcInsn(dscp.mv, literalType, val);
+                        // System.out.println(literalType+"= "+val);
+                        addType = literalType;
+                    }
+                }
+
+
+                dscp.mv.visitInsn(mulOp(addType));
+                var adr = dscp.innerTable.getSize();
+                dscp.mv.visitVarInsn(getOp(addType), adr);
+
+                VariableDescriptor tempDscp = new VariableDescriptor(addType);
+                tempDscp.setAddress(adr);
+                dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+                //push type into helper
+                helpStack.push("IDENTIFIER");
+                semanticStack.push("system_temp");
+
+
+                break;
+            }
+            //-----------------------------------------------------------------------
+            case "div" :{
+
+                var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+                String addType = null;
+                //-
+
+                for (int i = 0; i < 2; i++) {
+
+                    if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+                        helpStack.pop();
+                        var name = semanticStack.pop();
+
+                        var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+                        //search type and address in innerTable
+                        var address = varDscp.getAddress();
+                        var type = varDscp.getType();
+                        dscp.mv.visitVarInsn(loadOp(type), address);
+                        addType = type;
+
+
+                    } else {
+                        var literalType = helpStack.pop();
+                        var val = semanticStack.pop();
+                        typeLdcInsn(dscp.mv, literalType, val);
+                        // System.out.println(literalType+"= "+val);
+                        addType = literalType;
+                    }
+                }
+
+
+                dscp.mv.visitInsn(divOp(addType));
+                var adr = dscp.innerTable.getSize();
+                dscp.mv.visitVarInsn(getOp(addType), adr);
+
+                VariableDescriptor tempDscp = new VariableDescriptor(addType);
+                tempDscp.setAddress(adr);
+                dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+                //push type into helper
+                helpStack.push("IDENTIFIER");
+                semanticStack.push("system_temp");
+
+
+                break;
+
+            }
+            //---------------------------------------------------------------------
+
+
+
             ///-------------------------------------------------------------------------
              case "end_function":{
                 var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -383,10 +739,6 @@ public class CodeGen {
 
 
 
-
-
-
-
             case "done":
                 System.out.println("ok done");
                 break;
@@ -394,5 +746,6 @@ public class CodeGen {
         }
 
     }
+
 
 }

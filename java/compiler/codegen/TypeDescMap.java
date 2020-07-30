@@ -22,11 +22,6 @@ public class TypeDescMap {
         map.put("string", "Ljava/lang/String;");
 
     }
-    public void makeMapDCLs(String dcl , String value){
 
-        if(dcl.equals("int") && Integer.parseInt(value) < 6){
-
-        }
-    }
 
 }
