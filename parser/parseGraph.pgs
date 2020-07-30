@@ -1768,7 +1768,7 @@
         "start": 95,
         "end": 96,
         "token": "id",
-        "func": "make_dscp",
+        "func": "push_dcl_name",
         "anchorX": 722.5,
         "anchorY": 672.5,
         "isGraph": false,
@@ -3221,14 +3221,14 @@
         "isFinal": false
       },
       {
-        "x": 362.0,
-        "y": 952.0,
+        "x": 345.0,
+        "y": 949.0,
         "id": 177,
         "isFinal": false
       },
       {
-        "x": 184.0,
-        "y": 1098.0,
+        "x": 125.0,
+        "y": 1062.0,
         "id": 178,
         "isFinal": false
       },
@@ -3329,8 +3329,8 @@
         "isFinal": false
       },
       {
-        "x": 315.0,
-        "y": 385.0,
+        "x": 104.0,
+        "y": 325.0,
         "id": 195,
         "isFinal": false
       },
@@ -3411,8 +3411,8 @@
         "end": 178,
         "token": "PRE_TYPE",
         "func": "",
-        "anchorX": 229.0,
-        "anchorY": 1060.9999999999995,
+        "anchorX": 187.0,
+        "anchorY": 1025.9999999999995,
         "isGraph": true,
         "isGlobal": false
       },
@@ -3421,8 +3421,8 @@
         "end": 179,
         "token": ")",
         "func": "",
-        "anchorX": 290.49999999999943,
-        "anchorY": 1136.5,
+        "anchorX": 269.49999999999943,
+        "anchorY": 1130.5,
         "isGraph": false,
         "isGlobal": false
       },
@@ -3431,8 +3431,8 @@
         "end": 179,
         "token": ")",
         "func": "",
-        "anchorX": 175.49999999999994,
-        "anchorY": 1191.9999999999995,
+        "anchorX": 148.49999999999994,
+        "anchorY": 1205.9999999999995,
         "isGraph": false,
         "isGlobal": false
       },
@@ -3490,7 +3490,7 @@
         "start": 181,
         "end": 188,
         "token": "ASSIGNEMENT",
-        "func": "complete_assign",
+        "func": "simple_assign",
         "anchorX": 1535.5,
         "anchorY": 380.9999999999991,
         "isGraph": true,
@@ -3570,9 +3570,9 @@
         "start": 185,
         "end": 195,
         "token": "input",
-        "func": "",
-        "anchorX": 397.5,
-        "anchorY": 232.5,
+        "func": "new_scanner",
+        "anchorX": 187.5,
+        "anchorY": 265.5,
         "isGraph": false,
         "isGlobal": false
       },
@@ -3651,8 +3651,8 @@
         "end": 177,
         "token": "(",
         "func": "",
-        "anchorX": 342.0,
-        "anchorY": 673.0,
+        "anchorX": 249.99999999999991,
+        "anchorY": 685.0,
         "isGraph": false,
         "isGlobal": false
       },
