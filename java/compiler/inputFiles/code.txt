@@ -1,2 +1,0 @@
-void scanner called
-function
