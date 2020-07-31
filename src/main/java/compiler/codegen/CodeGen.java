@@ -29,10 +29,14 @@ public class CodeGen {
   public ClassWriter structCLW;
   public MethodVisitor mVisit;
   public Deque<String> semanticStack;
-  public String currentFunc;
+
   public Deque<String> helpStack;
 
   private final Lexical lexical;
+
+
+  public String currentFunc;
+  public boolean in_record = false;
 
   public CodeGen(File output, Lexical lexical) {
     OUTPUT_FILE = output;
@@ -126,8 +130,6 @@ public class CodeGen {
 
     return clazz;
   }
-
-
 
 
   public int getOp(String type) {
@@ -290,8 +292,6 @@ public class CodeGen {
       break;
     }
   }
-
-
 
 
 
@@ -598,8 +598,43 @@ public class CodeGen {
 
       break;
 
+    }
+    //-------------R E C O R D -----------------------------------------------
+
+    case "RECORD_INIT":{
+        in_record = true;
+
+        structCLW = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        structCLW.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, typeName, null, CodeWrite.SUPER_CLASS, null);
+        declarations.forEach(StructVarDCL::compile);
+
+        mVisit = structCLW.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
+        mVisit.visitCode();
+        mVisit.visitVarInsn(Opcodes.ALOAD, 0);
+        mVisit.visitMethodInsn(Opcodes.INVOKESPECIAL, CodeWrite.SUPER_CLASS, "<init>", "()V", false);
+
+
+        declarations.forEach(dcl -> dcl.init(typeName));
+
 
     }
+
+    case "RECORD_VAR_DCL":{
+        Logger.log("var dcl");
+
+    }
+
+    case "RECORD_DONE":{
+      in_record = false;
+
+      mVisit.visitInsn(Opcodes.RETURN);
+      mVisit.visitMaxs(1, 1);
+      mVisit.visitEnd();
+      structCLW.visitEnd();
+      writeRecordClass(typeName);
+    }
+
+
     //-----------------------------------------------------------------------
     case "add":{
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -807,7 +842,8 @@ public class CodeGen {
       }
       var arguments = "(" + argTypes + ")";
 
-
+      if(st.getDSCP(id)== null)
+        Logger.error("function "+ id+ " not found");
       var retType = st.getDSCP(id).getType();
       retType = mapper.map.get(retType);//function return type
 

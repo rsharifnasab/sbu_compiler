@@ -5,7 +5,7 @@ import java.io.*;
 
 import compiler.scanner.token.*;
 
-%% 
+%%
  /* * * * * options and macros (declerations) * * * * * * * */
 
 
@@ -17,6 +17,10 @@ import compiler.scanner.token.*;
 
 %{
     StringBuffer stringLiteral = new StringBuffer();
+
+    private Symbol of(ScannerToken token){
+        return Symbol.of(token,yytext());
+    }
 %}
 
 
@@ -35,7 +39,7 @@ import compiler.scanner.token.*;
 %state CHAR_STATE
 
 
- /* white spaces */ 
+ /* white spaces */
 LineTerminator = \r|\n|\r\n // support linux line ending and windows line ending
 InputCharacter = [^\r\n] // evething except line terminator is input character!
 
@@ -57,18 +61,20 @@ Identifier = {Underscore}* {Letter} ({Letter}|{Digit}|{Underscore})*
 
 
  /* * * * * *  numbers * * * * * * */
+ESign = (\-)
 Sign = (\+|\-)?
-DecimalInt = {Sign}[0-9]+
+NoSignDecimal = [0-9]+
+DecimalInt = {ESign}{NoSignDecimal}
 DecimalLong = {DecimalInt}[L]
 HexaDecimal = {Sign}[0][xX][0-9a-fA-F]+
  // IntegerNumber ={DecimalInt}|{DecimalLong}|{HexaDecimal}
 
-Num = {FloatNumber}|{DecimalInt}
+Num = {DoubleNumber}|{DecimalInt}|{NoSignDecimal}
 DoubleNumber = {Sign}(\.{Digit}+) | {Sign}({Digit}+\.) |{Sign}({Digit}+\.{Digit}+)
-FloatNumber = {DoubleNumber}[fF]
+FloatNumber = {Num}[fF]
 
 Ee = (e|E)
-ScientificNumber = {Num}{Ee}{Sign}{DecimalInt} 
+ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
 
  // RealNumber = {FloatNumber} | {DoubleNumber} | {ScientificNumber}
 
@@ -79,101 +85,107 @@ ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
  /* * * * * * * * lexical rules * * * * * ** * * * */
 %%
 
- 
-<YYINITIAL> { 
+
+<YYINITIAL> {
 
    {Comment}        { return nextToken(); }
 
+
+
+
   /* keywords */
-    "function" {return Symbol.of(ScannerToken.FUNCTION);}
-    "return" {return Symbol.of(ScannerToken.RETURN);}
-    "void" {return Symbol.of(ScannerToken.VOID);}
-    // "start" {return Symbol.of(ScannerToken.START);}
-    // "sizeof" {return Symbol.of(ScannerToken.SIZE_OF);}
-    "println" {return Symbol.of(ScannerToken.PRINT_LN);}
-    "input" {return Symbol.of(ScannerToken.INPUT);}
-    "if" {return Symbol.of(ScannerToken.IF);}
-    "then" {return Symbol.of(ScannerToken.THEN,null);}
-    "else" {return Symbol.of(ScannerToken.ELSE);}
-    "switch" {return Symbol.of(ScannerToken.SWITCH);}
-    "case" {return Symbol.of(ScannerToken.CASE);}
-    "begin" {return Symbol.of(ScannerToken.BEGIN);}
-    "end" {return Symbol.of(ScannerToken.END);}
-    "for" {return Symbol.of(ScannerToken.FOR);}
-    "repeat" {return Symbol.of(ScannerToken.REPEAT);}
-    "foreach" {return Symbol.of(ScannerToken.FOREACH);}
-    "in" {return Symbol.of(ScannerToken.IN);}
-    "break" {return Symbol.of(ScannerToken.BREAK);}
-    "continue" {return Symbol.of(ScannerToken.CONTINUE);}
-    "float" {return Symbol.of(ScannerToken.LAN_FLOAT);}
-    "double" {return Symbol.of(ScannerToken.LAN_DOUBLE);}
-    "long" {return Symbol.of(ScannerToken.LAN_LONG);}
-    "int" {return Symbol.of(ScannerToken.LAN_INT);}
-    "bool" {return Symbol.of(ScannerToken.LAN_BOOL);}
-    "char" {return Symbol.of(ScannerToken.LAN_CHAR);}
-    "string" {return Symbol.of(ScannerToken.LAN_STRING);}
-    "new" {return Symbol.of(ScannerToken.NEW);}
-    "default" {return Symbol.of(ScannerToken.DEFAULT);}
-    "until" {return Symbol.of(ScannerToken.UNTIL);}
-    "of" {return Symbol.of(ScannerToken.OF);}
-    "+=" {return Symbol.of(ScannerToken.PLUS_ASSIGN);}
-    "*=" {return Symbol.of(ScannerToken.STAR_ASSIGN);}
-    "-=" {return Symbol.of(ScannerToken.MINUS_ASSIGN);}
-    "%=" {return Symbol.of(ScannerToken.MODULE_ASSIGN);}
-    "const" {return Symbol.of(ScannerToken.CONST_KEYWORD);}
-    "auto" {return Symbol.of(ScannerToken.AUTO);}
-    "record" {return Symbol.of(ScannerToken.RECORD);}
-    ">=" {return Symbol.of(ScannerToken.GREATER_THAN_EQUAL);}
-    "<=" {return Symbol.of(ScannerToken.SMALLER_THAN_EQUAL);}
-    "==" {return Symbol.of(ScannerToken.COND_EQUAL);}
-    "!=" {return Symbol.of(ScannerToken.COND_UNEQUAL);}
-    "and" {return Symbol.of(ScannerToken.COND_AND);}
-    "or" {return Symbol.of(ScannerToken.COND_OR);}
-    "xor" {return Symbol.of(ScannerToken.COND_XOR);}
-    "not" {return Symbol.of(ScannerToken.COND_NOT);}
-    "=" {return Symbol.of(ScannerToken.EQUAL);}
-    "++" {return Symbol.of(ScannerToken.D_PLUS);}
-    "--" {return Symbol.of(ScannerToken.D_MINUS);}
-    "**" {return Symbol.of(ScannerToken.D_STAR);}
-    
-    "+" {return Symbol.of(ScannerToken.PLUS);}
-    "-" {return Symbol.of(ScannerToken.MINUS);}
-    "*" {return Symbol.of(ScannerToken.STAR);}
-    "/" {return Symbol.of(ScannerToken.DIVISION);}
-    "%" {return Symbol.of(ScannerToken.MODULO);}
-    "&" {return Symbol.of(ScannerToken.AND);}
-    "|" {return Symbol.of(ScannerToken.OR);}
-    "^" {return Symbol.of(ScannerToken.XOR);}
-    ">" {return Symbol.of(ScannerToken.GREATER_THAN);}
-    "<" {return Symbol.of(ScannerToken.SMALLER_THAN);}
-    "{" {return Symbol.of(ScannerToken.OPEN_CURLY_BRACK);}
-    "}" {return Symbol.of(ScannerToken.CLOSE_CURLY_BRACK);}
-    "[" {return Symbol.of(ScannerToken.OPEN_BRACK);}
-    "]" {return Symbol.of(ScannerToken.CLOSE_BRACK);}
-    "(" {return Symbol.of(ScannerToken.OPEN_PRANTS);}
-    ")" {return Symbol.of(ScannerToken.CLOSE_PRANTS);}
-    "," {return Symbol.of(ScannerToken.COMMA);}
-    ":" {return Symbol.of(ScannerToken.COLON);}
-    ";" {return Symbol.of(ScannerToken.SEMICOLON);}
+    "function" {return of(ScannerToken.FUNCTION);}
+    "return" {return of(ScannerToken.RETURN);}
+    "void" {return of(ScannerToken.VOID);}
+    // "start" {return of(ScannerToken.START);}
+    // "sizeof" {return of(ScannerToken.SIZE_OF);}
+    "println" {return of(ScannerToken.PRINT_LN);}
+    "input" {return of(ScannerToken.INPUT);}
+    "if" {return of(ScannerToken.IF);}
+    "then" {return of(ScannerToken.THEN);}
+    "else" {return of(ScannerToken.ELSE);}
+    "switch" {return of(ScannerToken.SWITCH);}
+    "case" {return of(ScannerToken.CASE);}
+    "begin" {return of(ScannerToken.BEGIN);}
+    "end" {return of(ScannerToken.END);}
+    "for" {return of(ScannerToken.FOR);}
+    "repeat" {return of(ScannerToken.REPEAT);}
+    "foreach" {return of(ScannerToken.FOREACH);}
+    "in" {return of(ScannerToken.IN);}
+    "break" {return of(ScannerToken.BREAK);}
+    "continue" {return of(ScannerToken.CONTINUE);}
+    "float" {return of(ScannerToken.LAN_FLOAT);}
+    "double" {return of(ScannerToken.LAN_DOUBLE);}
+    "long" {return of(ScannerToken.LAN_LONG);}
+    "int" {return of(ScannerToken.LAN_INT);}
+    "bool" {return of(ScannerToken.LAN_BOOL);}
+    "char" {return of(ScannerToken.LAN_CHAR);}
+    "string" {return of(ScannerToken.LAN_STRING);}
+    "new" {return of(ScannerToken.NEW);}
+    "default" {return of(ScannerToken.DEFAULT);}
+    "until" {return of(ScannerToken.UNTIL);}
+    "of" {return of(ScannerToken.OF);}
+    "+=" {return of(ScannerToken.PLUS_ASSIGN);}
+    "*=" {return of(ScannerToken.STAR_ASSIGN);}
+    "-=" {return of(ScannerToken.MINUS_ASSIGN);}
+    "%=" {return of(ScannerToken.MODULE_ASSIGN);}
+    "const" {return of(ScannerToken.CONST_KEYWORD);}
+    "auto" {return of(ScannerToken.AUTO);}
+    "record" {return of(ScannerToken.RECORD);}
+    ">=" {return of(ScannerToken.GREATER_THAN_EQUAL);}
+    "<=" {return of(ScannerToken.SMALLER_THAN_EQUAL);}
+    "==" {return of(ScannerToken.COND_EQUAL);}
+    "!=" {return of(ScannerToken.COND_UNEQUAL);}
+    "and" {return of(ScannerToken.COND_AND);}
+    "or" {return of(ScannerToken.COND_OR);}
+    "xor" {return of(ScannerToken.COND_XOR);}
+    "not" {return of(ScannerToken.COND_NOT);}
+    "=" {return of(ScannerToken.EQUAL);}
+    "++" {return of(ScannerToken.D_PLUS);}
+    "--" {return of(ScannerToken.D_MINUS);}
+    "**" {return of(ScannerToken.D_STAR);}
+
+    "+" {return of(ScannerToken.PLUS);}
+    "-" {return of(ScannerToken.MINUS);}
+    "*" {return of(ScannerToken.STAR);}
+    "/" {return of(ScannerToken.DIVISION);}
+    "%" {return of(ScannerToken.MODULO);}
+    "&" {return of(ScannerToken.AND);}
+    "|" {return of(ScannerToken.OR);}
+    "^" {return of(ScannerToken.XOR);}
+    ">" {return of(ScannerToken.GREATER_THAN);}
+    "<" {return of(ScannerToken.SMALLER_THAN);}
+    "{" {return of(ScannerToken.OPEN_CURLY_BRACK);}
+    "}" {return of(ScannerToken.CLOSE_CURLY_BRACK);}
+    "[" {return of(ScannerToken.OPEN_BRACK);}
+    "]" {return of(ScannerToken.CLOSE_BRACK);}
+    "(" {return of(ScannerToken.OPEN_PRANTS);}
+    ")" {return of(ScannerToken.CLOSE_PRANTS);}
+    "," {return of(ScannerToken.COMMA);}
+    ":" {return of(ScannerToken.COLON);}
+    ";" {return of(ScannerToken.SEMICOLON);}
 
 
-    "(?" {return Symbol.of(ScannerToken.BOOL_PARAN);}
+    "(?" {return of(ScannerToken.BOOL_PARAN);}
 
 
  {Identifier}  {return Symbol.of(ScannerToken.IDENTIFIER, yytext());}
 
-
- {DoubleNumber}     {return Symbol.of(ScannerToken.DOUBLE_LIT, yytext());}
  {FloatNumber}      {return Symbol.of(ScannerToken.FLOAT_LIT, yytext().toLowerCase().replace("f",""));}
- {ScientificNumber} {return Symbol.of(ScannerToken.DOUBLE_LIT,
-                        ""+Double.parseDouble(yytext())
-                             ); }
+ {DoubleNumber}     {return Symbol.of(ScannerToken.DOUBLE_LIT, yytext());}
+
 
  {DecimalInt}  {return Symbol.of(ScannerToken.INT_LIT, yytext()); }
- {DecimalLong} {return Symbol.of(ScannerToken.LONG_LIT, yytext()); } 
+ {NoSignDecimal} {return Symbol.of(ScannerToken.INT_LIT, yytext()); }
+ {DecimalLong} {return Symbol.of(ScannerToken.LONG_LIT, yytext()); }
  {HexaDecimal} {return Symbol.of(ScannerToken.INT_LIT,
         "" + Integer.parseInt(yytext().toLowerCase().replace("0x",""),16)
         ); }
+
+
+ {ScientificNumber} {return Symbol.of(ScannerToken.DOUBLE_LIT,
+                        ""+Double.parseDouble(yytext())
+                             ); }
 
 
  {WhiteSpace}     { return nextToken(); }
@@ -181,14 +193,14 @@ ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
 
   /* jump to another state: String */
  "\""  {stringLiteral.setLength(0); yybegin(STRING_STATE); }
-	
+
   /* jump to another state: Character */
  "\'"  { yybegin(CHAR_STATE); }
 
  <<EOF>> { return Symbol.of(ScannerToken.EOF); }
 
 
-	
+
  [^]  { return Symbol.of(ScannerToken.UNRECOGNIZED, yytext()); }
 
 }
@@ -197,7 +209,7 @@ ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
 <STRING_STATE> {
     /* end of string */
  "\""  { yybegin( YYINITIAL ); return Symbol.of(ScannerToken.STRING_LIT, stringLiteral.toString()); }
- 
+
   /* for \" */
     "\\\""  { stringLiteral.append(yytext());}
     "\\t" { stringLiteral.append('\t'); }
@@ -211,18 +223,17 @@ ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
 
  /* * * * * * * *  * * * State : CHARACTER * * * * * * * */
 <CHAR_STATE> {
-    
+
     "\\\""{SingleQ}  { yybegin(YYINITIAL); return Symbol.of(ScannerToken.CHAR_LIT, yytext()); }
-    "\\t"{SingleQ} { yybegin(YYINITIAL); 
+    "\\t"{SingleQ} { yybegin(YYINITIAL);
             return Symbol.of(ScannerToken.CHAR_LIT, "\t");}
-    "\\n"{SingleQ} { yybegin(YYINITIAL); 
+    "\\n"{SingleQ} { yybegin(YYINITIAL);
             return Symbol.of(ScannerToken.CHAR_LIT,  "\n" );}
-    "\\r"{SingleQ} { yybegin(YYINITIAL); 
+    "\\r"{SingleQ} { yybegin(YYINITIAL);
             return Symbol.of(ScannerToken.CHAR_LIT, "\r" );}
-    "\\"{SingleQ}  { yybegin(YYINITIAL); 
+    "\\"{SingleQ}  { yybegin(YYINITIAL);
             return Symbol.of(ScannerToken.CHAR_LIT, "\\" );}
 
     /* any other char */
     .{SingleQ} { yybegin(YYINITIAL); return Symbol.of(ScannerToken.CHAR_LIT, yytext().replace("\'","")); }
 }
-
