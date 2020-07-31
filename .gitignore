@@ -1,1 +1,3 @@
 *.class
+target/
+src/main/java/compiler/scanner/MyScanner.java
