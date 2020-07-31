@@ -697,7 +697,7 @@ public class CodeGen {
     }
     //-----------------------------------------------------------------------
     case "mult":{
-
+      
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       String addType = null;
       //-
