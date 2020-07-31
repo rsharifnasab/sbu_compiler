@@ -913,7 +913,7 @@ public class CodeGen {
         dscp.mv.visitJumpInsn(compareOp(comp), ifJump);
         labelStack.push(ifJump);
 
-        dscp.mv.visitLabel(ifJump);
+
 
         break;
 
@@ -923,6 +923,8 @@ public class CodeGen {
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var label = labelStack.pop();
+        dscp.mv.visitLabel(label);
 
 
         break;}
