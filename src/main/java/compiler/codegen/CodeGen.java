@@ -132,7 +132,6 @@ public class CodeGen {
   }
 
 
-<<<<<<< HEAD
   public String compareSymbol(String name){
 
     switch (name) {
@@ -152,8 +151,7 @@ public class CodeGen {
   }
 
 
-=======
->>>>>>> ba3dc50006a1eb6b7b2041ce95424e3afef4d804
+
   public int getOp(String type) {
 
     switch (type) {
@@ -628,7 +626,7 @@ public class CodeGen {
         in_record = true;
 
         structCLW = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        structCLW.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, typeName, null, CodeWrite.SUPER_CLASS, null);
+        /*structCLW.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, typeName, null, CodeWrite.SUPER_CLASS, null);
         declarations.forEach(StructVarDCL::compile);
 
         mVisit = structCLW.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
@@ -637,7 +635,7 @@ public class CodeGen {
         mVisit.visitMethodInsn(Opcodes.INVOKESPECIAL, CodeWrite.SUPER_CLASS, "<init>", "()V", false);
 
 
-        declarations.forEach(dcl -> dcl.init(typeName));
+        declarations.forEach(dcl -> dcl.init(typeName));*/
 
 
     }
@@ -654,7 +652,7 @@ public class CodeGen {
       mVisit.visitMaxs(1, 1);
       mVisit.visitEnd();
       structCLW.visitEnd();
-      writeRecordClass(typeName);
+     // writeRecordClass(typeName);
     }
 
 
@@ -886,6 +884,7 @@ public class CodeGen {
         var secondOp = semanticStack.pop();
         var comp = semanticStack.pop();
         var firstOp = semanticStack.pop();
+
 
 
 
