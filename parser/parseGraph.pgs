@@ -739,8 +739,8 @@
         "isFinal": false
       },
       {
-        "x": 1638.0,
-        "y": 302.0,
+        "x": 1700.0,
+        "y": 303.0,
         "id": 42,
         "isFinal": false
       },
@@ -902,7 +902,7 @@
         "start": 42,
         "end": 43,
         "token": "BLOCK",
-        "func": "",
+        "func": "cjz",
         "anchorX": 1792.0,
         "anchorY": 300.5,
         "isGraph": true,
@@ -2227,8 +2227,8 @@
     "name": "BLOCK",
     "nodes": [
       {
-        "x": 222.0,
-        "y": 604.0,
+        "x": 106.0,
+        "y": 606.0,
         "id": 124,
         "isFinal": false
       },
@@ -2256,9 +2256,9 @@
         "start": 124,
         "end": 125,
         "token": "{",
-        "func": "",
-        "anchorX": 373.5,
-        "anchorY": 606.0,
+        "func": "visit_block_body",
+        "anchorX": 222.5,
+        "anchorY": 611.0,
         "isGraph": false,
         "isGlobal": false
       },
@@ -3467,7 +3467,7 @@
       {
         "start": 179,
         "end": 182,
-        "token": "PRE_TYPE",
+        "token": "CAST_TYPE",
         "func": "",
         "anchorX": 577.9999999999986,
         "anchorY": 872.5,
@@ -4280,5 +4280,107 @@
       }
     ],
     "start": 223
+  },
+  {
+    "name": "CAST_TYPE",
+    "nodes": [
+      {
+        "x": 561.0,
+        "y": 277.0,
+        "id": 228,
+        "isFinal": false
+      },
+      {
+        "x": 974.0,
+        "y": 282.0,
+        "id": 229,
+        "isFinal": true
+      },
+      {
+        "x": 413.0,
+        "y": -193.0,
+        "id": 230,
+        "isFinal": false
+      },
+      {
+        "x": 1888.0,
+        "y": -208.0,
+        "id": 231,
+        "isFinal": false
+      }
+    ],
+    "edges": [
+      {
+        "start": 228,
+        "end": 229,
+        "token": "int",
+        "func": "cast_int",
+        "anchorX": 750.0,
+        "anchorY": 182.0,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "double",
+        "func": "cast_double",
+        "anchorX": 732.0,
+        "anchorY": 285.0,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "long",
+        "func": "cast_long",
+        "anchorX": 756.0,
+        "anchorY": 105.0,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "string",
+        "func": "cast_string",
+        "anchorX": 740.0,
+        "anchorY": 458.99999999999994,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "bool",
+        "func": "cast_bool",
+        "anchorX": 747.0,
+        "anchorY": 552.0,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "char",
+        "func": "cast_char",
+        "anchorX": 745.0,
+        "anchorY": 382.0,
+        "isGraph": false,
+        "isGlobal": false
+      },
+      {
+        "start": 228,
+        "end": 229,
+        "token": "float",
+        "func": "cast_float",
+        "anchorX": 744.0,
+        "anchorY": 659.0,
+        "isGraph": false,
+        "isGlobal": false
+      }
+    ],
+    "start": 228
   }
 ]

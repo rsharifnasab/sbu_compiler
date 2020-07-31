@@ -39,6 +39,8 @@ function void start(){
 
      test(2, "init");
      if(x <= 2){ }
+     double z = 3;
+     println(z);
 
 
 

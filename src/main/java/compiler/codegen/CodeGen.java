@@ -9,6 +9,7 @@ import org.objectweb.asm.*;
 import java.io.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Stack;
 
 import compiler.util.*;
 import compiler.scanner.*;
@@ -26,7 +27,7 @@ public class CodeGen {
   public ClassWriter structCLW;
   public MethodVisitor mVisit;
   public Deque<String> semanticStack;
-
+  public Stack<Label> labelStack;
   public Deque<String> helpStack;
 
   private final Lexical lexical;
@@ -41,6 +42,7 @@ public class CodeGen {
     this.lexical = lexical;
     this.semanticStack = new ArrayDeque<>();
     this.helpStack = new ArrayDeque<>();
+    this.labelStack = new Stack<>();
     initializeClass();
 
   }
@@ -324,7 +326,7 @@ public class CodeGen {
     var lastToken = lexical.getLastSym().token;
     Logger.print("sem:"+semantic+", last sym:"+lexical.getLastSym(),"yellow");
     //System.out.println("sem: "+ semantic);
-    Label ifJump = new Label();
+
 
     switch(semantic){
 
@@ -362,7 +364,7 @@ public class CodeGen {
       }
       ///--------------------------------------------------------------
       case "add_arg_dscp":{
-        Descriptor argDscp = new VariableDescriptor(semanticStack.peek());
+        Descriptor argDscp = new VariableDescriptor((String) semanticStack.peek());
         var symtab = ((FunctionDescriptor)st.getDSCP(currentFunc)).innerTable;
         symtab.add(lastValue, argDscp);
         break;
@@ -426,11 +428,11 @@ public class CodeGen {
         var type  = semanticStack.pop();
 
         var functionDscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-        VariableDescriptor varDscp = new VariableDescriptor(type);
+        VariableDescriptor varDscp = new VariableDescriptor((String) type);
         int address = functionDscp.innerTable.getSize();
         varDscp.setAddress(address);
 
-        functionDscp.innerTable.add(name, varDscp);
+        functionDscp.innerTable.add((String) name, varDscp);
 
         // 1 extra slots for double
         if(type.equals("double")||type.equals("long")){
@@ -439,8 +441,8 @@ public class CodeGen {
 
         if(helpStack.peek().equals("IDENTIFIER")){ // if the right side is id , load it's value
         helpStack.pop();
-        var adr = ((VariableDescriptor)functionDscp.innerTable.getDSCP(value)).getAddress();
-        functionDscp.mv.visitVarInsn(loadOp(type), adr);
+        var adr = ((VariableDescriptor)functionDscp.innerTable.getDSCP((String) value)).getAddress();
+        functionDscp.mv.visitVarInsn(loadOp((String) type), adr);
       }
       else typeLdcInsn(functionDscp.mv, type, value);//-push for every type
 
@@ -880,6 +882,7 @@ public class CodeGen {
     //------------------------------------------------------------------------
       case "jump_zero":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+
         var secondOp = semanticStack.pop();
         var comp = semanticStack.pop();
         var firstOp = semanticStack.pop();
@@ -906,15 +909,25 @@ public class CodeGen {
 
         }else { typeLdcInsn(dscp.mv, type2, secondOp); }
 
-
+        Label ifJump = new Label();
         dscp.mv.visitJumpInsn(compareOp(comp), ifJump);
+        labelStack.push(ifJump);
 
+        dscp.mv.visitLabel(ifJump);
 
         break;
 
       }
+      //-----------------------------------------------------------------------
+      case "visit_block_body":{break;}
+      ///------------------------------------------------------------------------
+      case "cjz":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
 
-      
+
+        break;}
+
+
 
     ///-------------------------------------------------------------------------
     case "end_function":{
@@ -922,7 +935,7 @@ public class CodeGen {
       while (!semanticStack.isEmpty()) semanticStack.pop();
 
       dscp.mv.visitInsn(returnOp(dscp.type));
-      dscp.mv.visitMaxs(dscp.innerTable.getSize() + 2, 1);
+      dscp.mv.visitMaxs(dscp.innerTable.getSize() + 2, dscp.innerTable.getSize());
       dscp.mv.visitEnd();
 
 
