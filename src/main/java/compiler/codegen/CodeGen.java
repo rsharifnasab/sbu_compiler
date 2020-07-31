@@ -437,7 +437,7 @@ public class CodeGen {
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       var varDscp = ((VariableDescriptor)dscp.innerTable.getDSCP(name));
       Logger.log(" dcl name is: "+name+ " and dscp :"+varDscp);
-      if(varDscp != null) Logger.error("double declare "+name);
+      if(varDscp != null) Logger.error("variable "+name+" is already defined in this function");
       semanticStack.push(lastValue);
 
     }
