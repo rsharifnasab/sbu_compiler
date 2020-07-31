@@ -4,7 +4,7 @@ import compiler.scanner.symboltable.Descriptor;
 import compiler.scanner.symboltable.FunctionDescriptor;
 import compiler.scanner.symboltable.SymbolTable;
 import compiler.scanner.symboltable.VariableDescriptor;
-import jdk.swing.interop.SwingInterOpUtils;
+
 import org.objectweb.asm.*;
 import java.io.*;
 import java.util.ArrayDeque;
@@ -77,11 +77,11 @@ public class CodeGen {
 
   }
 
-  public void writeRecordClass(){
+  public void writeRecordClass(String record_out){
     Logger.log("writing record to file");
     File record_out_file = new File(
-    OUTPUT_FILE.getParentFile().getName(),
-    record_out+".class"
+        OUTPUT_FILE.getParentFile().getName(),
+        record_out+".class"
     );
     writeAndCheckClass(structCLW.toByteArray(), record_out_file, record_out);
   }
@@ -119,9 +119,10 @@ public class CodeGen {
         method.setAccessible(false);
       }
     } catch (Throwable e) {
+      e.printStackTrace();
       Logger.error("compilation failed");
     }
-    System.out.println("check doneeeeeeee");
+    Logger.print("check doneeeeeeee","green");
 
     return clazz;
   }
@@ -301,9 +302,10 @@ public class CodeGen {
 
     semantic = semantic.replace("@","");
     var st = lexical.symTab;
-    System.out.println("semantic:"+semantic);
+
     String lastValue = lexical.getLastSym().content;
     var lastToken = lexical.getLastSym().token;
+    Logger.print("sem:"+semantic+", last sym:"+lexical.getLastSym(),"yellow");
 
     switch(semantic){
 

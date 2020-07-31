@@ -5,6 +5,12 @@ function void test(int a, string s){
   return;
 }
 
+record roozbeh_type {
+
+
+
+};
+
 function void start(){
 
      println(12.53f);
@@ -13,12 +19,18 @@ function void start(){
      int a = 50;
      string str = "mehrshad";
      str = "";
-     int c = input(int);
-     int x = 7 + 5 * 2 + (2 - 3);
-     test(2, "init");
-     println(x);
-     if(3 >= 2){ }
 
+     int c = input(int);
+     println("you enterred ");
+  //   println(c);
+
+
+
+     int x = 7 + 5 * 2 + (2 - 3);
+     println(x);
+     
+    //test(2, "init");
+     if(3 >= 2){ }
 
 
 
