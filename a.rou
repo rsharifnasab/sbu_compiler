@@ -1,4 +1,5 @@
 
+
 function void test(int a, string s){
   println(a);
   test(4 , "rec");
@@ -6,6 +7,8 @@ function void test(int a, string s){
 }
 
 record roozbeh_type {
+  int a;
+  double d = 1.0;
 
 
 
@@ -21,9 +24,21 @@ function void start(){
      str = "";
 
 
+
+
      int x = 7 + (5 * 2) + (2 - 3);
      println(x);*/
 
+     println("enter an int ");
+     int c = input(int);
+     println("you entered ");
+     println(c);
+    c = 2;
+     println(c);
+
+     println("enter some string");
+     string s = input(string);
+     println(s);
 
     test(2, "init");
      if(3 <= 2){ }
