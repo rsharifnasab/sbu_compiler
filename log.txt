@@ -1,3 +1,0 @@
-Initializing code generator
-writing generated code into output file
-(Error) compilation failed
