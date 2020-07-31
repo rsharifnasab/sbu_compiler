@@ -13,7 +13,7 @@ record roozbeh_type {
 
 function void start(){
 
-     println(12.53f);
+    /* println(12.53f);
      println("mehrshad");
      int b = 5;
      int a = 50;
@@ -22,11 +22,11 @@ function void start(){
 
 
      int x = 7 + (5 * 2) + (2 - 3);
-     println(x);
+     println(x);*/
 
 
-//    test(2, "init");
-    // if(3 >= 2){ }
+    test(2, "init");
+     if(3 <= 2){ }
 
 
 

@@ -128,6 +128,23 @@ public class CodeGen {
   }
 
 
+  public String compareSymbol(String name){
+
+    switch (name) {
+      case "COND_EQUAL":
+        return  "==";
+      case "COND_UNEQUAL":
+        return "!=";
+      case "GREATER_THAN_EQUAL":
+        return ">=";
+      case "SMALLER_THAN_EQUAL":
+        return "<=";
+      case "SMALLER_THAN":
+        return "<";
+      default:
+        return ">";
+    }
+  }
 
 
   public int getOp(String type) {
@@ -306,6 +323,7 @@ public class CodeGen {
     String lastValue = lexical.getLastSym().content;
     var lastToken = lexical.getLastSym().token;
     Logger.print("sem:"+semantic+", last sym:"+lexical.getLastSym(),"yellow");
+    //System.out.println("sem: "+ semantic);
 
     switch(semantic){
 
@@ -697,7 +715,7 @@ public class CodeGen {
     }
     //-----------------------------------------------------------------------
     case "mult":{
-      
+
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       String addType = null;
       //-
@@ -817,9 +835,22 @@ public class CodeGen {
     }
     //-----------------------------------------------------------------------
     case "compare_push":{
-      System.out.println(lastValue);
+      semanticStack.push(compareSymbol(lastToken.toString()));
+      break;
+
 
     }
+    //------------------------------------------------------------------------
+      case "jump_zero":{
+        var secondOp = semanticStack.pop();
+        var comp = semanticStack.pop();
+        var firstOp = semanticStack.pop();
+
+
+
+        break;
+
+      }
 
     ///-------------------------------------------------------------------------
     case "end_function":{
