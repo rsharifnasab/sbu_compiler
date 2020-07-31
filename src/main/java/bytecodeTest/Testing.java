@@ -12,9 +12,8 @@ public class Testing {
         if(a > b){
             System.out.println("goal");
         }
-        else {
-            System.out.println("not goal");
-        }
+
+        System.out.println("kallle");
 
 
 

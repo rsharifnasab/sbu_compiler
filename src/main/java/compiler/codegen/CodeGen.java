@@ -324,6 +324,7 @@ public class CodeGen {
     var lastToken = lexical.getLastSym().token;
     Logger.print("sem:"+semantic+", last sym:"+lexical.getLastSym(),"yellow");
     //System.out.println("sem: "+ semantic);
+    Label ifJump = new Label();
 
     switch(semantic){
 
@@ -885,8 +886,8 @@ public class CodeGen {
         //-----------------------
         var type2 = helpStack.pop();var type1 = helpStack.pop();
 
+        //--first operand load
        if(type1.equalsIgnoreCase("IDENTIFIER")){
-
          var varDSCP = findDSCP(dscp.innerTable, firstOp);
          var adr = varDSCP.getAddress();
          var type = varDSCP.getType();
@@ -896,6 +897,7 @@ public class CodeGen {
 
        }else { typeLdcInsn(dscp.mv, type1, firstOp); }
 
+       //----second operand load
         if(type2.equalsIgnoreCase("IDENTIFIER")){
           var varDSCP = findDSCP(dscp.innerTable, secondOp);
           var adr = varDSCP.getAddress();
@@ -905,15 +907,14 @@ public class CodeGen {
         }else { typeLdcInsn(dscp.mv, type2, secondOp); }
 
 
-
-
-
-
+        dscp.mv.visitJumpInsn(compareOp(comp), ifJump);
 
 
         break;
 
       }
+
+      
 
     ///-------------------------------------------------------------------------
     case "end_function":{
