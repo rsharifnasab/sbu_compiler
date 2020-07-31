@@ -433,6 +433,11 @@ public class CodeGen {
 
     //------------------------------------------------------------------------
     case "push_dcl_name":{
+      String name = lastValue;
+      var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+      var varDscp = ((VariableDescriptor)dscp.innerTable.getDSCP(name));
+      Logger.log(" dcl name is: "+name+ " and dscp :"+varDscp);
+      if(varDscp != null) Logger.error("double declare "+name);
       semanticStack.push(lastValue);
 
     }

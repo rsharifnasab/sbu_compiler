@@ -20,17 +20,24 @@ function void start(){
      string str = "mehrshad";
      str = "";
 
+
+
+
+     int x = 7 + (5 * 2) + (2 - 3);
+     println(x);
+     
+     println("enter an int ");
      int c = input(int);
      println("you entered ");
+     println(c);
+     int c = 2;
+     println(c);
+    
+     println("enter some string");
      string b = input(string);
      println(b);
 
-
-
-     int x = 7 + 5 * 2 + (2 - 3);
-     println(x);
-     
-    test(2, "init");
+//    test(2, "init");
     // if(3 >= 2){ }
 
 
