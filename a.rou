@@ -21,16 +21,17 @@ function void start(){
      str = "";
 
      int c = input(int);
-     println("you enterred ");
-  //   println(c);
+     println("you entered ");
+     string b = input(string);
+     println(b);
 
 
 
      int x = 7 + 5 * 2 + (2 - 3);
      println(x);
      
-    //test(2, "init");
-     if(3 >= 2){ }
+    test(2, "init");
+    // if(3 >= 2){ }
 
 
 

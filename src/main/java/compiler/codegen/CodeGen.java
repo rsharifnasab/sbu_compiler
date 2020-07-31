@@ -581,7 +581,7 @@ public class CodeGen {
       var varName = semanticStack.pop();
       var varType = semanticStack.pop();
       VariableDescriptor varDscp = new VariableDescriptor(varType);
-      varDscp.setAddress(dscp.innerTable.getSize() - 1);
+      varDscp.setAddress(dscp.innerTable.getSize());
       dscp.innerTable.add(varName, varDscp);
 
       //1 extra slot for long and double
