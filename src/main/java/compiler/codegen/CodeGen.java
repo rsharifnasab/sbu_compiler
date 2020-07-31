@@ -9,12 +9,9 @@ import org.objectweb.asm.*;
 import java.io.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Map;
-import java.util.Stack;
 
 import compiler.util.*;
 import compiler.scanner.*;
-import org.objectweb.asm.tree.analysis.Value;
 
 
 import static org.objectweb.asm.Opcodes.*;
@@ -881,9 +878,35 @@ public class CodeGen {
     }
     //------------------------------------------------------------------------
       case "jump_zero":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
         var secondOp = semanticStack.pop();
         var comp = semanticStack.pop();
         var firstOp = semanticStack.pop();
+        //-----------------------
+        var type2 = helpStack.pop();var type1 = helpStack.pop();
+
+       if(type1.equalsIgnoreCase("IDENTIFIER")){
+
+         var varDSCP = findDSCP(dscp.innerTable, firstOp);
+         var adr = varDSCP.getAddress();
+         var type = varDSCP.getType();
+         dscp.mv.visitVarInsn(loadOp(type), adr);// load the variable
+
+
+
+       }else { typeLdcInsn(dscp.mv, type1, firstOp); }
+
+        if(type2.equalsIgnoreCase("IDENTIFIER")){
+          var varDSCP = findDSCP(dscp.innerTable, secondOp);
+          var adr = varDSCP.getAddress();
+          var type = varDSCP.getType();
+          dscp.mv.visitVarInsn(loadOp(type), adr);// load the variable
+
+        }else { typeLdcInsn(dscp.mv, type2, secondOp); }
+
+
+
+
 
 
 
@@ -917,6 +940,10 @@ public class CodeGen {
   }
 
 }
+
+  private VariableDescriptor findDSCP(SymbolTable table, String key) {
+    return ((VariableDescriptor)table.getDSCP(key));
+  }
 
 
 }
