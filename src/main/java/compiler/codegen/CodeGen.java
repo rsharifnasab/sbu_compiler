@@ -919,7 +919,12 @@ public class CodeGen {
 
       }
       //-----------------------------------------------------------------------
-      case "visit_block_body":{break;}
+      case "visit_block_body":{
+        System.out.println("body");
+        //dscp.mv.visitCode();
+
+        break;
+      }
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -928,20 +933,44 @@ public class CodeGen {
 
 
         break;}
+        ///------------------------------------------------------------------
+      case "jump":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        Label end = new Label();
+
+        dscp.mv.visitJumpInsn(GOTO, end);
+        labelStack.push(end);
+
+
+
+
+        break;
+      }
+        ///--------------------------------------------------------------------
+      case "cjp":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        dscp.mv.visitLabel(labelStack.pop());
+
+        System.out.println("end if");
+
+        break;
+
+      }
+
 
 
 
     ///-------------------------------------------------------------------------
-    case "end_function":{
-      var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-      while (!semanticStack.isEmpty()) semanticStack.pop();
+      case "end_function":{
+         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+         while (!semanticStack.isEmpty()) semanticStack.pop();
 
-      dscp.mv.visitInsn(returnOp(dscp.type));
-      dscp.mv.visitMaxs(dscp.innerTable.getSize() + 2, dscp.innerTable.getSize());
-      dscp.mv.visitEnd();
+         dscp.mv.visitInsn(returnOp(dscp.type));
+         dscp.mv.visitMaxs(dscp.innerTable.getSize() + 2, dscp.innerTable.getSize() + 1);
+         dscp.mv.visitEnd();
 
 
-      break;
+         break;
     }
 
 
