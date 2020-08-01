@@ -29,6 +29,7 @@ public class CodeGen {
   public Deque<String> semanticStack;
   public Stack<Label> labelStack;
   public Deque<String> helpStack;
+  public Label currentLabel;
 
   private final Lexical lexical;
 
@@ -940,9 +941,9 @@ public class CodeGen {
         var firstOp = semanticStack.pop();
         //-----------------------
         var type2 = helpStack.pop();var type1 = helpStack.pop();
-
         //--first operand load
-       if(type1.equalsIgnoreCase("IDENTIFIER")){
+
+        if(type1.equalsIgnoreCase("IDENTIFIER")){
          var varDSCP = findDSCP(dscp.innerTable, firstOp);
          var adr = varDSCP.getAddress();
          var type = varDSCP.getType();
@@ -1023,7 +1024,6 @@ public class CodeGen {
         }else { typeLdcInsn(dscp.mv, type2, secondOp); }
 
 
-
          dscp.mv.visitJumpInsn(jnzOp(comp), labelStack.pop());
 
 
@@ -1033,6 +1033,7 @@ public class CodeGen {
 
         break;
       }
+
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -1057,7 +1058,7 @@ public class CodeGen {
 
         break;}
 
-        ///--------------------------------------------------------------------
+        ////--------------------------------------------------------------------
       case "cjp":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
         if(!labelStack.isEmpty())
@@ -1067,6 +1068,30 @@ public class CodeGen {
 
         break;
 
+      }
+
+      ///-----------------------------------------------------------------
+      case "exit":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var label = labelStack.pop();
+        dscp.mv.visitLabel(label);
+        break;
+      }
+      //----------------------------------------------------------
+      case "jump_back":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        dscp.mv.visitJumpInsn(GOTO, currentLabel);
+
+
+        break;
+      }
+      //------------------------------------------------------
+      case "complete_jump_back":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        currentLabel = new Label();
+        //labelStack.push(loopStart);
+        dscp.mv.visitLabel(currentLabel);
+        break;
       }
 
 
