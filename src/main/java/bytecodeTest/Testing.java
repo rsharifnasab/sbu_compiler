@@ -4,16 +4,12 @@ import java.util.Scanner;
 
 public class Testing {
     public static void main(String[] args) {
-     int a = 2; int b = 3;
-     boolean c  = false;
+     int a = 2;
 
-      // c = a < b;
+     do{
+         System.out.println("khar");
+     }while(a < 100);
 
-        if(a > b){
-            System.out.println("goal");
-        }
-
-        System.out.println("kallle");
 
 
 

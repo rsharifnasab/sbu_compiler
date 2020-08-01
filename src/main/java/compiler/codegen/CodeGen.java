@@ -927,6 +927,60 @@ public class CodeGen {
 
         break;
       }
+      //----------------------------------------------------------------
+      case "visit_loop_body":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        Label loopStart = new Label();
+        labelStack.push(loopStart);
+        dscp.mv.visitLabel(loopStart);
+
+        System.out.println("body");
+
+
+
+        break;
+      }
+      //------------------------------------------------------------
+      case "jz_loop":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+
+        var secondOp = semanticStack.pop();
+        var comp = semanticStack.pop();
+        var firstOp = semanticStack.pop();
+        //-----------------------
+        var type2 = helpStack.pop();var type1 = helpStack.pop();
+
+        //--first operand load
+        if(type1.equalsIgnoreCase("IDENTIFIER")){
+          var varDSCP = findDSCP(dscp.innerTable, firstOp);
+          var adr = varDSCP.getAddress();
+          var type = varDSCP.getType();
+          dscp.mv.visitVarInsn(loadOp(type), adr);// load the variable
+
+
+
+        }else { typeLdcInsn(dscp.mv, type1, firstOp); }
+
+        //----second operand load
+        if(type2.equalsIgnoreCase("IDENTIFIER")){
+          var varDSCP = findDSCP(dscp.innerTable, secondOp);
+          var adr = varDSCP.getAddress();
+          var type = varDSCP.getType();
+          dscp.mv.visitVarInsn(loadOp(type), adr);// load the variable
+
+        }else { typeLdcInsn(dscp.mv, type2, secondOp); }
+
+
+
+         dscp.mv.visitJumpInsn(compareOp(comp), labelStack.pop());
+
+
+
+
+
+
+        break;
+      }
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -946,7 +1000,6 @@ public class CodeGen {
         }
 
 
-        //dscp.mv.visitLabel(end);
 
 
 
