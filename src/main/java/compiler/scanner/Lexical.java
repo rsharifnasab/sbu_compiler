@@ -41,6 +41,7 @@ public class Lexical {
     public String nextToken() throws IOException{
         Symbol s = inner.nextToken();
         setLastSym(s);
+        Logger.print(s+"","yellow");
 
         return s.token.toString();
     }

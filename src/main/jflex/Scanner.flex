@@ -74,7 +74,7 @@ DoubleNumber = {Sign}(\.{Digit}+) | {Sign}({Digit}+\.) |{Sign}({Digit}+\.{Digit}
 FloatNumber = {Num}[fF]
 
 Ee = (e|E)
-ScientificNumber = {Num}{Ee}{Sign}{DecimalInt}
+ScientificNumber = {Num}{Ee}{NoSignDecimal}
 
  // RealNumber = {FloatNumber} | {DoubleNumber} | {ScientificNumber}
 
