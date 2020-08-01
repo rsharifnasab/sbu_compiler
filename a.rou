@@ -53,10 +53,11 @@ function void start(){
 
       int a = 0;
 
-      repeat { println("looooop baby"); } until (2 < 3);
+      repeat { println("run"); a = a + 1; } until (a < 6);
 
-
-
+      int b = 0;
+      a = a + 1;
+      println(a);
 
 
 

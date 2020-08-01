@@ -491,23 +491,39 @@ public class CodeGen {
       var literal = semanticStack.pop();
       var name    = semanticStack.pop();
 
-      if(!functionDscp.innerTable.hasDefined(name)){
-        System.err.println("compile error: variable "+name+" is not defined at function "+currentFunc+"()");
-        System.exit(404);//terminate compilation
-      }
-      else{
-
-        var varDscp = (VariableDescriptor)functionDscp.innerTable.getDSCP(name);
-        varDscp.value = literal;
-        var type = varDscp.type;
-
-        //---loads for every type
-        typeLdcInsn(functionDscp.mv,type,literal);
-        functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
 
 
+          if(!functionDscp.innerTable.hasDefined(name)){
+            System.err.println("compile error: variable "+name+" is not defined at function "+currentFunc+"()");
+            System.exit(404);//terminate compilation
+          }
+          else{
 
-      }
+            var varDscp = (VariableDescriptor)functionDscp.innerTable.getDSCP(name);
+            if(!helpStack.peek().equals("IDENTIFIER")){
+                helpStack.pop();
+                var type = varDscp.type;
+
+                //---loads for every type
+                typeLdcInsn(functionDscp.mv,type,literal);
+                functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
+            }
+            else{
+                var id = literal;
+                System.out.println(id);
+                var varDSCP = findDSCP(functionDscp.innerTable, id);
+                var adr = varDSCP.getAddress();
+                var type = varDSCP.getType();
+                functionDscp.mv.visitVarInsn(loadOp(type), adr);
+                functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
+            }
+          }
+
+
+
+
+
+
       break;
 
 
