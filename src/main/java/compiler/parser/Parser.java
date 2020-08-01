@@ -178,7 +178,7 @@ public class Parser {
     }
 
     private void doSemantics(List<String> functions) {
-        if(true) return;
+//        if(true) return;
         for (String function : functions) {
             codeGenerator.doSemantic(function);
         }
