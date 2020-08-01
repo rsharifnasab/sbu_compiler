@@ -1235,8 +1235,8 @@
         "isFinal": false
       },
       {
-        "x": 1585.0,
-        "y": 1053.0,
+        "x": 1748.0,
+        "y": 1052.0,
         "id": 85,
         "isFinal": false
       },
@@ -1498,7 +1498,7 @@
         "start": 84,
         "end": 85,
         "token": ")",
-        "func": "",
+        "func": "jz_loop",
         "anchorX": 1463.5,
         "anchorY": 1052.0,
         "isGraph": false,
@@ -1509,8 +1509,8 @@
         "end": 86,
         "token": ";",
         "func": "",
-        "anchorX": 1730.0,
-        "anchorY": 1050.0,
+        "anchorX": 1853.0,
+        "anchorY": 1054.0,
         "isGraph": false,
         "isGlobal": false
       },
@@ -1531,8 +1531,8 @@
     "name": "LOOP_BLOCK",
     "nodes": [
       {
-        "x": 233.0,
-        "y": 587.0,
+        "x": 126.0,
+        "y": 582.0,
         "id": 88,
         "isFinal": false
       },
@@ -1572,9 +1572,9 @@
         "start": 88,
         "end": 89,
         "token": "{",
-        "func": "",
-        "anchorX": 328.5,
-        "anchorY": 585.5,
+        "func": "visit_loop_body",
+        "anchorX": 162.5,
+        "anchorY": 582.5,
         "isGraph": false,
         "isGlobal": false
       },
