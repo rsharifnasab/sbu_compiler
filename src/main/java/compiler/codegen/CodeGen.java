@@ -1108,11 +1108,7 @@ public class CodeGen {
 
         break;
       }
-      case "minus_assign":{
-        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-        System.out.println("+=x");
-        break;
-      }
+     
       case "plus_assign":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
 
