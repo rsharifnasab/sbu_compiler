@@ -930,13 +930,20 @@ public class CodeGen {
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-        Label end = new Label();
-        dscp.mv.visitJumpInsn(GOTO, end);
+        Label  end = new Label();
+
+       if(lastToken.toString().equals("ELSE"))
+        {
+          dscp.mv.visitJumpInsn(GOTO, end);
+        }
 
         var label = labelStack.pop();
         dscp.mv.visitLabel(label);
 
-        labelStack.push(end);
+        if(lastToken.toString().equals("ELSE"))
+        {
+          labelStack.push(end);
+        }
 
 
         //dscp.mv.visitLabel(end);
@@ -948,7 +955,8 @@ public class CodeGen {
         ///--------------------------------------------------------------------
       case "cjp":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-        dscp.mv.visitLabel(labelStack.pop());
+        if(!labelStack.isEmpty())
+          dscp.mv.visitLabel(labelStack.pop());
 
         System.out.println("end if");
 

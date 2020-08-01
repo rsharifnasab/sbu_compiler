@@ -38,11 +38,24 @@ function void start(){
 
 
 
-     if(x >= 25){
-       println("if block");
-      } else{ println("else block"); }
+     if(x == 25){
+         println("if block");
+      }
+      else {
+          if(2 < 3){
+            println("else part");
+          }
+          else{
+                println("Mehrshad succeeded");
+           }
+       }
 
-       test(2, "init");
+
+
+
+
+
+       //test(2, "init");
 
      double z = 3;
      println(z);
