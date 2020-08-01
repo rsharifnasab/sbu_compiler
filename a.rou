@@ -49,16 +49,17 @@ function void start(){
        }*/
 
 
+
       int a = 0;
       repeat { println("run"); a = a + 1; } until (a < 6);
 
-      for ( int i = 0 ; i < 5 ; i = i + 1) { println("tu loop am");}
+      for ( int i = 0 ; i < 5 ; i = i + 1) { println("tu loop am"); break;}
 
+      a++;
+      a--;
+      a += 2;
+      //test(2, "init");
 
-
-
-
-       //test(2, "init");
 
      double z = 3;
      println(z);

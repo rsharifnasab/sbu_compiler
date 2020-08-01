@@ -1089,8 +1089,33 @@ public class CodeGen {
       case "complete_jump_back":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
         currentLabel = new Label();
-        //labelStack.push(loopStart);
+        //labelStack.push(dest);
         dscp.mv.visitLabel(currentLabel);
+        break;
+      }
+      //-------------------------------------------------------------------------
+      case "plus_plus":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var varDSCP = findDSCP(dscp.innerTable, semanticStack.pop());
+        dscp.mv.visitIincInsn(varDSCP.getAddress(), +1);
+
+        break;
+      }
+      case "minus_minus":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var varDSCP = findDSCP(dscp.innerTable, semanticStack.pop());
+        dscp.mv.visitIincInsn(varDSCP.getAddress(), -1);
+
+        break;
+      }
+      case "minus_assign":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        System.out.println("+=x");
+        break;
+      }
+      case "plus_assign":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+
         break;
       }
 
