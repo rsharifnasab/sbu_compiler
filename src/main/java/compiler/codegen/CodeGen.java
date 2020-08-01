@@ -281,6 +281,28 @@ public class CodeGen {
     }
   }
 
+  public int jnzOp(String comp) {
+    switch (comp) {
+      case "==":
+        return IF_ICMPEQ;
+      case "!=":
+        return IF_ICMPNE;
+      case "<=":
+        return IF_ICMPLE;
+      case ">=":
+        return IF_ICMPGE;
+      case "<":
+        return IF_ICMPLT;
+      case ">":
+        return IF_ICMPGT;
+      default:
+        return 0;
+
+    }
+  }
+
+
+
 
   //------------------------------------------------
   public void typeLdcInsn(MethodVisitor mv , String type , String literal){
@@ -941,7 +963,7 @@ public class CodeGen {
         break;
       }
       //------------------------------------------------------------
-      case "jz_loop":{
+      case "jnz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
 
         var secondOp = semanticStack.pop();
@@ -972,7 +994,7 @@ public class CodeGen {
 
 
 
-         dscp.mv.visitJumpInsn(compareOp(comp), labelStack.pop());
+         dscp.mv.visitJumpInsn(jnzOp(comp), labelStack.pop());
 
 
 
@@ -1031,7 +1053,7 @@ public class CodeGen {
          break;
     }
 
-    
+
 
 
     case "done":
@@ -1041,6 +1063,8 @@ public class CodeGen {
   }
 
 }
+
+
 
   private VariableDescriptor findDSCP(SymbolTable table, String key) {
     return ((VariableDescriptor)table.getDSCP(key));

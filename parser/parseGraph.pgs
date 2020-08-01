@@ -1498,7 +1498,7 @@
         "start": 84,
         "end": 85,
         "token": ")",
-        "func": "jz_loop",
+        "func": "jnz",
         "anchorX": 1463.5,
         "anchorY": 1052.0,
         "isGraph": false,
