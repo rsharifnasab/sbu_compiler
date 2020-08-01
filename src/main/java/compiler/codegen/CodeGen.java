@@ -748,12 +748,18 @@ public class CodeGen {
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       String addType = null;
       //-
+      Stack<String> temp = new Stack<>();
+      Stack<String> kind = new Stack<>();
+      temp.push(semanticStack.pop());
+      temp.push(semanticStack.pop());
+      kind.push(helpStack.pop());
+      kind.push(helpStack.pop());
 
       for (int i = 0; i < 2; i++) {
 
-        if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
-          helpStack.pop();
-          var name = semanticStack.pop();
+        if (kind.peek().equalsIgnoreCase("IDENTIFIER")) {
+          kind.pop();
+          var name = temp.pop();
 
           var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
 
@@ -765,8 +771,8 @@ public class CodeGen {
 
 
         } else {
-          var literalType = helpStack.pop();
-          var val = semanticStack.pop();
+          var literalType = kind.pop();
+          var val = temp.pop();
           typeLdcInsn(dscp.mv, literalType, val);
           // System.out.println(literalType+"= "+val);
           addType = literalType;
@@ -781,6 +787,7 @@ public class CodeGen {
       VariableDescriptor tempDscp = new VariableDescriptor(addType);
       tempDscp.setAddress(adr);
       dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
 
       //push type into helper
       helpStack.push("IDENTIFIER");
@@ -842,12 +849,18 @@ public class CodeGen {
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       String addType = null;
       //-
+      Stack<String> temp = new Stack<>();
+      Stack<String> kind = new Stack<>();
+      temp.push(semanticStack.pop());
+      temp.push(semanticStack.pop());
+      kind.push(helpStack.pop());
+      kind.push(helpStack.pop());
 
       for (int i = 0; i < 2; i++) {
 
-        if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
-          helpStack.pop();
-          var name = semanticStack.pop();
+        if (kind.peek().equalsIgnoreCase("IDENTIFIER")) {
+          kind.pop();
+          var name = temp.pop();
 
           var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
 
@@ -859,8 +872,8 @@ public class CodeGen {
 
 
         } else {
-          var literalType = helpStack.pop();
-          var val = semanticStack.pop();
+          var literalType = kind.pop();
+          var val = temp.pop();
           typeLdcInsn(dscp.mv, literalType, val);
           // System.out.println(literalType+"= "+val);
           addType = literalType;
@@ -875,6 +888,7 @@ public class CodeGen {
       VariableDescriptor tempDscp = new VariableDescriptor(addType);
       tempDscp.setAddress(adr);
       dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
 
       //push type into helper
       helpStack.push("IDENTIFIER");
