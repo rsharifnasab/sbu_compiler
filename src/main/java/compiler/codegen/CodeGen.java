@@ -920,32 +920,31 @@ public class CodeGen {
       }
       //-----------------------------------------------------------------------
       case "visit_block_body":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
         System.out.println("body");
         //dscp.mv.visitCode();
+
 
         break;
       }
       ///------------------------------------------------------------------------
       case "cjz":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        Label end = new Label();
+        dscp.mv.visitJumpInsn(GOTO, end);
+
         var label = labelStack.pop();
         dscp.mv.visitLabel(label);
 
-
-        break;}
-        ///------------------------------------------------------------------
-      case "jump":{
-        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-        Label end = new Label();
-
-        dscp.mv.visitJumpInsn(GOTO, end);
         labelStack.push(end);
 
 
+        //dscp.mv.visitLabel(end);
 
 
-        break;
-      }
+
+        break;}
+
         ///--------------------------------------------------------------------
       case "cjp":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
@@ -956,8 +955,6 @@ public class CodeGen {
         break;
 
       }
-
-
 
 
     ///-------------------------------------------------------------------------

@@ -37,10 +37,12 @@ function void start(){
      println(x);
 
 
-     //test(2, "init");
+
      if(x >= 25){
        println("if block");
       } else{ println("else block"); }
+
+       test(2, "init");
 
      double z = 3;
      println(z);
