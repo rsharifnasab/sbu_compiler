@@ -6,10 +6,13 @@ public class Testing {
 
     public static void main(String[] args) {
     int a = 0;
-  /*  String str = "abc";
+    String str = "abc";
+
     a = str.length();
-   */
-    a = func(12);
+    /*int[] arr = new int[3];
+    a = arr.length;*/
+
+  //  a = func(12);
 
 
 

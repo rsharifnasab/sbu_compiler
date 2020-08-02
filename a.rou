@@ -71,11 +71,14 @@ function void start(){
       b = arr[3];
       println(b);
       b = 50;
+
       //test(12, "init");
 
 
       b = fun(12, "hello");
-      println(b);
+
+
+      int length = len("Roulang");
 
 
 

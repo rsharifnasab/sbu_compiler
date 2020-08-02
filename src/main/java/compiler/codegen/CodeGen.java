@@ -741,7 +741,7 @@ public class CodeGen {
 
             } else{
                 var id = literal;
-                System.out.println(id);
+               // System.out.println(id);
                 var varDSCP = findDSCP(functionDscp.innerTable, id);
                 var adr = varDSCP.getAddress();
                 var type = varDSCP.getType();
@@ -1131,61 +1131,74 @@ public class CodeGen {
 
     }
     //-----------------------------------------------------------------------
-    case "call":{
-      var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-      /*---------
-        |hello|
-        |12   |
-        |fun  |
-        |b    |
-      ---------- */
-      /*   string
-           int
-           IDENTIFIER
-           IDENTIFIER
-      */ //----------------
+    case "call": {
+      var dscp = (FunctionDescriptor) st.getDSCP(currentFunc);
 
       Stack<String> args = new Stack<>();
       Stack<String> argsType = new Stack<>();
 
-      while (!helpStack.peek().equals("IDENTIFIER")){
-         argsType.push(helpStack.pop());
-         args.push(semanticStack.pop());
+      while (!helpStack.peek().equals("IDENTIFIER")) {
+        argsType.push(helpStack.pop());
+        args.push(semanticStack.pop());
       }
       var funcName = semanticStack.pop();
-      helpStack.pop();
-      var callee = ((FunctionDescriptor)st.getDSCP(funcName));
-      Stack<String> temp = new Stack<>();
 
-      for (var x:callee.argumentTypes) {
-        temp.push(x);
-      }
-      String argumentBuilder = "";
-      while (!temp.isEmpty()){
-        argumentBuilder += mapper.map.get(temp.pop());
+      if (funcName.equals("len")) {
+         helpStack.pop();
+         var str = args.pop();
+         dscp.mv.visitLdcInsn(str);
+         var toAddrress = dscp.innerTable.getSize();
+         dscp.mv.visitVarInsn(ASTORE, toAddrress);
+         dscp.mv.visitVarInsn(ALOAD, toAddrress);
+         VariableDescriptor systemVar = new VariableDescriptor("string");
+         systemVar.setAddress(toAddrress);
+         dscp.innerTable.add("system_var", systemVar);
+         dscp.mv.visitMethodInsn(INVOKEVIRTUAL,"java/lang/String","length", "()I", false );
+         var adr =  dscp.innerTable.getSize();
+         dscp.mv.visitVarInsn(ISTORE,adr);
+         VariableDescriptor varDSCP = new VariableDescriptor("int");
+         varDSCP.setAddress(adr);
+         dscp.innerTable.add("system_function_temp", varDSCP);
+         semanticStack.push("system_function_temp");
+         helpStack.push("IDENTIFIER");
 
-      }
-      argumentBuilder = "("+argumentBuilder+")"+ mapper.map.get(callee.type);
-      System.out.println(argumentBuilder);
-      //------------------------------
-      while (!args.isEmpty()){
-        var type = argsType.pop();
-        var literal = args.pop();
-        typeLdcInsn(dscp.mv, type, literal);
 
-      }
-      dscp.mv.visitMethodInsn(INVOKESTATIC, OUTCLASS_NAME, funcName, argumentBuilder, false);
-
-      if(!callee.type.equals("void")){
-        var toAddress = dscp.innerTable.getSize();
-        dscp.mv.visitVarInsn(getOp(callee.type), toAddress);
-        VariableDescriptor varDSCP = new VariableDescriptor(callee.type);
-        varDSCP.setAddress(toAddress);
-        dscp.innerTable.add("system_function_temp", varDSCP);
-        semanticStack.push("system_function_temp");
-        helpStack.push("IDENTIFIER");
 
       }
+      else{
+        helpStack.pop();
+        var callee = ((FunctionDescriptor) st.getDSCP(funcName));
+        Stack<String> temp = new Stack<>();
+
+        for (var x : callee.argumentTypes) {
+          temp.push(x);
+        }
+        String argumentBuilder = "";
+        while (!temp.isEmpty()) {
+          argumentBuilder += mapper.map.get(temp.pop());
+
+        }
+        argumentBuilder = "(" + argumentBuilder + ")" + mapper.map.get(callee.type);
+        //------------------------------
+        while (!args.isEmpty()) {
+          var type = argsType.pop();
+          var literal = args.pop();
+          typeLdcInsn(dscp.mv, type, literal);
+
+        }
+        dscp.mv.visitMethodInsn(INVOKESTATIC, OUTCLASS_NAME, funcName, argumentBuilder, false);
+
+        if (!callee.type.equals("void")) {
+          var toAddress = dscp.innerTable.getSize();
+          dscp.mv.visitVarInsn(getOp(callee.type), toAddress);
+          VariableDescriptor varDSCP = new VariableDescriptor(callee.type);
+          varDSCP.setAddress(toAddress);
+          dscp.innerTable.add("system_function_temp", varDSCP);
+          semanticStack.push("system_function_temp");
+          helpStack.push("IDENTIFIER");
+
+        }
+    }
 
 
 
