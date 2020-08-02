@@ -67,8 +67,12 @@ function void start(){
       arr[0] = a;
       arr[2] = 50;
 
-     double z = 3;
-     println(z);
+      int b = 1;
+      b = arr[3];
+      println(b);
+      b = 50;
+
+
 
 
 

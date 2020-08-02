@@ -695,13 +695,41 @@ public class CodeGen {
       var literal = semanticStack.pop();
       var name    = semanticStack.pop();
 
+      if(!semanticStack.isEmpty()){
+        System.out.println("inja");
+        var leftSide = semanticStack.pop();
+        var index = Integer.parseInt(literal);
+        var arrayName = name;
+        ArrayDescriptor array = (ArrayDescriptor)functionDscp.innerTable.getDSCP(arrayName);
+        functionDscp.mv.visitVarInsn(ALOAD, array.getAddress());
+
+        if (index < 6)
+          functionDscp.mv.visitInsn(icvOp(index));
+        else functionDscp.mv.visitIntInsn(icvOp(index), index);
+
+        functionDscp.mv.visitInsn( getElementOp(array.type) );
+        var leftDSCP = findDSCP(functionDscp.innerTable, leftSide);
+        //-----error handling for type mismatch-----
+        if(!leftDSCP.type.equals(array.type)){
+          System.err.println("type mismatch");
+          System.exit(505);
+        }
+        ///-----------------------------------------
+        functionDscp.mv.visitVarInsn(getOp(leftDSCP.type), leftDSCP.getAddress());
 
 
-          if(!functionDscp.innerTable.hasDefined(name)){
+
+
+      }
+      else{
+
+
+
+      if(!functionDscp.innerTable.hasDefined(name)){
             System.err.println("compile error: variable "+name+" is not defined at function "+currentFunc+"()");
             System.exit(404);//terminate compilation
-          }
-          else{
+      }
+      else{
 
             var varDscp = (VariableDescriptor)functionDscp.innerTable.getDSCP(name);
             if(!helpStack.peek().equals("IDENTIFIER")){
@@ -711,8 +739,8 @@ public class CodeGen {
                 //---loads for every type
                 typeLdcInsn(functionDscp.mv,type,literal);
                 functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
-            }
-            else{
+
+            } else{
                 var id = literal;
                 System.out.println(id);
                 var varDSCP = findDSCP(functionDscp.innerTable, id);
@@ -722,6 +750,7 @@ public class CodeGen {
                 functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
             }
           }
+      }
 
 
 

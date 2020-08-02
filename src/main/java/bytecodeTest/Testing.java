@@ -6,7 +6,7 @@ public class Testing {
 
     public static void main(String[] args) {
     int[] arr = new int[8];
-    arr[7] = 56;
+    int a = arr[0];
 
 
 
