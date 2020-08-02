@@ -59,7 +59,7 @@ function void start(){
       a--;
       int [] arr = new int[12];
       //test(2, "init");
-      arr[2] = 55;
+      arr[0] = a;
 
 
      double z = 3;

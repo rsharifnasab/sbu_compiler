@@ -590,24 +590,47 @@ public class CodeGen {
        var name = semanticStack.pop();
        System.out.println(name+"["+index+"]"+"="+literal);
        var literalType = helpStack.pop();
+
        //-----------------------------------------
         ArrayDescriptor array = (ArrayDescriptor)dscp.innerTable.getDSCP(name);
-        //--error handler-----------
-        if (!array.type.equals(literalType)){
-          System.err.println("type "+literalType+" is not assignable to "+array.type+" array");
-          System.exit(505);
+        //--error index handler-----------
+        if(array.upperBound < index || index < 0){
+          System.err.println("index "+ index +" is out of bounds for length "+ (array.upperBound + 1));
+          System.exit(202);
         }
+
         ///----------------------------
-        dscp.mv.visitVarInsn(ALOAD, array.getAddress());
-        if(index < 6){
-          dscp.mv.visitInsn(icvOp(index));
+        if(!literalType.equals("IDENTIFIER")) {
+
+          //---error type handler-----
+          if (!array.type.equals(literalType)){
+            System.err.println("type "+literalType+" is not assignable to "+array.type+" array");
+            System.exit(505);
+          }
+          //-------------------------
+           dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+           if (index < 6) {
+             dscp.mv.visitInsn(icvOp(index));
+           } else {
+             dscp.mv.visitIntInsn(icvOp(index), index);
+           }
+           typeLdcInsn(dscp.mv, literalType, literal);
+           dscp.mv.visitInsn(setElementOp(literalType));
         }
         else{
-          dscp.mv.visitIntInsn(icvOp(index), index);
-        }
-        typeLdcInsn(dscp.mv, literalType, literal);
-        dscp.mv.visitInsn(setElementOp(literalType));
+         var id = literal;
+         var varDSCP = findDSCP(dscp.innerTable, id);
 
+          dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+
+          if (index < 6)
+            dscp.mv.visitInsn(icvOp(index));
+           else dscp.mv.visitIntInsn(icvOp(index), index);
+
+          dscp.mv.visitVarInsn(loadOp(varDSCP.type), varDSCP.getAddress());
+          dscp.mv.visitInsn(setElementOp(varDSCP.type));
+
+        }
 
 
 
