@@ -13,7 +13,7 @@ public class Testing {
     public static void main(String[] args) {
         int arr[] = new int[5];
         int i = 1;
-        arr[i] = 6;
+        arr[i] = i;
     }
 
 }

@@ -57,7 +57,9 @@ function void start(){
       b = fun(17, "hello");
       println(b);
       int j = 0;
-      arr[j] = 5;
+      int blue = 7;
+      arr[j] = blue;
+      arr[j] = 8;
 
 
 

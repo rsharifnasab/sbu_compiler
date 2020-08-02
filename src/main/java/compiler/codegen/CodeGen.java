@@ -650,8 +650,18 @@ public class CodeGen {
           }
           dscp.mv.visitVarInsn(ALOAD, array.getAddress());
           dscp.mv.visitVarInsn(ILOAD, adr);
-          typeLdcInsn(dscp.mv, literalType, literal);
-          dscp.mv.visitInsn(setElementOp(literalType));
+
+          if (!literalType.equals("IDENTIFIER")){
+            typeLdcInsn(dscp.mv, literalType, literal);
+            dscp.mv.visitInsn(setElementOp(literalType));
+          }else{
+
+            var id = literal;
+            var idDSCP = findDSCP(dscp.innerTable, id);
+            System.out.println(id+"<<");
+            dscp.mv.visitVarInsn(loadOp(idDSCP.type), idDSCP.getAddress());
+            dscp.mv.visitInsn(setElementOp(idDSCP.type));
+          }
 
 
         }
