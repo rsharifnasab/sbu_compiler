@@ -1,9 +1,14 @@
 
-
 function void test(int a, string s){
   println(a);
   test(4 , "rec");
   return;
+}
+
+function int test(int x){
+  println(x);
+
+  return x;
 }
 
 record roozbeh_type {
@@ -60,7 +65,7 @@ function void start(){
       int [] arr = new int[12];
       //test(2, "init");
       arr[0] = a;
-
+      arr[2] = 50;
 
      double z = 3;
      println(z);

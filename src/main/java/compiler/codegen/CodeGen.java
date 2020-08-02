@@ -453,6 +453,7 @@ public class CodeGen {
 
         FunctionDescriptor functionDscp = new FunctionDescriptor(retType, null);
         st.add("$temp" , functionDscp);
+
         break;
       }
 
@@ -501,7 +502,7 @@ public class CodeGen {
           }
           args = "("+args+")";
           String signature = args + mapper.map.get(dscp.getType());
-          System.out.println(signature);
+          System.out.println("function signature: "+signature);
           dscp.mv = mainCLW.visitMethod(ACC_PUBLIC|ACC_STATIC, currentFunc, signature, null, null);
         }
         break;
@@ -1317,12 +1318,31 @@ public class CodeGen {
         break;
       }
 
+      //--------------------------------------------------------------------
+      case "load_return":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        String value = null;
+        if(!semanticStack.isEmpty()){
+          value = semanticStack.pop();
+        }
+       if(!helpStack.peek().equals("IDENTIFIER")){
+         typeLdcInsn(dscp.mv, helpStack.pop(), value);
+       }
+       else{
+         var id = value;
+         var varDSCP = findDSCP(dscp.innerTable, id);
+         dscp.mv.visitVarInsn(loadOp(varDSCP.getType()), varDSCP.getAddress());
+
+       }
+
+        break;
+      }
+
 
     ///-------------------------------------------------------------------------
       case "end_function":{
          var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
          while (!semanticStack.isEmpty()) semanticStack.pop();
-
          dscp.mv.visitInsn(returnOp(dscp.type));
          dscp.mv.visitMaxs(dscp.innerTable.getSize() + 2, dscp.innerTable.getSize() + 1);
          dscp.mv.visitEnd();
