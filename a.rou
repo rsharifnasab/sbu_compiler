@@ -60,12 +60,10 @@ function void start(){
       int blue = 7;
       arr[j] = blue;
       arr[j] = 8;
-
-
-
-
       int length = len("Roulang");
       println(length);
+
+      int fj = j & 3 | 5;
 
     return;
 }

@@ -1143,6 +1143,145 @@ public class CodeGen {
       break;
 
     }
+    //--------------------------------------------------------------
+      case "bitwise_and":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        String addType = null;
+        //-
+
+        for (int i = 0; i < 2; i++) {
+
+          if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+            helpStack.pop();
+            var name = semanticStack.pop();
+
+            var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+            //search type and address in innerTable
+            var address = varDscp.getAddress();
+            var type = varDscp.getType();
+            dscp.mv.visitVarInsn(loadOp(type), address);
+            addType = type;
+
+
+          } else {
+            var literalType = helpStack.pop();
+            var val = semanticStack.pop();
+            typeLdcInsn(dscp.mv, literalType, val);
+            // System.out.println(literalType+"= "+val);
+            addType = literalType;
+          }
+        }
+
+
+        dscp.mv.visitInsn(IAND);
+        var adr = dscp.innerTable.getSize();
+        dscp.mv.visitVarInsn(getOp(addType), adr);
+
+        VariableDescriptor tempDscp = new VariableDescriptor(addType);
+        tempDscp.setAddress(adr);
+        dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+        //push type into helper
+        helpStack.push("IDENTIFIER");
+        semanticStack.push("system_temp");
+
+
+        break;
+
+        }
+      case "bitwise_or":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        String addType = null;
+        //-
+
+        for (int i = 0; i < 2; i++) {
+
+          if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+            helpStack.pop();
+            var name = semanticStack.pop();
+
+            var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+            //search type and address in innerTable
+            var address = varDscp.getAddress();
+            var type = varDscp.getType();
+            dscp.mv.visitVarInsn(loadOp(type), address);
+            addType = type;
+
+
+          } else {
+            var literalType = helpStack.pop();
+            var val = semanticStack.pop();
+            typeLdcInsn(dscp.mv, literalType, val);
+            // System.out.println(literalType+"= "+val);
+            addType = literalType;
+          }
+        }
+
+
+        dscp.mv.visitInsn(IOR);
+        var adr = dscp.innerTable.getSize();
+        dscp.mv.visitVarInsn(getOp(addType), adr);
+
+        VariableDescriptor tempDscp = new VariableDescriptor(addType);
+        tempDscp.setAddress(adr);
+        dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+        //push type into helper
+        helpStack.push("IDENTIFIER");
+        semanticStack.push("system_temp");
+
+
+        break;
+
+      }
+      case "bitwise_xor":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        String addType = null;
+        //-
+
+        for (int i = 0; i < 2; i++) {
+
+          if (helpStack.peek().equalsIgnoreCase("IDENTIFIER")) {
+            helpStack.pop();
+            var name = semanticStack.pop();
+
+            var varDscp = ((VariableDescriptor) dscp.innerTable.getDSCP(name));
+
+            //search type and address in innerTable
+            var address = varDscp.getAddress();
+            var type = varDscp.getType();
+            dscp.mv.visitVarInsn(loadOp(type), address);
+            addType = type;
+
+
+          } else {
+            var literalType = helpStack.pop();
+            var val = semanticStack.pop();
+            typeLdcInsn(dscp.mv, literalType, val);
+            // System.out.println(literalType+"= "+val);
+            addType = literalType;
+          }
+        }
+
+
+        dscp.mv.visitInsn(IXOR);
+        var adr = dscp.innerTable.getSize();
+        dscp.mv.visitVarInsn(getOp(addType), adr);
+
+        VariableDescriptor tempDscp = new VariableDescriptor(addType);
+        tempDscp.setAddress(adr);
+        dscp.innerTable.add("system_temp", tempDscp); //temporary value
+
+        //push type into helper
+        helpStack.push("IDENTIFIER");
+        semanticStack.push("system_temp");
+
+
+        break;
+
+      }
     //-----------------------------------------------------------------------
     case "call": {
       var dscp = (FunctionDescriptor) st.getDSCP(currentFunc);
