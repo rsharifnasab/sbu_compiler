@@ -11,8 +11,9 @@ final class roozbeh{
 public class Testing {
 
     public static void main(String[] args) {
-        System.out.println("kalle");
-        roozbeh r = new roozbeh();
+        int arr[] = new int[5];
+        int i = 1;
+        arr[i] = 6;
     }
 
 }

@@ -12,7 +12,6 @@ function int fun(int x, string str){
 
 record roozbeh_type {
 
-
 };
 
 function void start(){
@@ -57,6 +56,9 @@ function void start(){
 
       b = fun(17, "hello");
       println(b);
+      int j = 0;
+      arr[j] = 5;
+
 
 
 

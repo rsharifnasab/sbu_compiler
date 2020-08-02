@@ -2,6 +2,7 @@ package compiler.codegen;
 
 import compiler.scanner.symboltable.*;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import org.objectweb.asm.*;
 import java.io.*;
 import java.util.ArrayDeque;
@@ -583,55 +584,75 @@ public class CodeGen {
       ///----------------|A R R A Y - A C C E S S|--------------------------------------------
       case "push_element":{
         semanticStack.push(lastValue);
+        helpStack.push(lastToken.toString());
         break;
       }
       //-----------------------------------------------------------------------
-      case "array_assign":{
-        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
-       var literal = semanticStack.pop();
-       var index = Integer.parseInt(semanticStack.pop());
-       var name = semanticStack.pop();
-       System.out.println(name+"["+index+"]"+"="+literal);
-       var literalType = helpStack.pop();
+      case "array_assign": {
+        var dscp = (FunctionDescriptor) st.getDSCP(currentFunc);
+        var literal = semanticStack.pop();
+        var elem = semanticStack.pop();
+        var name = semanticStack.pop();
+        System.out.println(name + "[" + elem + "]" + "=" + literal);
+        var literalType = helpStack.pop();
 
-       //-----------------------------------------
-        ArrayDescriptor array = (ArrayDescriptor)dscp.innerTable.getDSCP(name);
-        //--error index handler-----------
-        if(array.upperBound < index || index < 0){
-          System.err.println("index "+ index +" is out of bounds for length "+ (array.upperBound + 1));
-          System.exit(202);
-        }
+        //-----------------------------------------
+        ArrayDescriptor array = (ArrayDescriptor) dscp.innerTable.getDSCP(name);
 
-        ///----------------------------
-        if(!literalType.equals("IDENTIFIER")) {
+        assert helpStack.peek() != null;
 
-          //---error type handler-----
-          if (!array.type.equals(literalType)){
-            System.err.println("type "+literalType+" is not assignable to "+array.type+" array");
-            System.exit(505);
-          }
-          //-------------------------
-           dscp.mv.visitVarInsn(ALOAD, array.getAddress());
-           if (index < 6) {
-             dscp.mv.visitInsn(icvOp(index));
-           } else {
-             dscp.mv.visitIntInsn(icvOp(index), index);
+        if(!helpStack.peek().equals("IDENTIFIER")){
+           var index = Integer.parseInt(elem);
+          //--error index handler-----------
+           if (array.upperBound < index || index < 0) {
+            System.err.println("index " + index + " is out of bounds for length " + (array.upperBound + 1));
+            System.exit(202);
            }
-           typeLdcInsn(dscp.mv, literalType, literal);
-           dscp.mv.visitInsn(setElementOp(literalType));
-        }
+
+          ///----------------------------
+          if (!literalType.equals("IDENTIFIER")) {
+
+              //---error type handler-----
+              if (!array.type.equals(literalType)) {
+                System.err.println("type " + literalType + " is not assignable to " + array.type + " array");
+                System.exit(505);
+              }
+              //-------------------------
+              dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+              if (index < 6) {
+                dscp.mv.visitInsn(icvOp(index));
+              } else {
+                dscp.mv.visitIntInsn(icvOp(index), index);
+              }
+              typeLdcInsn(dscp.mv, literalType, literal);
+              dscp.mv.visitInsn(setElementOp(literalType));
+            } else {
+              var id = literal;
+              var varDSCP = findDSCP(dscp.innerTable, id);
+
+              dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+
+              if (index < 6)
+                dscp.mv.visitInsn(icvOp(index));
+              else dscp.mv.visitIntInsn(icvOp(index), index);
+
+              dscp.mv.visitVarInsn(loadOp(varDSCP.type), varDSCP.getAddress());
+              dscp.mv.visitInsn(setElementOp(varDSCP.type));
+
+            }
+       }
         else{
-         var id = literal;
-         var varDSCP = findDSCP(dscp.innerTable, id);
-
+          var varDSCP = findDSCP(dscp.innerTable, elem);
+          var adr = varDSCP.getAddress();
+          if(!varDSCP.type.equals("int")){
+            System.err.println(elem+" must be integer");
+            System.exit(101);
+          }
           dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+          dscp.mv.visitVarInsn(ILOAD, adr);
+          typeLdcInsn(dscp.mv, literalType, literal);
+          dscp.mv.visitInsn(setElementOp(literalType));
 
-          if (index < 6)
-            dscp.mv.visitInsn(icvOp(index));
-           else dscp.mv.visitIntInsn(icvOp(index), index);
-
-          dscp.mv.visitVarInsn(loadOp(varDSCP.type), varDSCP.getAddress());
-          dscp.mv.visitInsn(setElementOp(varDSCP.type));
 
         }
 
