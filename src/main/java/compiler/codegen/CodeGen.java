@@ -543,6 +543,8 @@ public class CodeGen {
         dscp.innerTable.add(name, arrayDSCP);
         //----------PUT TYPE BACK IN THE STACK FOR CADSCP------------
         semanticStack.push(leftType);
+        ///-------NAME BACK------
+        semanticStack.push(name);
 
 
         break;
@@ -550,6 +552,7 @@ public class CodeGen {
       ////-------------------------------------------------
       case "cadscp":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var arrayName = semanticStack.pop();
         var arraySize = Integer.parseInt(lastValue);
         var type = semanticStack.pop();
         int opCode = icvOp(arraySize);
@@ -562,6 +565,9 @@ public class CodeGen {
         }
         dscp.mv.visitIntInsn(NEWARRAY, makeArrayOp(type));
 
+        //------store the array------------------------
+        var adr = ((ArrayDescriptor)dscp.innerTable.getDSCP(arrayName)).getAddress();
+        dscp.mv.visitVarInsn(ASTORE, adr);
 
 
 
