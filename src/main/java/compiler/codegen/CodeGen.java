@@ -774,12 +774,14 @@ public class CodeGen {
 
             } else{
                 var id = literal;
-               // System.out.println(id);
+                System.out.println(id+"<--");
                 var varDSCP = findDSCP(functionDscp.innerTable, id);
                 var adr = varDSCP.getAddress();
                 var type = varDSCP.getType();
                 functionDscp.mv.visitVarInsn(loadOp(type), adr);
-                functionDscp.mv.visitVarInsn(getOp(type), varDscp.getAddress());
+                System.out.println(name+"<>");
+                functionDscp.mv.visitVarInsn(getOp(findDSCP(functionDscp.innerTable, name).type),
+                        findDSCP(functionDscp.innerTable, name).getAddress() );
             }
           }
       }

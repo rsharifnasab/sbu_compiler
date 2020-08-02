@@ -64,6 +64,10 @@ function void start(){
       println(length);
 
       int fj = j & 3 | 5;
+      long lg = input(long);
+      int ms = 5;
+      int tb = 6;
+      ms = tb;
 
     return;
 }
