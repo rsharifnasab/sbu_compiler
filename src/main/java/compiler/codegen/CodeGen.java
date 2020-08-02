@@ -21,7 +21,6 @@ public class CodeGen {
   public static final String SUPER_CLASS = "java/lang/Object";
 
   public ClassWriter mainCLW;
-  public ClassWriter structCLW;
   public MethodVisitor mVisit;
   public Deque<String> semanticStack;
   public Stack<Label> labelStack;
@@ -29,6 +28,7 @@ public class CodeGen {
   public Label currentLabel;
   public ClassWriter currentRecord;
   public String cast;
+  boolean inRecord = false;
 
   private final Lexical lexical;
 
@@ -717,12 +717,24 @@ public class CodeGen {
 
     //------------------------------------------------------------------------
     case "push_dcl_name":{
+      if(!inRecord){ // normal mode 
       String name = lastValue;
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
       var varDscp = ((VariableDescriptor)dscp.innerTable.getDSCP(name));
       Logger.log(" dcl name is: "+name+ " and dscp :"+varDscp);
       if(varDscp != null) Logger.error("variable "+name+" is already defined in this function");
       semanticStack.push(lastValue);
+      } else {
+          // in dcl mode 
+        String esmesh = lastValue;
+        String typesh = semanticStack.pop();
+
+        FieldVisitor fieldVisitor;
+        fieldVisitor = currentRecord.visitField(0, esmesh, mapper.map.get(typesh), null, null);
+        fieldVisitor.visitEnd();
+        
+
+      }
 
     }
     break;
@@ -931,17 +943,24 @@ public class CodeGen {
     }
     //-------------R E C O R D -----------------------------------------------
 
+
+    case "push":
+    { // push record name 
+        semanticStack.push(lastValue);
+        currentRecord = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+        currentRecord.visit(V1_8, ACC_FINAL, lastValue, null, SUPER_CLASS, null);
+
+        inRecord = true;
+
+
+    } break;
+
     case "write_class":{
-      currentRecord = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
       break;
     }
 
       case "complete_record":{
-
-
         String currName = semanticStack.pop();
-
-        currentRecord.visit(V1_8, ACC_FINAL, currName, null, SUPER_CLASS, null);
         
         mVisit = currentRecord.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mVisit.visitCode();
@@ -955,6 +974,8 @@ public class CodeGen {
 
         Logger.log(">> struct name is "+currName);
         writeRecordClass(currName);
+        
+        inRecord = false;
 
         break;
       }
@@ -1610,9 +1631,6 @@ public class CodeGen {
 
 
 
-    case "push":
-    semanticStack.push(lastValue);
-    break;
 
     default:
         Logger.print("sem is "+semantic+" and i cant run it","RED");
