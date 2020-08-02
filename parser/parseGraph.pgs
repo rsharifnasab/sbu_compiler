@@ -408,7 +408,7 @@
         "start": 20,
         "end": 21,
         "token": "EXPRESSION",
-        "func": "",
+        "func": "load_return",
         "anchorX": 1450.0,
         "anchorY": 384.5,
         "isGraph": true,
