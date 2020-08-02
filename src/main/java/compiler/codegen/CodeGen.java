@@ -1,9 +1,6 @@
 package compiler.codegen;
 
-import compiler.scanner.symboltable.Descriptor;
-import compiler.scanner.symboltable.FunctionDescriptor;
-import compiler.scanner.symboltable.SymbolTable;
-import compiler.scanner.symboltable.VariableDescriptor;
+import compiler.scanner.symboltable.*;
 
 import org.objectweb.asm.*;
 import java.io.*;
@@ -199,6 +196,30 @@ public class CodeGen {
         return AALOAD;
     }
 
+  }
+  //---------
+  public int icvOp(int value){
+    if(value < 6){
+      switch (value) {
+        case 0:
+          return  ICONST_0;
+        case 1:
+          return ICONST_1;
+        case 2:
+          return  ICONST_2;
+        case 3:
+          return ICONST_3;
+        case 4:
+          return ICONST_4;
+        default:
+          return ICONST_5;
+      }
+    }
+
+    else if(value < 128)
+      return BIPUSH;
+
+    else return SIPUSH;
   }
 
 
@@ -504,6 +525,49 @@ public class CodeGen {
 
 
       }break;
+      ////--------|A R R A Y|-------------------------------
+      case "madscp":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+
+        var name = semanticStack.pop();
+        var leftType = semanticStack.pop();
+        var rightType = lastToken.toString().split("_")[1].toLowerCase();
+        //----error handler-----------------------------------------------
+        if(!leftType.equals(rightType)){
+          System.err.println("can not assign "+rightType+" to "+leftType);
+          System.exit(505);
+        }
+        //---------------------------------------------------------------
+        ArrayDescriptor arrayDSCP = new ArrayDescriptor(leftType);
+        arrayDSCP.setAddress( dscp.innerTable.getSize() );
+        dscp.innerTable.add(name, arrayDSCP);
+        //----------PUT TYPE BACK IN THE STACK FOR CADSCP------------
+        semanticStack.push(leftType);
+
+
+        break;
+      }
+      ////-------------------------------------------------
+      case "cadscp":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+        var arraySize = Integer.parseInt(lastValue);
+        var type = semanticStack.pop();
+        int opCode = icvOp(arraySize);
+
+        if(arraySize < 6){
+          dscp.mv.visitInsn(opCode);
+        }
+        else{
+          dscp.mv.visitIntInsn(opCode, arraySize);
+        }
+        dscp.mv.visitIntInsn(NEWARRAY, makeArrayOp(type));
+
+
+
+
+
+        break;
+      }
 
       //-----------------------------------
       case "push_lit":{
