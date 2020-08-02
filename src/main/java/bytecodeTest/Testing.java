@@ -11,8 +11,9 @@ final class roozbeh{
 public class Testing {
 
     public static void main(String[] args) {
-        System.out.println("kalle");
-        roozbeh r = new roozbeh();
+        int a = 5;
+        long b = 7;
+        a = (int)b;
     }
 
 }
