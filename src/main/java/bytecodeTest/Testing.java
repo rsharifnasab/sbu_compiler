@@ -12,8 +12,8 @@ public class Testing {
 
     public static void main(String[] args) {
         int a = 5;
-        int b = 7;
-        a = b;
+        long b = 7;
+        a = (int)b;
     }
 
 }

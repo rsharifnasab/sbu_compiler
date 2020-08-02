@@ -29,6 +29,7 @@ public class CodeGen {
   public Deque<String> helpStack;
   public Label currentLabel;
   public ClassWriter currentRecord;
+  public String cast;
 
   private final Lexical lexical;
 
@@ -1549,6 +1550,10 @@ public class CodeGen {
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
 
         break;
+      }
+
+      case "cast_push":{
+        cast = lastValue;
       }
 
       //--------------------------------------------------------------------
