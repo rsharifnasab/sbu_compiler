@@ -27,12 +27,13 @@ public class CodeGen {
   public Stack<Label> labelStack;
   public Deque<String> helpStack;
   public Label currentLabel;
+  public ClassWriter currentRecord;
 
   private final Lexical lexical;
 
 
   public String currentFunc;
-  public boolean in_record = false;
+
 
   public CodeGen(File output, Lexical lexical) {
     OUTPUT_FILE = output;
@@ -71,6 +72,7 @@ public class CodeGen {
 
   public void writeEndOfClass(){
     Logger.log("writing generated code into output file");
+
     mainCLW.visitEnd();
 
     writeAndCheckClass(mainCLW.toByteArray(), OUTPUT_FILE, OUTCLASS_NAME );
@@ -84,7 +86,7 @@ public class CodeGen {
         OUTPUT_FILE.getParentFile().getName(),
         record_out+".class"
     );
-    writeAndCheckClass(structCLW.toByteArray(), record_out_file, record_out);
+    writeAndCheckClass(currentRecord.toByteArray(), record_out_file, record_out);
   }
 
   private static void writeAndCheckClass(byte[] b,File location, String className){
@@ -892,38 +894,18 @@ public class CodeGen {
     }
     //-------------R E C O R D -----------------------------------------------
 
-    case "RECORD_INIT":{
-        in_record = true;
+    case "write_class":{
+      currentRecord = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+      currentRecord.visit(V1_8, ACC_FINAL, OUTCLASS_NAME, null, SUPER_CLASS, null);
 
-        structCLW = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        /*structCLW.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, typeName, null, CodeWrite.SUPER_CLASS, null);
-        declarations.forEach(StructVarDCL::compile);
-
-        mVisit = structCLW.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
-        mVisit.visitCode();
-        mVisit.visitVarInsn(Opcodes.ALOAD, 0);
-        mVisit.visitMethodInsn(Opcodes.INVOKESPECIAL, CodeWrite.SUPER_CLASS, "<init>", "()V", false);
-
-
-        declarations.forEach(dcl -> dcl.init(typeName));*/
-
-
+      break;
     }
+      case "complete_record":{
+        currentRecord.visitEnd();
 
-    case "RECORD_VAR_DCL":{
-        Logger.log("var dcl");
 
-    }
-
-    case "RECORD_DONE":{
-      in_record = false;
-
-      mVisit.visitInsn(Opcodes.RETURN);
-      mVisit.visitMaxs(1, 1);
-      mVisit.visitEnd();
-      structCLW.visitEnd();
-     // writeRecordClass(typeName);
-    }
+        break;
+      }
 
 
     //-----------------------------------------------------------------------

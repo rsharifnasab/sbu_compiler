@@ -12,33 +12,14 @@ function int fun(int x, string str){
 }
 
 record roozbeh_type {
-  /*int a;
-  double d = 1.0;
-*/
 
 
 };
 
 function void start(){
 
-    /* println(12.53f);
-     println("mehrshad");
-     int b = 5;
-     int a = 50;
-     string str = "mehrshad";
-     str = "";
 
-     println("enter an int ");
-     int c = input(int);
-     println("you entered ");
-     println(c);
-     c = 2;
-     println(c);
-     */
-
-     /*string s = input(string);
-     println(s);*/
-    /* int x = 7 + (5 * 2) + (2 - 3);
+     int x = 7 + (5 * 2) + (2 - 3);
      println(x);
 
      if(x == 25){
@@ -51,7 +32,7 @@ function void start(){
           else{
                 println("Mehrshad succeeded");
            }
-       }*/
+       }
 
 
 
@@ -63,7 +44,7 @@ function void start(){
       a++;
       a--;
       int [] arr = new int[12];
-      //test(2, "init");
+
       arr[0] = a;
       arr[2] = 50;
 
