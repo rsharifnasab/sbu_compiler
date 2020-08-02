@@ -1,25 +1,14 @@
 
-record golabi{
-  // khali okeye
-};
-record roozbeh{
-   int i;
-  // golabi g; // record in record not supported
-  char c = 'a';
-
-};
-
-
 function void s1(){
-    
+
     return;
 }
 
 
 
 
-function char start( /* roozbeh a, golabi d */ ){ // TODO
-    return;
+function char start( roozbeh a, golabi d ){ 
+    return 'a';
 }
 
 
@@ -28,12 +17,12 @@ function void another(){
         println("salam");
     }
     else {
-//        println(a); 
+        int a = 41;
+        println(a); 
     }
     return;
 }
 
 
-function golabi golabii(){ println("na"); println("2 + +2"); return; } //TODO BUG
-
+function int golabii(){ println("na"); println(2); return 1; }
 

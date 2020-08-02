@@ -8,10 +8,10 @@ echo "updating parse table"
 ./updateTable.sh
 
 echo "compiling"
-mvn clean package -q -Dmaven.test.skip=true || exit
+mvn clean package -q || exit # -Dmaven.test.skip=true || exit
 
 echo "-- compiling a.rou--"
-java -jar ./target/*s.jar r.rou out.class  || exit
+java -jar ./target/*s.jar a.rou out.class  || exit
 
 echo "running compiled source"
 java out || exit 

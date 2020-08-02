@@ -1,4 +1,6 @@
 // hooora first program!
+
+
 function int calc(int a, char b){
     return a+b;
 }
@@ -10,19 +12,15 @@ function void start(){
     
     float f2 = (float) my_car;
     f++;
-   --f;
-    input(float);
 
-    sizeof(f);
     if(1 == 2){
         // pass
     } else {
-        string g;
-       g = "google";
+        string g = "google";
 
         println("p");
-        //println(g);
-        //println(2);
+        println(g);
+        println(2);
     }
     auto c=2;
 

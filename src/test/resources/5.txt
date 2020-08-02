@@ -5,7 +5,7 @@ function void main(){
         //break;
     }
     
-    switch(1+ +2) of:
+    switch(1 + 2) of:
         begin 
             case 2: { //pass
             }
@@ -23,12 +23,9 @@ function void main(){
     repeat {
         i++;
         println("im coming..");
-        //continue;
-        //break;
-        //continue;
     } until (2>3);
     
- //   auto a =1, b = 2f, c = new int[1];
+    auto a = 1, b = 2f;
 
     return;
 }

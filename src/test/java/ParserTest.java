@@ -46,12 +46,12 @@ public class ParserTest{
         p.parse();
     }
 
-
-    @Test
+//    @Test
     public void ourPT2() throws Exception{
         p = l("pt.npt","2.txt");
         p.parse();
     }
+
 
 
     @Test
@@ -60,16 +60,23 @@ public class ParserTest{
         p.parse();
     }
 
-
     @Test
     public void ourPT4() throws Exception{
         p = l("pt.npt","4.txt");
         p.parse();
     }
 
+
     @Test
     public void ourPT5() throws Exception{
         p = l("pt.npt","5.txt");
         p.parse();
     }
+
+    @Test
+    public void testRouzbeh() throws Exception{
+        p = l("pt.npt","6.txt");
+        p.parse();
+    }
+
 }

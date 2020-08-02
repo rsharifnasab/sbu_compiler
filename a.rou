@@ -7,7 +7,6 @@ function void test(int a, string s){
 
 function int fun(int x, string str){
   println(x);
-
   return x;
 }
 
@@ -56,14 +55,12 @@ function void start(){
       //test(12, "init");
 
 
-      b = fun(12, "hello");
+      b = fun(17, "hello");
+      println(b);
 
 
       int length = len("Roulang");
-
-
-
-
+      println(length);
 
     return;
 }

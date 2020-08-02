@@ -1,17 +1,8 @@
 
 function void start(){
-    1.2f;
-    //1+2;
     
-    int a  = 1+ +5 ; // TODO BUG
+    int a  =  -5 ; 
     int b = 2;
-//    a+3;
- //   a = a-6;
-  //  a *= 40; // TODO not supported
-    
-  /*  true || false;
-    a || true && b;
-    if ( (? a || c || d || e)) print(a); else println (b); */
+    a = a - 6;
     return;
-
 }
