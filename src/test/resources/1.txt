@@ -8,10 +8,10 @@ function int calc(int a, char b){
 function void start(){
     
     int my_car = 3;
-    float f = (float) 2;
+    float l = 2;
     
-    float f2 = (float) my_car;
-    f++;
+    float f2 = my_car;
+    l++;
 
     if(1 == 2){
         // pass
