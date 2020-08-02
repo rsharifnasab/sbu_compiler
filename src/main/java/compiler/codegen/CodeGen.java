@@ -53,7 +53,6 @@ public class CodeGen {
 
 
   private void initializeClass(){
-
     Logger.log("Initializing code generator");
     mainCLW = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
     mainCLW.visit(V1_8, ACC_PUBLIC, OUTCLASS_NAME, null, SUPER_CLASS, null);
@@ -65,33 +64,38 @@ public class CodeGen {
     mVisit.visitInsn(RETURN);
     mVisit.visitMaxs(1, 1);
     mVisit.visitEnd();
-
-
   }
 
 
 
   public void writeEndOfClass(){
     Logger.log("writing generated code into output file");
-
     mainCLW.visitEnd();
-
-    writeAndCheckClass(mainCLW.toByteArray(), OUTPUT_FILE, OUTCLASS_NAME );
+    writeAndCheckClass(mainCLW.toByteArray(), OUTPUT_FILE, OUTCLASS_NAME, false);
     Logger.close();
 
   }
 
   public void writeRecordClass(String record_out){
-    Logger.log("writing record to file");
+    String dest_folder = OUTPUT_FILE.getAbsoluteFile().getParentFile().getAbsolutePath();
+
+    Logger.print(
+        "~~~ writing record to file with name "
+        +record_out+" to "+ dest_folder,
+    "BLUE");
+
     File record_out_file = new File(
-        OUTPUT_FILE.getParentFile().getName(),
+        dest_folder,
         record_out+".class"
     );
-    writeAndCheckClass(currentRecord.toByteArray(), record_out_file, record_out);
+
+
+    writeAndCheckClass(currentRecord.toByteArray(), record_out_file, record_out, true);
   }
 
-  private static void writeAndCheckClass(byte[] b,File location, String className){
-    finalCheckClass(b,className);
+  private static void writeAndCheckClass(byte[] b,File location, String className, boolean isRecord){
+    if(!isRecord) finalCheckClass(b,className);
+    
     try(OutputStream out = new FileOutputStream(location)){
       out.write(b);
     } catch(IOException e){
@@ -929,13 +933,28 @@ public class CodeGen {
 
     case "write_class":{
       currentRecord = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-      currentRecord.visit(V1_8, ACC_FINAL, OUTCLASS_NAME, null, SUPER_CLASS, null);
-
       break;
     }
+
       case "complete_record":{
+
+
+        String currName = semanticStack.pop();
+
+        currentRecord.visit(V1_8, ACC_FINAL, currName, null, SUPER_CLASS, null);
+        
+        mVisit = currentRecord.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
+        mVisit.visitCode();
+        mVisit.visitVarInsn(Opcodes.ALOAD, 0);
+        mVisit.visitMethodInsn(Opcodes.INVOKESPECIAL, SUPER_CLASS, "<init>", "()V", false);
+        // we can iniialize here
+        mVisit.visitInsn(Opcodes.RETURN);
+        mVisit.visitMaxs(1, 1);
+        mVisit.visitEnd();
         currentRecord.visitEnd();
 
+        Logger.log(">> struct name is "+currName);
+        writeRecordClass(currName);
 
         break;
       }
@@ -1591,9 +1610,12 @@ public class CodeGen {
 
 
 
-    case "done":
-    System.out.println("ok done");
+    case "push":
+    semanticStack.push(lastValue);
     break;
+
+    default:
+        Logger.print("sem is "+semantic+" and i cant run it","RED");
 
   }
 
