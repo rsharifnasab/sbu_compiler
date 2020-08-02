@@ -3,6 +3,7 @@
 clear
 echo "deleting junk files"
 find . -name "*.args" -type f -delete
+find . -name "*.class" -type f -delete
 
 echo "updating parse table"
 ./updateTable.sh
