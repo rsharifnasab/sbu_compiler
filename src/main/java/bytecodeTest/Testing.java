@@ -5,10 +5,7 @@ import java.util.Scanner;
 public class Testing {
 
     public static void main(String[] args) {
-      int a = 0;
-      int b = 5;
-        System.out.println("x");
-      b++;
+    int[] arr = new int[2];
 
 
 

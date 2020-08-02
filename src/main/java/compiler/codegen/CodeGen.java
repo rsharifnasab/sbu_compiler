@@ -130,6 +130,76 @@ public class CodeGen {
 
     return clazz;
   }
+  ///-------------------------------------------------------------------------------------------------------------------
+  public int makeArrayOp(String type){
+    switch (type) {
+      case "double":
+        return  T_DOUBLE;
+      case "int":
+        return T_INT;
+      case "long":
+        return T_LONG;
+      case "float":
+        return T_FLOAT;
+      case "bool":
+        return T_BOOLEAN;
+      case "char":
+        return T_CHAR;
+      case "byte":
+       return T_BYTE;
+      case "short":
+        return T_SHORT;
+      default:
+        return 0;
+    }
+
+  }
+  //--
+  public int setElementOp(String type){
+    switch (type) {
+      case "double":
+        return  DASTORE;
+      case "int":
+        return IASTORE;
+      case "long":
+        return LASTORE;
+      case "float":
+        return FASTORE;
+      case "bool":
+      case "byte":
+        return BASTORE;
+      case "char":
+        return CASTORE;
+      case "short":
+        return SASTORE;
+      default:
+        return AASTORE;
+    }
+
+  }
+  //---
+  public int getElementOp(String type){
+    switch (type) {
+      case "double":
+        return  DALOAD;
+      case "int":
+        return IALOAD;
+      case "long":
+        return LALOAD;
+      case "float":
+        return FALOAD;
+      case "bool":
+      case "byte":
+        return BALOAD;
+      case "char":
+        return CALOAD;
+      case "short":
+        return SALOAD;
+      default:
+        return AALOAD;
+    }
+
+  }
 
 
   public String compareSymbol(String name){
@@ -1108,7 +1178,7 @@ public class CodeGen {
 
         break;
       }
-     
+
       case "plus_assign":{
         var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
 
