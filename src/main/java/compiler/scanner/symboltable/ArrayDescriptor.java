@@ -2,6 +2,7 @@ package compiler.scanner.symboltable;
 
 public class ArrayDescriptor extends Descriptor{
     private int address;
+    public int upperBound;
     public ArrayDescriptor(String type) {
         super(type);
     }

@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class Testing {
 
     public static void main(String[] args) {
-    int[] arr = new int[1000];
-    //arr[120] = 56;
+    int[] arr = new int[8];
+    arr[7] = 56;
 
 
 

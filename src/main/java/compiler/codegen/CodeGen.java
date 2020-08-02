@@ -566,8 +566,47 @@ public class CodeGen {
         dscp.mv.visitIntInsn(NEWARRAY, makeArrayOp(type));
 
         //------store the array------------------------
-        var adr = ((ArrayDescriptor)dscp.innerTable.getDSCP(arrayName)).getAddress();
+        var arrDSCP = ((ArrayDescriptor)dscp.innerTable.getDSCP(arrayName));
+        arrDSCP.upperBound = arraySize - 1;
+        var adr = arrDSCP.getAddress();
         dscp.mv.visitVarInsn(ASTORE, adr);
+
+
+
+
+        break;
+      }
+
+      ///----------------|A R R A Y - A C C E S S|--------------------------------------------
+      case "push_element":{
+        semanticStack.push(lastValue);
+        break;
+      }
+      //-----------------------------------------------------------------------
+      case "array_assign":{
+        var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+       var literal = semanticStack.pop();
+       var index = Integer.parseInt(semanticStack.pop());
+       var name = semanticStack.pop();
+       System.out.println(name+"["+index+"]"+"="+literal);
+       var literalType = helpStack.pop();
+       //-----------------------------------------
+        ArrayDescriptor array = (ArrayDescriptor)dscp.innerTable.getDSCP(name);
+        //--error handler-----------
+        if (!array.type.equals(literalType)){
+          System.err.println("type "+literalType+" is not assignable to "+array.type+" array");
+          System.exit(505);
+        }
+        ///----------------------------
+        dscp.mv.visitVarInsn(ALOAD, array.getAddress());
+        if(index < 6){
+          dscp.mv.visitInsn(icvOp(index));
+        }
+        else{
+          dscp.mv.visitIntInsn(icvOp(index), index);
+        }
+        typeLdcInsn(dscp.mv, literalType, literal);
+        dscp.mv.visitInsn(setElementOp(literalType));
 
 
 
