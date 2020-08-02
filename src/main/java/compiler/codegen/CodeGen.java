@@ -696,7 +696,6 @@ public class CodeGen {
       var name    = semanticStack.pop();
 
       if(!semanticStack.isEmpty()){
-        System.out.println("inja");
         var leftSide = semanticStack.pop();
         var index = Integer.parseInt(literal);
         var arrayName = name;
@@ -1134,27 +1133,65 @@ public class CodeGen {
     //-----------------------------------------------------------------------
     case "call":{
       var dscp = (FunctionDescriptor)st.getDSCP(currentFunc);
+      /*---------
+        |hello|
+        |12   |
+        |fun  |
+        |b    |
+      ---------- */
+      /*   string
+           int
+           IDENTIFIER
+           IDENTIFIER
+      */ //----------------
 
-      String argTypes = "";
-      var id = semanticStack.pollLast(); // function name
-      helpStack.pollLast();//pop name type from help stack
+      Stack<String> args = new Stack<>();
+      Stack<String> argsType = new Stack<>();
 
-      while(semanticStack.size() != 0){
-
-        var literal = semanticStack.pollLast();
-        var temp = helpStack.pollLast();
-        typeLdcInsn(dscp.mv, temp, literal);
-        argTypes += mapper.map.get(temp);
+      while (!helpStack.peek().equals("IDENTIFIER")){
+         argsType.push(helpStack.pop());
+         args.push(semanticStack.pop());
       }
-      var arguments = "(" + argTypes + ")";
+      var funcName = semanticStack.pop();
+      helpStack.pop();
+      var callee = ((FunctionDescriptor)st.getDSCP(funcName));
+      Stack<String> temp = new Stack<>();
 
-      if(st.getDSCP(id)== null)
-        Logger.error("function "+ id+ " not found");
-      var retType = st.getDSCP(id).getType();
-      retType = mapper.map.get(retType);//function return type
+      for (var x:callee.argumentTypes) {
+        temp.push(x);
+      }
+      String argumentBuilder = "";
+      while (!temp.isEmpty()){
+        argumentBuilder += mapper.map.get(temp.pop());
+
+      }
+      argumentBuilder = "("+argumentBuilder+")"+ mapper.map.get(callee.type);
+      System.out.println(argumentBuilder);
+      //------------------------------
+      while (!args.isEmpty()){
+        var type = argsType.pop();
+        var literal = args.pop();
+        typeLdcInsn(dscp.mv, type, literal);
+
+      }
+      dscp.mv.visitMethodInsn(INVOKESTATIC, OUTCLASS_NAME, funcName, argumentBuilder, false);
+
+      if(!callee.type.equals("void")){
+        var toAddress = dscp.innerTable.getSize();
+        dscp.mv.visitVarInsn(getOp(callee.type), toAddress);
+        VariableDescriptor varDSCP = new VariableDescriptor(callee.type);
+        varDSCP.setAddress(toAddress);
+        dscp.innerTable.add("system_function_temp", varDSCP);
+        semanticStack.push("system_function_temp");
+        helpStack.push("IDENTIFIER");
+
+      }
 
 
-      dscp.mv.visitMethodInsn(INVOKESTATIC, OUTCLASS_NAME, id, arguments + retType, false);
+
+
+
+
       break;
     }
     //-----------------------------------------------------------------------
