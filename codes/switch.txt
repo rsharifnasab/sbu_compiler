@@ -1,15 +1,7 @@
 
-//string fun(int a);
-//string fun(int a, int b);
+string fun(int a);
+string fun(int a, int b);
 
-function string fun(int a){
-	retrun "one param function";
-}
-
-function string fun(int a, int b){
-	//retrun "two param function";
-    return;
-}
 record newType {
 	int a,b;
 	double d;
@@ -105,3 +97,10 @@ void start(){
 }
 
 
+string fun(int a){
+	retrun "one param function";
+}
+
+string fun(int a, int b){
+	retrun "two param function";
+}
