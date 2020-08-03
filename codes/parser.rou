@@ -1,0 +1,56 @@
+
+
+function int main() { 			/** must be start **/
+
+	
+	record newType {   /** shouldn't be here **/
+	int a,b;
+	double d;
+	};
+
+    int number1 = 243 + 343 * 23;
+    long number2 = 34 + number1;
+    char local_character = 'a', c3 = '\t';
+    string str = "ali alavi";
+
+    int a = (int) number2;
+    double darray[10 + 1];  /** should be newed **/
+
+
+    repeat
+    {						
+        number1 = 2;
+        number1 = 2 * 8
+        and
+        3;
+    }
+    until(number1 < 12);
+
+
+    for (a = -1; a < 100; a += 10) {
+        int var = a;
+        Println(a);
+        Println(var * 3)  /** ; missed **/
+    }
+
+
+    switch (a) of :
+        {						/** must be begin / end **/
+            case 10: {
+                if (a = 5) { 	/** must be == **/
+                    a = 3;
+                } 
+            }
+            case 1: {
+                int c = true;
+            }
+            case 5:
+
+            case 2: {
+            }
+            default: {
+                double d = 3e4;
+            }
+        }
+
+}

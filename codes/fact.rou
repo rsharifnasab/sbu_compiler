@@ -1,0 +1,28 @@
+// factorial recursive program
+/* this program 
+checks the recursive function calls
+- signature declaration will be checked too
+*/
+
+function int fact(int n);
+
+void start(){
+	Println("input a number");
+	int n = Input(int);
+	Println(fact(n));
+	// because of call by value, n shouldn't have changed
+	Println(n);
+	Println("input a number");
+	string n = Input();
+	int m = int(n)
+	Println(fact(m));
+	return;
+}
+
+
+function int fact(int n){
+	if (n == 0 or n == 1)
+		return 1;
+	return n*fact(--n);
+
+}

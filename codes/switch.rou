@@ -1,0 +1,107 @@
+
+//string fun(int a);
+//string fun(int a, int b);
+
+function string fun(int a){
+	retrun "one param function";
+}
+
+function string fun(int a, int b){
+	//retrun "two param function";
+    return;
+}
+record newType {
+	int a,b;
+	double d;
+};
+
+void start(){
+	
+
+	const int n = Input(int);
+
+	repeat {
+		Switch (n) of:
+			begin
+				case 0 : { n++; //error -> const var changed
+				}
+				case 1 : {
+					// compare operator
+					Println("input two int to compare them");
+					int a = Input(int);
+					int b = Input(int);
+					if ( a > b ){
+						Println(a);
+					}
+					else{
+						Println(b);
+					}
+					break;
+				}
+				case 2 : {
+					// test record
+					newType n;
+					n.a=2;
+					n.b = n.a;
+					n.c = 2.5F;
+					Println(n.a);
+					Println(n.b);
+					Println(n.c);
+					break;
+				}
+				case 3 : {
+					// function overload
+					Println(fun(1));
+					Println(fun(1,2));
+					break;
+				}
+				case 4 : {
+					//bitwise operateor and modulo
+					int k = 2;
+					Println(k<<4);
+					int l= 5;
+					Println(k | l);
+					Println(k ^ l);
+					Println(k & l);
+					Println(63 & 0xF0);
+					Println(l % k);
+					break;
+				}
+				case 5 : {
+					//extra points
+					string s1 = "hello";
+					string s2 = " there";
+					Println(s1+s2);
+					Println(len(s1));
+
+					// warning of unreachable code
+					const int j = 5;
+					if (j<0){
+						string t = "How did you reach here ??";
+					 	Println(t);
+					}
+
+					int w,e,r;
+					int q = 3;
+					w=e=r=q;
+					Println(w);
+
+					int[][][] threeD_arr = new int[10][20][30];
+
+					q = int[0][2][3];
+					Println(q);
+					break;
+				}
+				case 6 : {Println("case 6");}
+				case 7 : {Println("case 7");break;}
+
+				default: {Println("default");}
+			end
+		s = Input();
+	}
+	until ( s != "exit" ) ;
+
+	return;
+}
+
+

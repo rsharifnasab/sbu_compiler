@@ -101,6 +101,7 @@ ScientificNumber = {Num}{Ee}{NoSignDecimal}
     // "start" {return of(ScannerToken.START);}
     // "sizeof" {return of(ScannerToken.SIZE_OF);}
     "println" {return of(ScannerToken.PRINT_LN);}
+    "Println" {return of(ScannerToken.PRINT_LN);}
     "input" {return of(ScannerToken.INPUT);}
     "if" {return of(ScannerToken.IF);}
     "then" {return of(ScannerToken.THEN);}

@@ -1,0 +1,15 @@
+function int pow(int b, int e){
+	int res = 1;
+	for ( int i = 0 ; i<e ; i++ ) {
+		res *= b;
+	}
+	return b;
+}
+
+function void start(){
+	int arr = new int[5];
+	foreach ( a in arr ) {
+		Println(pow(a,2));
+	}
+	return;
+}
