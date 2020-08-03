@@ -7,6 +7,7 @@ public enum ScannerToken implements Token{
     BOOL_PARAN,
 
 
+    INCLUDE,
 
     //OTHER
     FUNCTION,RETURN,START,
@@ -75,6 +76,8 @@ public enum ScannerToken implements Token{
         new HashMap<>();
 
     static {
+
+        ntv.put("include", INCLUDE);
 
         ntv.put("$", EOF);
         ntv.put("<=", SMALLER_THAN_EQUAL);

@@ -1,3 +1,4 @@
+include "lib.rou";
 
 function void test(int a, string s){
   println(a);
@@ -17,6 +18,7 @@ record roozbeh_type {
 
 function void start(){
 
+    clear();
 
      int x = 7 + (5 * 2) + (2 - 3);
      println(x);

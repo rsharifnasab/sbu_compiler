@@ -94,6 +94,7 @@ ScientificNumber = {Num}{Ee}{NoSignDecimal}
 
 
   /* keywords */
+    "include" {return of(ScannerToken.INCLUDE);}
     "function" {return of(ScannerToken.FUNCTION);}
     "return" {return of(ScannerToken.RETURN);}
     "void" {return of(ScannerToken.VOID);}

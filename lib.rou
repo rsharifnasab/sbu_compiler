@@ -1,0 +1,23 @@
+
+function void setGreen(){
+    println("this is green");
+
+    return;
+}
+
+
+function void resetColor(){
+    println("resetting color");
+    return;
+}
+
+function void clear(){
+    println("\n\n\n\n\n");
+    return;
+}
+
+function void start(){
+    clear();
+    return;
+}
+

@@ -23,6 +23,10 @@ public class SymbolTable {
         this.table = new HashMap<>();
     }
 
+    public void include(SymbolTable other){
+        this.table.putAll(other.table);
+    }
+
 
     public void add(String name , Descriptor dscp){
         table.put(name , dscp);

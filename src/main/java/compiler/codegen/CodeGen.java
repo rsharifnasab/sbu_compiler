@@ -450,6 +450,15 @@ public class CodeGen {
 
 
     switch(semantic){
+      
+      case "include":
+      {
+        String masir = semanticStack.pop();
+        SymbolTable anotherST = compiler.Compiler.compileLib(masir);
+        st.include(anotherST);
+
+
+      } break;
 
       case "make_function_dscp":{
         String retType = lastToken.toString();
@@ -1363,7 +1372,9 @@ public class CodeGen {
         helpStack.pop();
         var callee = ((FunctionDescriptor) st.getDSCP(funcName));
         Stack<String> temp = new Stack<>();
-
+        if(callee == null){
+            Logger.error("func "+funcName+" not found");
+        }
         for (var x : callee.argumentTypes) {
           temp.push(x);
         }
