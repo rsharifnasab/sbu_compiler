@@ -1,0 +1,18 @@
+int g;
+double d;
+
+record roozbeh {
+//    int a;
+};
+
+
+function int yetAnother(int a, char c){
+      print("salam");
+      print(2);
+      print(2.33);
+      //return 2;
+}
+function void start(){
+    yetAnother(1,'a');
+
+}

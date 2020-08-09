@@ -1,0 +1,13 @@
+int b;
+float f = 1.3;
+
+record salam{
+    int c;
+};
+
+record golabi{
+    int d;
+    int e;
+    char f;
+    string s;
+};

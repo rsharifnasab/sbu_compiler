@@ -1,0 +1,36 @@
+
+record golabi{
+  // khali okeye
+};
+record roozbeh{
+   int i;
+  //golabi g; // record in record not supported
+  char c = 'a';
+
+};
+
+
+function void s1(){
+  roozbeh r;
+
+}
+
+
+
+
+function char start(roozbeh a, golabi d){ // TODO
+}
+
+
+function void another(){
+    int a;
+    if(1==1){
+        println("salam");
+    }
+    else {
+        println(a);
+    }
+}
+
+
+function int golabii(){ println("na"); println(2 + 2); return 3; } //TODO BUG
