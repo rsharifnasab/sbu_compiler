@@ -1,4 +1,0 @@
-function void start(){
-    println(2);
-
-}
